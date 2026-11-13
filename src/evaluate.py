@@ -16,6 +16,8 @@ from collections import Counter, defaultdict
 from difflib import SequenceMatcher
 from pathlib import Path
 
+from corpus import Corpus
+
 
 
 # --- Squelettes de comparaison -----------------------------------------------
@@ -201,10 +203,8 @@ def measures(c: Counter) -> dict:
 
 
 def load_tokens(path: Path) -> dict:
-    """Export -> {"ch.vs": [tokens de w]}."""
-    data = json.loads(path.read_text(encoding="utf-8"))
-    (book, chapters), = data.items()
-    return {f"{ch}.{vs}": d["w"].split(" ") for ch, vs_ in chapters.items() for vs, d in vs_.items()}
+    """Export -> {"ch.vs": [tokens de w]} (lecture via corpus.Corpus)."""
+    return {key: v.tokens("w") for key, v in Corpus(path).verses.items()}
 
 
 def evaluate_book(jsonl: Path, he: Path, lxx: Path, gold: Path) -> dict:

@@ -16,10 +16,9 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-import yaml
-
-from align import align, make_aligner
-from llm_align import OllamaAligner
+from aligners import make_aligner
+from align import align
+from config import Config
 from evaluate import evaluate_book, export_csv, measures
 
 COLUMNS = ["precision", "rappel_blocs", "f1", "nonalign_exactitude", "aer",
@@ -27,25 +26,18 @@ COLUMNS = ["precision", "rappel_blocs", "f1", "nonalign_exactitude", "aer",
 
 
 def main(config_path: str):
-    cfg = yaml.safe_load(Path(config_path).read_text(encoding="utf-8"))
-    out = Path("results") / cfg["name"]
+    cfg = Config.from_yaml(config_path)  # arrête tout de suite si la config est invalide
+    out = Path("results") / cfg.name
     out.mkdir(parents=True, exist_ok=True)
     shutil.copy(config_path, out / "config.yaml")
 
-    if cfg.get("aligner", "simalign") == "llm":
-        aligner = OllamaAligner(cfg["llm_model"], cfg.get("llm_url", "http://localhost:11434"),
-                                think=cfg.get("llm_think", False))
-    else:
-        aligner = make_aligner(cfg["model"], cfg["layer"], cfg["methods"], cfg["device"])
+    aligner = make_aligner(cfg)  # SimAlign ou LLM, selon la config
 
     scores, total = {}, {}
-    for p in cfg["passages"]:
-        he_book = p["book"]
-        lxx_book = p.get("lxx_book", he_book)
-        label = p.get("only") or lxx_book
+    for p in cfg.passages:
+        he_book, lxx_book, label = p.book, p.lxx_book, p.label
         jsonl = out / f"{label}.jsonl"
-        n = align(aligner, f"data/he/{he_book}.json", f"data/lxx/{lxx_book}.json", jsonl,
-                  cfg["tokens"], p.get("only"), cfg.get("greek_accents", True))
+        n = align(aligner, f"data/he/{he_book}.json", f"data/lxx/{lxx_book}.json", jsonl, p.only)
         res = evaluate_book(jsonl, Path(f"data/he/{he_book}.json"),
                             Path(f"data/lxx/{lxx_book}.json"),
                             Path(f"data/gold_clean/{lxx_book}.json"))
@@ -56,8 +48,8 @@ def main(config_path: str):
             total.setdefault(m, Counter()).update(r["comptes"])
         print(f"{label} : {n} versets alignés et évalués")
 
-    if getattr(aligner, "stats", None):
-        print("Aligneur LLM :", dict(aligner.stats))
+    if aligner.stats:
+        print(f"{type(aligner).__name__} :", dict(aligner.stats))
     scores["TOTAL"] = {"methodes": {m: {"mesures": measures(c), "comptes": dict(c)}
                                     for m, c in total.items()}}
     (out / "scores.json").write_text(json.dumps(scores, ensure_ascii=False, indent=1), encoding="utf-8")
