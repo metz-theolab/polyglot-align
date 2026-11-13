@@ -1,0 +1,17 @@
+# Expérience de référence (test de non-régression, voir DECISIONS.md).
+# Lancer (depuis la racine du projet) : python src/run.py experiments/mbert_formes_sans_accents.yaml
+
+name: mbert_formes_sans_accents
+
+passages:
+  - {book: Gen, only: Gen.1}
+  - {book: Gen, only: Gen.3}
+  - {book: 1Sam, only: 1Sam.9}
+
+tokens: w             # w = formes, l = lemmes
+greek_accents: false  # true = garder les accents grecs, false = les retirer
+
+model: bert
+layer: 8
+methods: mai          # m = mwmf, a = inter (argmax), i = itermax
+device: cpu

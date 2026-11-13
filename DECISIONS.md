@@ -477,9 +477,42 @@ seule classe (`OllamaAligner`). Symptômes :
 (chaîne de transformations lancée une fois), `show.py` (petit script).
 
 **Test de non-régression (obligatoire) :** avant la restructuration, garder les
-résultats actuels (`results/glot500/`, `results/mbert_formes_sans_accents/`).
-Après, relancer les mêmes configs : `scores.csv` doit être **identique**. La
-restructuration ne doit changer aucun chiffre.
+résultats actuels. Après, relancer les mêmes configs : `scores.csv` doit être
+**identique**. La restructuration ne doit changer aucun chiffre.
+
+*Mise en place (2026-11-13).* Expériences de référence dans `experiments/`
+(Gen 1, Gen 3, 1 Sam 9 ; formes, grec sans accents) : `mbert_…`, `xlmr_…`,
+`glot500_formes_sans_accents` (SimAlign, méthodes `mai`) et
+`gemma4_texte_gen3` (LLM, sans réflexion). Résultats relancés avec le code
+d'avant la restructuration et copiés dans `tests/reference/`. Contrôle :
+`python tests/check_non_regression.py`, en deux volets :
+- **rejeu** : les JSONL de référence sont réévalués avec le code actuel (et,
+  pour le LLM, ses tableaux reconvertis en liens) ; liens et scores identiques ;
+- **relance** (SimAlign seulement) : `results/<nom>/` relancé doit être
+  identique à la référence, octet par octet. Vérifié pour mBERT : deux
+  exécutions donnent exactement les mêmes fichiers.
+
+*Constat : le LLM n'est pas déterministe*, même à température 0 avec une graine
+fixe. Deux exécutions de `gemma4_texte_gen3` diffèrent (Gn 3:6 : `ἰδεῖν`
+rattaché ou non à `לעינים`) ; précision 94,1 / 94,3 %, rappel 94,4 / 93,8 %.
+D'où le rejeu pour le LLM. Conséquence pour l'article : les scores du LLM
+doivent être donnés sur plusieurs exécutions (moyenne et écart).
+
+*Corrections d'étiquetage :* l'ancien `results/mbert_formes_sans_accents/`
+contenait des résultats XLM-R (config modifiée sans changer `name`) ;
+l'ancien `results/gemma4_12b_texte_gen3/` (« avec réflexion ») est invalide :
+JSONL vide, exécution avec réflexion interrompue, scores d'une exécution
+antérieure sans réflexion. Aucun résultat avec réflexion n'existe à ce jour.
+
+Résultats de référence (TOTAL des trois chapitres, méthode `inter` ; LLM sur
+Gen 3 seulement) :
+
+| Aligneur | Précision | Rappel blocs | Non-al. |
+|---|---|---|---|
+| mBERT | 73,0 % | 57,4 % | 75,0 % |
+| XLM-R | 62,2 % | 44,2 % | 80,9 % |
+| Glot500 | **82,8 %** | 69,4 % | **87,5 %** |
+| Gemma 4 12B (LLM, Gen 3) | **94,1 %** | **94,4 %** | 22,7 % |
 
 **Ordre :** 1. restructuration + non-régression ; 2. `tokens: g` (implémenté
 une seule fois, dans `Verse`).
