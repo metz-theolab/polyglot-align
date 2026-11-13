@@ -1,0 +1,21 @@
+{
+ "unités": 347966,
+ "kind:sure": 345363,
+ "type:align": 302402,
+ "type:plus": 27587,
+ "type:minus": 17977,
+ "todo:ben_sira_balisage_propre": 14029,
+ "todo:ref_lxx_forme": 6666,
+ "todo:renvoi_vide_non_rattache": 3348,
+ "kind:possible": 2603,
+ "todo:residu_gr": 2051,
+ "todo:residu_hb": 1734,
+ "todo:transposition_grecque_non_resolue": 687,
+ "todo:renvoi_hors_verset": 391,
+ "todo:indicateur_..r_hb": 364,
+ "todo:transposition_hebraique_non_resolue": 169,
+ "todo:indicateur_.._hb": 47,
+ "todo:indicateur_..r_gr": 5,
+ "todo:ketiv_sans_qere": 4,
+ "todo:indicateur_..d_hb": 4
+}

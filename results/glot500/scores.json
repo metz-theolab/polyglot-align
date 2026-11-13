@@ -1,0 +1,106 @@
+{
+ "Gen.1": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.8214,
+     "rappel_blocs": 0.6584,
+     "f1": 0.7309,
+     "nonalign_exactitude": 0.8824,
+     "aer": 0.2366,
+     "aer_precision": 0.8214,
+     "aer_rappel": 0.587,
+     "couverture_hb": 1.0,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 345,
+     "blocs_evaluables": 401,
+     "blocs_trouves": 264,
+     "aer_A": 420,
+     "aer_S": 138,
+     "aer_AinP": 345,
+     "aer_AinS": 81,
+     "tokens_hb": 662,
+     "tokens_hb_rattaches": 662,
+     "tokens_gr": 741,
+     "tokens_gr_rattaches": 741,
+     "versets": 31,
+     "faux": 75,
+     "nonalign_tokens": 68,
+     "nonalign_respectes": 60
+    }
+   }
+  }
+ },
+ "Gen.3": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.8482,
+     "rappel_blocs": 0.7678,
+     "f1": 0.806,
+     "nonalign_exactitude": 0.7273,
+     "aer": 0.1713,
+     "aer_precision": 0.8482,
+     "aer_rappel": 0.7667,
+     "couverture_hb": 1.0,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 324,
+     "faux": 58,
+     "blocs_evaluables": 323,
+     "blocs_trouves": 248,
+     "nonalign_tokens": 22,
+     "nonalign_respectes": 16,
+     "aer_A": 382,
+     "aer_S": 120,
+     "aer_AinP": 324,
+     "aer_AinS": 92,
+     "tokens_hb": 495,
+     "tokens_hb_rattaches": 495,
+     "tokens_gr": 581,
+     "tokens_gr_rattaches": 581,
+     "versets": 24
+    }
+   }
+  }
+ },
+ "TOTAL": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.8342,
+     "rappel_blocs": 0.7072,
+     "f1": 0.7655,
+     "nonalign_exactitude": 0.8444,
+     "aer": 0.2057,
+     "aer_precision": 0.8342,
+     "aer_rappel": 0.6705,
+     "couverture_hb": 1.0,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 669,
+     "blocs_evaluables": 724,
+     "blocs_trouves": 512,
+     "aer_A": 802,
+     "aer_S": 258,
+     "aer_AinP": 669,
+     "aer_AinS": 173,
+     "tokens_hb": 1157,
+     "tokens_hb_rattaches": 1157,
+     "tokens_gr": 1322,
+     "tokens_gr_rattaches": 1322,
+     "versets": 55,
+     "faux": 133,
+     "nonalign_tokens": 90,
+     "nonalign_respectes": 76
+    }
+   }
+  }
+ }
+}
