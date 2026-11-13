@@ -32,8 +32,9 @@ class Config:
     passages: list = field(default_factory=list)  # liste de Passage
 
     # texte donné à l'aligneur
-    tokens: str = "w"             # w = formes, l = lemmes
+    tokens: str = "w"             # w = mots BHSA (בְּ רֵאשִׁית), g = mots graphiques (בְּרֵאשִׁית), l = lemmes
     greek_accents: bool = True    # False = accents grecs retirés (SimAlign)
+    hebrew_vocalization: bool = False  # True = voyelles hébraïques gardées (SimAlign)
 
     # aligneur
     aligner: str = "simalign"     # simalign ou llm
@@ -66,8 +67,8 @@ class Config:
         problems = []
         if not self.passages:
             problems.append("aucun passage")
-        if self.tokens not in ("w", "l"):
-            problems.append(f"tokens = {self.tokens!r} (attendu : w ou l)")
+        if self.tokens not in ("w", "g", "l"):
+            problems.append(f"tokens = {self.tokens!r} (attendu : w, g ou l)")
         if self.aligner not in ("simalign", "llm"):
             problems.append(f"aligner = {self.aligner!r} (attendu : simalign ou llm)")
         if self.aligner == "llm" and not self.llm_model:

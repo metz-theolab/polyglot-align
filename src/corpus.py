@@ -33,15 +33,29 @@ class Verse:
         return f"{self.book}.{self.key}"
 
     def tokens(self, layer: str = "w") -> list:
-        """Tokens d'une couche (w, l, g)."""
+        """Tokens d'une couche :
+        w : un token par mot BHSA, proclitiques séparés (בְּ רֵאשִׁית) ;
+        l : lexème de chaque token de w ;
+        g : un token par mot graphique (בְּרֵאשִׁית), tokens de w recollés
+            (nom composé gardé en un token : בית_אל)."""
+        if layer == "g":
+            return self._join_graphic("w", keep_compound=True)
         return self.layers[layer].split(" ")
 
+    def graphic_numbers(self) -> list:
+        """Numéro du mot graphique de chaque token de w (couche g de l'export)."""
+        return self.layers["g"].split(" ")
+
     def graphic_words(self, layer: str = "w") -> list:
-        """Recolle les tokens d'un même mot graphique (couche g) :
-        בְּ + רֵאשִׁית -> בְּרֵאשִׁית ; nom composé בית_אל -> בית אל."""
+        """Mots graphiques pour l'affichage (prompt du LLM) : tokens recollés,
+        nom composé בית_אל -> « בית אל ». layer = w ou l (g = w)."""
+        return self._join_graphic("w" if layer == "g" else layer, keep_compound=False)
+
+    def _join_graphic(self, layer: str, keep_compound: bool) -> list:
+        """Recolle les tokens de `layer` qui ont le même numéro de mot graphique."""
         words = {}
-        for tok, k in zip(self.tokens(layer), self.tokens("g")):
-            words[k] = words.get(k, "") + tok.replace("_", " ")
+        for tok, k in zip(self.tokens(layer), self.graphic_numbers()):
+            words[k] = words.get(k, "") + (tok if keep_compound else tok.replace("_", " "))
         return list(words.values())
 
 

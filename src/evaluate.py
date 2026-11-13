@@ -43,14 +43,17 @@ def parse_links(raw: str) -> list:
 class Evaluator:
     """Évalue les alignements d'un livre contre son gold."""
 
-    def __init__(self, gold: Gold, he: Corpus, lxx: Corpus):
+    def __init__(self, gold: Gold, he: Corpus, lxx: Corpus, layer: str = "w"):
         self.gold, self.he, self.lxx = gold, he, lxx
+        # tokens rattachés au gold : ceux de la couche alignée ; pour les lemmes (l),
+        # les formes w (mêmes indices, mais seules les formes se comparent au gold)
+        self.layer = "g" if layer == "g" else "w"
 
     @classmethod
-    def for_books(cls, he_book: str, lxx_book: str, root="data") -> "Evaluator":
+    def for_books(cls, he_book: str, lxx_book: str, root="data", layer: str = "w") -> "Evaluator":
         """Evaluator.for_books("Gen", "Gen") ; doubles textes : ("Judg", "JudgA")."""
         return cls(Gold.load(lxx_book, root), Corpus.load("he", he_book, root),
-                   Corpus.load("lxx", lxx_book, root))
+                   Corpus.load("lxx", lxx_book, root), layer)
 
     # --- un verset ---
 
@@ -60,8 +63,8 @@ class Evaluator:
         key = d["ref"].split(".", 1)[1]
         if not self.gold.covers(key):
             return None, "verset_sans_gold"
-        hb = self.he[key].tokens("w") if key in self.he else []
-        gr = self.lxx[key].tokens("w") if key in self.lxx else []
+        hb = self.he[key].tokens(self.layer) if key in self.he else []
+        gr = self.lxx[key].tokens(self.layer) if key in self.lxx else []
         if len(d["src"]) != len(hb) or len(d["tgt"]) != len(gr):
             return None, "tokens_differents_de_l_export"
         hb_unit, gr_unit = self.gold.attach(key, hb, gr)

@@ -84,6 +84,11 @@ class TestGold(unittest.TestCase):
         # ἐν ἀρχῇ | ἐποίησεν | ὁ θεὸς | τὸν οὐρανὸν | καὶ τὴν γῆν
         self.assertEqual(n(gr), ["1", "1", "2", "3", "3", "4", "4", "5", "5", "5"])
 
+    def test_projection_mots_graphiques(self):
+        # tokens: g : chaque mot graphique se rattache directement à son bloc
+        hb, _ = self.gold.attach("1.1", self.he["1.1"].tokens("g"), self.lxx["1.1"].tokens("g"))
+        self.assertEqual([self.gold.units[u]["n"] for u in hb], ["1", "2", "3", "4", "4", "5", "5"])
+
     def test_couverture_genese(self):
         missing = total = 0
         for key, v in self.he.verses.items():

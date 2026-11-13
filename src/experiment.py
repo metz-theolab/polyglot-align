@@ -62,7 +62,7 @@ class Experiment:
         jsonl = self.out / f"{p.label}.jsonl"
         n = align(aligner, self.data / "he" / f"{p.book}.json",
                   self.data / "lxx" / f"{p.lxx_book}.json", jsonl, p.only)
-        evaluator = Evaluator.for_books(p.book, p.lxx_book, root=self.data)
+        evaluator = Evaluator.for_books(p.book, p.lxx_book, root=self.data, layer=self.cfg.tokens)
         self.scores[p.label] = evaluator.evaluate(jsonl)
         evaluator.export_csv(jsonl, self.out / f"{p.label}.csv")
         return n

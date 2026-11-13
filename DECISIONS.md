@@ -452,6 +452,36 @@ Gn 1 + Gn 3, méthode `inter`), puis avec mBERT.
 **Pas concerné :** le LLM (Gemma) voit déjà le texte pointé complet ; seule la
 couche des tokens reliés changerait.
 
+## 2026-11-13 — Option `hebrew_vocalization` : hébreu avec ou sans voyelles
+
+**Statut : décidé** (à mesurer avec l'expérience de segmentation)
+
+Nouvelle option du YAML, `hebrew_vocalization: true / false` (défaut `false`,
+le comportement de toutes les expériences précédentes). Elle règle ce que
+l'aligneur à embeddings (SimAlign) reçoit côté hébreu :
+- `false` : texte consonantique (`בְּרֵאשִׁ֖ית` → `בראשית`) ;
+- `true` : vocalisation gardée — voyelles, dagesh / mappiq, points du shin et
+  du sin (`בְּרֵאשִׁית`).
+
+Dans les deux cas sont retirés : les accents de cantillation (teʿamim), le
+meteg (`וַֽיְהִי` → `וַיְהִי`), la ponctuation (maqqef, paseq, sof pasuq).
+
+**Raison :** les modèles ont appris l'hébreu moderne, écrit sans voyelles ;
+mais les voyelles lèvent des ambiguïtés que le texte consonantique laisse (ex.
+article et préposition : `בַּ` / `בְּ`), utiles une fois les proclitiques
+recollés en mots graphiques. Seule l'expérience peut trancher.
+**Choix :** teʿamim toujours retirés : ils notent la cantillation et la
+structure du verset, pas le sens des mots, et sont absents des données
+d'entraînement des modèles. Une option séparée pourra les tester plus tard
+(TODO.md distingue vocalisation et teʿamim).
+**Pas concerné :** le LLM, qui voit toujours le texte pointé complet.
+
+**Expériences** (Glot500, mêmes passages et réglages que
+`glot500_formes_sans_accents`, seules `tokens` et `hebrew_vocalization`
+changent) : `glot500_formes_vocalise_sans_accents` (w, voyelles),
+`glot500_mots_graphiques_sans_accents` (g, sans voyelles),
+`glot500_mots_graphiques_vocalise_sans_accents` (g, voyelles).
+
 ## 2026-11-13 — Restructuration du code en classes (avant `tokens: g`)
 
 **Statut : fait** (2026-11-13, en 4 étapes : `Config` + `Corpus`/`Verse` ;

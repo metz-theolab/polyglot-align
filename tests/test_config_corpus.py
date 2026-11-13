@@ -26,10 +26,15 @@ def config_from(text: str) -> Config:
 
 
 class TestConfig(unittest.TestCase):
+    def test_tokens_g_et_vocalisation(self):
+        c = config_from("name: x\npassages: [{book: Gen}]\ntokens: g\nhebrew_vocalization: true")
+        self.assertEqual((c.tokens, c.hebrew_vocalization), ("g", True))
+
     def test_valeurs_par_defaut(self):
         c = config_from("name: x\npassages: [{book: Gen, only: Gen.1}]")
         self.assertEqual((c.tokens, c.aligner, c.model, c.layer, c.methods), ("w", "simalign", "bert", 8, "mai"))
         self.assertTrue(c.greek_accents)
+        self.assertFalse(c.hebrew_vocalization)
 
     def test_passage(self):
         self.assertEqual(Passage("Gen", only="Gen.1").label, "Gen.1")
@@ -42,7 +47,7 @@ class TestConfig(unittest.TestCase):
             config_from("name: x\npassages: [{book: Gen}]\ntoken: w")
 
     def test_valeurs_invalides(self):
-        for text, msg in [("tokens: g", "tokens"), ("aligner: llm", "llm_model"),
+        for text, msg in [("tokens: x", "tokens"), ("aligner: llm", "llm_model"),
                           ("aligner: autre", "aligner"), ("methods: xyz", "methods")]:
             with self.assertRaisesRegex(ValueError, msg):
                 config_from(f"name: x\npassages: [{{book: Gen}}]\n{text}")
@@ -66,12 +71,23 @@ class TestCorpus(unittest.TestCase):
         v = self.he["1.1"]
         self.assertEqual((v.book, v.key, v.ref), ("Gen", "1.1", "Gen.1.1"))
         self.assertEqual(len(v.tokens("w")), len(v.tokens("l")))
-        self.assertEqual(v.tokens("g"), "0 0 1 2 3 4 4 5 5 6 6".split())
+        self.assertEqual(v.graphic_numbers(), "0 0 1 2 3 4 4 5 5 6 6".split())
 
     def test_mots_graphiques_hebreu(self):
         words = [nfc(w) for w in self.he["1.1"].graphic_words()]
         self.assertEqual(words[0], nfc("בְּרֵאשִׁ֖ית"))
         self.assertEqual(len(words), 7)
+
+    def test_tokens_mots_graphiques(self):
+        # tokens("g") : בְּ רֵאשִׁית -> בְּרֵאשִׁית ; 11 tokens w -> 7 mots graphiques
+        g = [nfc(t) for t in self.he["1.1"].tokens("g")]
+        self.assertEqual(len(g), 7)
+        self.assertEqual(g[0], nfc("בְּרֵאשִׁ֖ית"))
+        self.assertEqual(g[4], nfc("הַשָּׁמַ֖יִם"))
+        # nom composé : un seul token, avec "_" (comme dans w)
+        self.assertTrue(any("_" in t for t in self.he["4.22"].tokens("g")))
+        # grec : un token = un mot graphique
+        self.assertEqual(self.lxx["1.1"].tokens("g"), self.lxx["1.1"].tokens("w"))
 
     def test_mots_graphiques_grec(self):
         v = self.lxx["1.1"]

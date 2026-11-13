@@ -8,12 +8,18 @@ import re
 import unicodedata
 
 HEB_MARKS = re.compile(r"[֑-ׇ]")  # voyelles, accents, points shin/sin, ponctuation
+# Tout sauf la vocalisation : cantillation (teʿamim), meteg, maqqef, paseq, sof pasuq,
+# points supra/infra-linéaires, nun inversé. Restent : voyelles (sheva…qubuts, qamats
+# qatan), dagesh/mappiq, rafe, points du shin et du sin.
+HEB_NON_VOWELS = re.compile(r"[֑-ֽ֯־׀׃ׅׄ׆]")
 
 
-def norm_heb(token: str) -> str:
-    """Hébreu : texte consonantique (mBERT a appris l'hébreu moderne, non pointé).
+def norm_heb(token: str, vocalization: bool = False) -> str:
+    """Hébreu. vocalization=False : texte consonantique (mBERT a appris l'hébreu
+    moderne, non pointé) ; True : voyelles gardées, cantillation retirée.
     Nom propre composé (בית_אל) : l'espace le garde comme un seul mot pour SimAlign."""
-    token = HEB_MARKS.sub("", unicodedata.normalize("NFC", token))
+    marks = HEB_NON_VOWELS if vocalization else HEB_MARKS
+    token = marks.sub("", unicodedata.normalize("NFC", token))
     return token.replace("_", " ")
 
 
