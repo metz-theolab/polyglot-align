@@ -454,7 +454,11 @@ couche des tokens reliés changerait.
 
 ## 2026-11-13 — Restructuration du code en classes (avant `tokens: g`)
 
-**Statut : décidé** (à faire **avant** l'expérience de segmentation)
+**Statut : fait** (2026-11-13, en 4 étapes : `Config` + `Corpus`/`Verse` ;
+`Aligner` ; `Gold` + `Evaluator` ; `Experiment`). Non-régression vérifiée à
+chaque étape : rejeu identique pour les 4 expériences de référence (liens,
+scores, CSV de relecture), relance identique octet par octet pour les 3
+expériences SimAlign.
 
 **État actuel :** ~900 lignes dans `src/`, presque uniquement des fonctions, une
 seule classe (`OllamaAligner`). Symptômes :
@@ -529,14 +533,12 @@ pas d'état ni de variantes, une classe n'apporterait que de la cérémonie.
 ## Architecture cible
 
 ```
-gold brut ──► gold_clean.py ──► data/gold_clean/ (versionné)
-                                      │
-textes he/lxx ──► align.py ──┐        │
-                             ▼        ▼
-                normalize.py (partagé)
-                             │
-                             ▼
-                      evaluate.py  → précision / rappel / AER
+gold brut ──► gold_clean.py ──► data/gold_clean/ ──► Gold
+                                                      │
+textes he/lxx ──► Corpus / Verse ──► Aligner ──► JSONL ┤
+                  (couches t w l g)  (SimAlign, LLM)    ▼
+                                                  Evaluator → scores, CSV
+                  Config (YAML) ──► Experiment : enchaîne le tout
 ```
 
 ---
