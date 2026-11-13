@@ -5,8 +5,8 @@ Deux contrôles, contre les références produites avant la restructuration
 
 1. Rejeu (toutes les expériences, sans relancer les modèles) : on réévalue
    les alignements de référence avec le code actuel, et pour le LLM on
-   reconvertit d'abord ses tableaux (champ llm_table) en liens. Les liens et
-   les scores doivent être identiques. Teste tout notre code (conversion,
+   reconvertit d'abord ses tableaux (champ llm_table) en liens. Les liens, les
+   scores et le CSV de relecture doivent être identiques. Teste tout notre code (conversion,
    projection sur le gold, mesures), rapidement.
 
 2. Relance (SimAlign seulement) : si results/<nom>/ existe, ses fichiers
@@ -28,7 +28,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
-from evaluate import evaluate_book          # noqa: E402
+from evaluate import Evaluator             # noqa: E402
 from llm_align import table_to_links        # noqa: E402
 
 REFERENCE = ROOT / "tests" / "reference"
@@ -58,9 +58,17 @@ def replay(ref_dir: Path) -> list:
                     problems.append(f"{label} {d['ref']} : la conversion du tableau donne d'autres liens")
 
         # réévaluation
-        with tempfile.TemporaryDirectory() as tmp:
-            res = evaluate_book(jsonl, ROOT / f"data/he/{he_book}.json", ROOT / f"data/lxx/{lxx_book}.json",
-                                ROOT / f"data/gold_clean/{lxx_book}.json")
+        evaluator = Evaluator.for_books(he_book, lxx_book, root=ROOT / "data")
+        res = evaluator.evaluate(jsonl)
+
+        # CSV de relecture régénéré depuis le JSONL de référence
+        ref_csv = ref_dir / f"{label}.csv"
+        if ref_csv.exists():
+            with tempfile.TemporaryDirectory() as tmp:
+                new_csv = Path(tmp) / "x.csv"
+                evaluator.export_csv(jsonl, new_csv)
+                if new_csv.read_bytes() != ref_csv.read_bytes():
+                    problems.append(f"{label} : CSV de relecture différent")
         old = ref_scores[label]["methodes"]
         for m, r in res["methodes"].items():
             if r != old.get(m):

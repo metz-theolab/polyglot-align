@@ -15,7 +15,7 @@ import json
 import urllib.request
 
 from aligners import Aligner, VerseAlignment
-from evaluate import grc_letters, heb_letters, project
+from gold import grc_letters, heb_letters, project
 
 PROMPT = """Align this Hebrew verse with its Greek translation (Septuagint).
 

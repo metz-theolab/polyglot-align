@@ -19,7 +19,7 @@ from pathlib import Path
 from aligners import make_aligner
 from align import align
 from config import Config
-from evaluate import evaluate_book, export_csv, measures
+from evaluate import Evaluator, measures
 
 COLUMNS = ["precision", "rappel_blocs", "f1", "nonalign_exactitude", "aer",
            "couverture_hb", "couverture_gr"]
@@ -38,11 +38,9 @@ def main(config_path: str):
         he_book, lxx_book, label = p.book, p.lxx_book, p.label
         jsonl = out / f"{label}.jsonl"
         n = align(aligner, f"data/he/{he_book}.json", f"data/lxx/{lxx_book}.json", jsonl, p.only)
-        res = evaluate_book(jsonl, Path(f"data/he/{he_book}.json"),
-                            Path(f"data/lxx/{lxx_book}.json"),
-                            Path(f"data/gold_clean/{lxx_book}.json"))
-        export_csv(jsonl, Path(f"data/he/{he_book}.json"), Path(f"data/lxx/{lxx_book}.json"),
-                   Path(f"data/gold_clean/{lxx_book}.json"), out / f"{label}.csv")
+        evaluator = Evaluator.for_books(he_book, lxx_book)
+        res = evaluator.evaluate(jsonl)
+        evaluator.export_csv(jsonl, out / f"{label}.csv")
         scores[label] = res
         for m, r in res["methodes"].items():
             total.setdefault(m, Counter()).update(r["comptes"])
