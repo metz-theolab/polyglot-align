@@ -1,24 +1,17 @@
-# Configuration d'une expérience d'alignement.
-# Lancer (depuis la racine du projet) : python src/run.py config.yaml
-# Résultats : results/<name>/ (alignements, scores, copie de ce fichier)
+# Expérience de référence (test de non-régression, voir DECISIONS.md).
+# Lancer (depuis la racine du projet) : python src/run.py experiments/mbert_formes_sans_accents.yaml
 
 name: mbert_formes_sans_accents
 
-# Passages à aligner et évaluer.
-#   book     : livre hébreu (data/he/<book>.json)
-#   lxx_book : livre grec s'il diffère (doubles textes : JoshA, JudgA)
-#   only     : un chapitre ou un verset (ex. Gen.1) ; absent = tout le livre
 passages:
   - {book: Gen, only: Gen.1}
   - {book: Gen, only: Gen.3}
   - {book: 1Sam, only: 1Sam.9}
 
-# Texte donné à l'aligneur
 tokens: w             # w = formes, l = lemmes
 greek_accents: false  # true = garder les accents grecs, false = les retirer
 
-# Aligneur SimAlign
-model: xlmr           # bert (mBERT), xlmr, ou nom d'un modèle HuggingFace
-layer: 8              # couche du modèle utilisée pour les vecteurs
-methods: mai          # m = mwmf, a = inter (argmax de l'article), i = itermax
-device: cpu           # cpu, ou mps (GPU Apple), cuda
+model: bert
+layer: 8
+methods: mai          # m = mwmf, a = inter (argmax), i = itermax
+device: cpu

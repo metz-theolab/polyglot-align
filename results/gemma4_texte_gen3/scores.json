@@ -1,0 +1,71 @@
+{
+ "Gen.3": {
+  "versets_ignores": {},
+  "methodes": {
+   "llm": {
+    "mesures": {
+     "precision": 0.9426,
+     "rappel_blocs": 0.9381,
+     "f1": 0.9403,
+     "nonalign_exactitude": 0.1818,
+     "aer": 0.0654,
+     "aer_precision": 0.9426,
+     "aer_rappel": 0.875,
+     "couverture_hb": 1.0,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 838,
+     "blocs_evaluables": 323,
+     "blocs_trouves": 303,
+     "nonalign_tokens": 22,
+     "nonalign_respectes": 4,
+     "aer_A": 889,
+     "aer_S": 120,
+     "aer_AinP": 838,
+     "aer_AinS": 105,
+     "tokens_hb": 495,
+     "tokens_hb_rattaches": 495,
+     "tokens_gr": 581,
+     "tokens_gr_rattaches": 581,
+     "versets": 24,
+     "faux": 51
+    }
+   }
+  }
+ },
+ "TOTAL": {
+  "methodes": {
+   "llm": {
+    "mesures": {
+     "precision": 0.9426,
+     "rappel_blocs": 0.9381,
+     "f1": 0.9403,
+     "nonalign_exactitude": 0.1818,
+     "aer": 0.0654,
+     "aer_precision": 0.9426,
+     "aer_rappel": 0.875,
+     "couverture_hb": 1.0,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 838,
+     "blocs_evaluables": 323,
+     "blocs_trouves": 303,
+     "nonalign_tokens": 22,
+     "nonalign_respectes": 4,
+     "aer_A": 889,
+     "aer_S": 120,
+     "aer_AinP": 838,
+     "aer_AinS": 105,
+     "tokens_hb": 495,
+     "tokens_hb_rattaches": 495,
+     "tokens_gr": 581,
+     "tokens_gr_rattaches": 581,
+     "versets": 24,
+     "faux": 51
+    }
+   }
+  }
+ }
+}
