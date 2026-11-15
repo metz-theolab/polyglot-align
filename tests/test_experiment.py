@@ -49,6 +49,12 @@ class TestExperiment(unittest.TestCase):
                 self.assertEqual((out / name).read_bytes(), (REFERENCE / name).read_bytes(), name)
             self.assertIn("TOTAL", scores)
             self.assertEqual(list(scores), ["Gen.1", "Gen.3", "1Sam.9", "TOTAL"])
+            perf = json.loads((out / "perf.json").read_text(encoding="utf-8"))
+            self.assertEqual(set(perf["phases"]),
+                             {"chargement", "apprentissage", "alignement", "evaluation"})
+            self.assertEqual(perf["volume"]["versets"], 82)
+            self.assertGreater(perf["volume"]["tokens_hb"], 0)
+            self.assertGreater(perf["memoire_max_mo"], 0)
 
 
 if __name__ == "__main__":

@@ -6,6 +6,7 @@
     <passage>.csv      relecture : un mot hébreu par ligne, avec le verdict du gold
     scores.json        comptes bruts et mesures, par passage et au total
     scores.csv         le tableau des mesures
+    perf.json          durée, temps CPU, mémoire et débit, par phase (voir perf.py)
 """
 import csv
 import json
@@ -18,6 +19,7 @@ from aligners import make_aligner
 from config import Config
 from corpus import VerseMap
 from evaluate import Evaluator, measures
+from perf import PerfMeter
 
 COLUMNS = ["precision", "rappel_blocs", "f1", "nonalign_exactitude", "aer",
            "couverture_hb", "couverture_gr"]
@@ -31,6 +33,8 @@ class Experiment:
         self.out = Path(results_root) / cfg.name
         self.scores = {}                 # passage -> résultats ; puis "TOTAL"
         self.verse_map = VerseMap.load(self.data)   # appariement des versets hébreu ↔ LXX
+        self.perf = PerfMeter()          # durées par phase -> perf.json
+        self.n_verses = 0
 
     @classmethod
     def from_yaml(cls, path, **kwargs) -> "Experiment":
@@ -41,15 +45,19 @@ class Experiment:
         aligner : par défaut, construit d'après la config (SimAlign ou LLM) ;
         un autre Aligner peut être fourni (tests)."""
         self.prepare()
-        aligner = aligner or make_aligner(self.cfg)
-        aligner.fit(self.verse_map, self.data)
+        with self.perf.phase("chargement"):
+            aligner = aligner or make_aligner(self.cfg)
+        with self.perf.phase("apprentissage"):
+            aligner.fit(self.verse_map, self.data)
         for p in self.cfg.passages:
             n = self.run_passage(aligner, p)
+            self.n_verses += n
             print(f"{p.label} : {n} versets alignés et évalués")
         if aligner.stats:
             print(f"{type(aligner).__name__} :", dict(aligner.stats))
         self.scores["TOTAL"] = self.total()
         self.write_scores()
+        self.write_perf(aligner)
         self.print_table()
         return self.scores
 
@@ -63,12 +71,14 @@ class Experiment:
         """Aligne, évalue et écrit le CSV de relecture d'un passage.
         Renvoie le nombre de versets alignés."""
         jsonl = self.out / f"{p.label}.jsonl"
-        n = align(aligner, self.data / "he" / f"{p.book}.json",
-                  self.data / "lxx" / f"{p.lxx_book}.json",
-                  self.verse_map.pairs(p.book, p.lxx_book), jsonl, p.only)
-        evaluator = Evaluator.for_books(p.book, p.lxx_book, root=self.data, layer=self.cfg.tokens)
-        self.scores[p.label] = evaluator.evaluate(jsonl)
-        evaluator.export_csv(jsonl, self.out / f"{p.label}.csv")
+        with self.perf.phase("alignement"):
+            n = align(aligner, self.data / "he" / f"{p.book}.json",
+                      self.data / "lxx" / f"{p.lxx_book}.json",
+                      self.verse_map.pairs(p.book, p.lxx_book), jsonl, p.only)
+        with self.perf.phase("evaluation"):
+            evaluator = Evaluator.for_books(p.book, p.lxx_book, root=self.data, layer=self.cfg.tokens)
+            self.scores[p.label] = evaluator.evaluate(jsonl)
+            evaluator.export_csv(jsonl, self.out / f"{p.label}.csv")
         return n
 
     def total(self) -> dict:
@@ -93,6 +103,19 @@ class Experiment:
             w.writerow(["passage", "methode"] + COLUMNS)
             for label, m, x in self.rows():
                 w.writerow([label, m] + [x[c] for c in COLUMNS])
+
+    def write_perf(self, aligner) -> None:
+        """Écrit perf.json et en affiche le résumé."""
+        comptes = next(iter(self.scores["TOTAL"]["methodes"].values()), {}).get("comptes", {})
+        perf = self.perf.report(self.n_verses, comptes.get("tokens_hb", 0), comptes.get("tokens_gr", 0),
+                                device=getattr(self.cfg, "device", None),
+                                aligner_stats=dict(aligner.stats))
+        (self.out / "perf.json").write_text(json.dumps(perf, ensure_ascii=False, indent=1),
+                                            encoding="utf-8")
+        c, d = perf["cout_methode"], perf["debit_alignement"]
+        print(f"\nPerformances : {c['duree_s']:.1f} s (apprentissage + alignement), "
+              f"CPU {c['cpu_s']:.1f} s, {c['s_par_1000_versets']} s / 1000 versets, "
+              f"{d['versets_par_s']} versets/s, mémoire max {perf['memoire_max_mo']} Mo")
 
     def print_table(self) -> None:
         print(f"\nRésultats dans {self.out}/")

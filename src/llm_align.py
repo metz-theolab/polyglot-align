@@ -70,7 +70,12 @@ class OllamaAligner(Aligner):
         req = urllib.request.Request(f"{self.url}/api/chat", data=json.dumps(body).encode(),
                                      headers={"Content-Type": "application/json"})
         with urllib.request.urlopen(req, timeout=3600) as r:
-            return json.load(r)["message"]["content"]
+            resp = json.load(r)
+        # comptes d'Ollama, repris dans perf.json (le serveur est un autre processus :
+        # son CPU n'est pas mesuré par perf.py) ; durées en nanosecondes
+        for key in ("prompt_eval_count", "eval_count", "prompt_eval_duration", "eval_duration"):
+            self.stats[f"ollama_{key}"] += resp.get(key, 0)
+        return resp["message"]["content"]
 
     def align(self, hv, gv) -> VerseAlignment:
         """Liens sous la méthode "llm" ; le tableau brut est gardé (llm_table)."""
