@@ -25,8 +25,13 @@ class Aligner(ABC):
     """Interface commune à tous les aligneurs."""
 
     def __init__(self, layer: str = "w"):
-        self.layer = layer       # couche dont les tokens sont reliés (w ou l)
+        self.layer = layer       # couche dont les tokens sont reliés (w, g ou l)
         self.stats = Counter()   # compteurs affichés en fin d'expérience (vide si rien à dire)
+
+    def fit(self, verse_map, data_root) -> None:
+        """Apprentissage sur le corpus (versets appariés par verse_map,
+        corpus.VerseMap), appelé une fois avant l'alignement des passages.
+        Ne fait rien par défaut (SimAlign, LLM) ; voir EflomalAligner."""
 
     @abstractmethod
     def align(self, hv, gv) -> VerseAlignment:
@@ -57,6 +62,10 @@ def make_aligner(cfg) -> Aligner:
     if cfg.aligner == "llm":
         from llm_align import OllamaAligner
         return OllamaAligner(cfg.llm_model, cfg.llm_url, think=cfg.llm_think, layer=cfg.tokens)
+    if cfg.aligner == "eflomal":
+        from eflomal_align import EflomalAligner
+        return EflomalAligner(layer=cfg.tokens, greek_accents=cfg.greek_accents,
+                              hebrew_vocalization=cfg.hebrew_vocalization)
     return SimAlignAligner(cfg.model, cfg.layer, cfg.methods, cfg.device, layer=cfg.tokens,
                            greek_accents=cfg.greek_accents,
                            hebrew_vocalization=cfg.hebrew_vocalization)

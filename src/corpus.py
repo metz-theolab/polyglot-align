@@ -84,3 +84,30 @@ class Corpus:
 
     def keys(self):
         return self.verses.keys()
+
+
+class VerseMap:
+    """Table d'équivalence des versets hébreu ↔ LXX (data/verse_map.json,
+    produite par data/make_verse_map.py à partir du gold). Seule source de
+    l'appariement des versets : un verset hébreu n'est aligné qu'avec son
+    équivalent LXX de la table (groupes 1 ↔ 1, voir DECISIONS.md)."""
+
+    def __init__(self, path):
+        self.books = json.loads(Path(path).read_text(encoding="utf-8"))
+
+    @classmethod
+    def load(cls, root="data") -> "VerseMap":
+        return cls(Path(root) / "verse_map.json")
+
+    def pairs(self, he_book: str, lxx_book: str) -> list:
+        """[(ch.vs TM, ch.vs LXX)] du livre, dans l'ordre du TM."""
+        if lxx_book not in self.books:
+            raise KeyError(f"{lxx_book} absent de la table des versets (data/verse_map.json)")
+        entry = self.books[lxx_book]
+        if entry["he"] != he_book:
+            raise KeyError(f"{lxx_book} est apparié à {entry['he']} dans la table, pas à {he_book}")
+        return [tuple(p) for p in entry["pairs"]]
+
+    def book_pairs(self) -> list:
+        """[(livre hébreu, livre grec)] de toute la table."""
+        return [(e["he"], lxx_book) for lxx_book, e in self.books.items()]

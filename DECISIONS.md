@@ -560,19 +560,263 @@ branchée par la config, sans cas particulier dans `run.py`.
 **Écarté :** tout mettre en classes (y compris `normalize`, `gold_clean`) :
 pas d'état ni de variantes, une classe n'apporterait que de la cérémonie.
 
+## 2026-11-13 — Aligneur statistique eflomal (ligne de base avant fine-tuning)
+
+**Statut : décidé**, implémenté sans priors (expériences 1 et 2) ; les priors
+tirés du gold attendent le découpage entraînement / test, voir « À trancher »
+
+Nouvel aligneur `EflomalAligner`, dans un module `src/eflomal_align.py` (comme
+`llm_align.py`), déclaré dans `make_aligner` (`aligner: eflomal` dans le YAML).
+eflomal (Östling & Tiedemann 2016) est un aligneur statistique de la famille
+des modèles IBM : il apprend, sur un corpus parallèle, quels mots apparaissent
+ensemble d'un verset à l'autre, aligne dans les deux sens (hébreu → grec,
+grec → hébreu) puis combine les deux (symétrisation).
+
+**Raison :**
+- c'est la ligne de base attendue dans la littérature sur l'alignement de
+  Bibles face aux modèles à embeddings : sans elle, on ne peut pas dire si
+  SimAlign ou un modèle fine-tuné apporte quelque chose ;
+- le corpus BHSA / LXX (~23 000 versets) suffit à un modèle statistique, et la
+  Septante, souvent littérale, offre des correspondances régulières
+  (`אמר` ↔ `λέγω`, `ו` ↔ `καί`) ;
+- il peut travailler sur les **lemmes** (couche `l`), ce qui réduit la
+  dispersion des formes fléchies ; SimAlign ne travaille que sur les formes ;
+- rapide (quelques minutes sur CPU), sans GPU ;
+- il accepte des **priors** (probabilités de traduction fournies à l'avance) :
+  calculés sur le gold des chapitres d'entraînement, ils donnent un modèle
+  semi-supervisé sans fine-tuning neuronal, point de comparaison direct avec
+  Glot500 fine-tuné.
+
+**Changement de l'interface `Aligner` :** eflomal n'aligne pas verset par
+verset, il apprend d'abord sur tout le corpus. On ajoute à `Aligner` une
+méthode `fit(corpus)`, appelée une fois par `Experiment` avant l'alignement des
+passages ; elle ne fait rien par défaut (SimAlign, LLM inchangés, non-régression
+à vérifier). `EflomalAligner.fit` aligne tout le corpus et garde les liens ;
+`align(hv, gv)` renvoie ensuite les liens du verset demandé.
+
+**Corpus d'apprentissage :** toutes les paires de versets de la table
+d'équivalence (voir « Appariement des versets par le gold ») : 22 489 paires,
+dans 40 livres grecs, dont les textes A de Josué et des Juges (`JoshA`,
+`JudgA`, appariés à `Josh` / `Judg`) et Daniel de Théodotion (`DanTh`, apparié
+à `Dan`). Les versets vides d'un côté sont ignorés. Chapitres de
+test compris. Légitime : eflomal sans priors ne voit jamais le gold. On
+n'évalue que sur les passages de la config, comme les autres aligneurs.
+Exception : avec priors, ceux-ci ne viennent **que** des chapitres
+d'entraînement.
+
+Ce que chaque modèle voit (« entraîner » eflomal sans priors = compter les
+cooccurrences de mots dans les textes parallèles, sans aucun lien) :
+
+| | Texte vu par le modèle | Gold vu par le modèle | Évaluation |
+|---|---|---|---|
+| SimAlign (mBERT, Glot500) | pré-entraînement générique | rien | n'importe quel passage |
+| eflomal sans priors | tout le corpus BHSA / LXX | rien | n'importe quel passage |
+| eflomal + priors | tout le corpus BHSA / LXX | chapitres d'entraînement | chapitres de test |
+| Glot500 fine-tuné | chapitres d'entraînement | chapitres d'entraînement | chapitres de test |
+
+Aligner le corpus entier, phrases évaluées comprises, est l'usage normal des
+aligneurs statistiques : un mot doit avoir été vu pour être aligné, et le
+texte seul ne contient aucune réponse.
+
+**Sorties :** comme SimAlign produit plusieurs méthodes (`mwmf`, `inter`,
+`itermax`), eflomal produit plusieurs symétrisations dans
+`VerseAlignment.links` : `inter` (intersection des deux sens, précision) et
+`gdfa` (*grow-diag-final-and*, rappel). L'évaluation ne change pas.
+
+**Expériences prévues** (mêmes passages que les expériences de référence) :
+1. eflomal sur les formes (`tokens: w`) ;
+2. eflomal sur les lemmes (`tokens: l`) ;
+3. eflomal sur les lemmes + priors tirés du gold d'entraînement (après le
+   découpage).
+
+**Écarté :** GIZA++ et fast_align, de la même famille mais moins précis ou plus
+lents qu'eflomal (Östling & Tiedemann 2016) ; un seul aligneur statistique
+suffit comme ligne de base.
+
+**Installation :** paquet `eflomal` (extension C compilée), consigné dans
+`requirements.txt`.
+
+## 2026-11-13 — Livres grecs sans équivalent hébreu : `data/lxx/non_aligned/`
+
+**Statut : décidé**
+
+Les 18 livres de CenterBLC sans équivalent dans la Bible hébraïque (BHSA) sont
+rangés à part, dans `data/lxx/non_aligned/` : 1 Esdras, 1–4 Maccabées, Baruch,
+Lettre de Jérémie, Bel et Suzanne (OG et Théodotion), Judith, Odes, Psaumes de
+Salomon, Siracide, Tobit (deux textes), Sagesse. `export_lxx_tf.py` les y écrit
+directement. `data/lxx/` ne contient que les livres alignables (40 fichiers,
+dont `JoshA`, `JudgA`, `DanTh` et `2Esdr`).
+
+**Raison :** aucun aligneur ne peut les traiter (pas de texte hébreu en face) ;
+les séparer évite qu'un parcours de `data/lxx/` les prenne pour des livres à
+aligner. Ils restent exportés pour d'éventuels usages ultérieurs.
+
+**Cas particuliers :** le Siracide et 1 Esdras ont un gold CATSS (hébreu de
+Ben Sira hors BHSA ; parallèles de Chroniques / Esdras–Néhémie pour 1 Esdras),
+mais pas d'export hébreu correspondant : hors alignement pour l'instant (voir
+`TODO_gold_clean.md`). `2Esdr` reste dans `data/lxx/` : il correspond à
+Esdras–Néhémie, mais le gold (`Ezra.json`, `Neh.json`) ne donne pas encore de
+référence dans `2Esdr`, donc il n'a pas d'entrée dans la table des versets.
+
+## 2026-11-13 — Appariement des versets par le gold : table 1 ↔ 1
+
+**Statut : décidé**
+
+Tous les aligneurs (SimAlign, LLM, eflomal) et l'évaluation apparient un verset
+hébreu **uniquement** avec son équivalent LXX tiré du gold nettoyé. Jamais par
+numéro identique : on n'aligne pas des versets qui ne se correspondent pas.
+
+**Construction** (`data/make_verse_map.py` → `data/verse_map.json`, lu par
+`corpus.VerseMap`) : chaque unité du gold relie le verset TM qui la contient
+(clé CATSS) au verset LXX de son grec (`ref_lxx`, voir « Numérotation des
+versets CATSS »). On forme les groupes de versets reliés entre eux
+(composantes connexes du graphe versets TM – versets LXX) et **on ne garde que
+les groupes 1 verset TM ↔ 1 verset LXX**, présents dans les deux exports.
+
+Vérification de `ref_lxx` : en rattachant le grec du gold aux versets
+CenterBLC désignés par `ref_lxx`, il reste 0,1 à 0,3 % de tokens grecs non
+rattachés (Gen, Ps, Jer, 1 R, Ex) : les deux versifications concordent.
+
+**Chiffres :** sur tout le gold (26 154 versets TM), 25 169 groupes sont 1 ↔ 1
+(97,6 % des groupes). Dans les 40 livres alignables :
+
+| | Groupes |
+|---|---|
+| 1 ↔ 1 gardés | **22 489** |
+| dont renumérotés (verset LXX ≠ verset TM) | 3 215 : Ps 2 256, Jer 652, 1 R 112, Ex 73, Nb 50, Dn-Th 37, Dn 23… |
+| 1 ↔ 1 mais verset absent d'un export | 219 (formes de `ref_lxx` non lues : Pr 142, 1 R 31, Ab 19…) |
+| 1 ↔ 0 (verset TM sans grec) | 251 |
+| 2 ↔ 2 (verset débordant sur le suivant) | 247 |
+| 1 ↔ 2, 2 ↔ 1 | 35 |
+| plus grands (ex. Dn 3 : 3 versets TM ↔ 46 LXX, ajout grec) | 29 |
+
+Exemples : Ps 23:1 (TM) ↔ Ps 22:1 (LXX), numérotation des psaumes décalée ;
+Jérémie, ordre des chapitres différent dans la LXX. Les passages évalués
+jusqu'ici (Gen 1, Gen 3, 1 S 9) sont entièrement 1 ↔ 1, sous le même numéro :
+résultats antérieurs inchangés (non-régression identique).
+
+**Format du JSONL :** `ref` reste la référence hébraïque ; si le verset LXX a un
+autre numéro, il est donné dans `ref_lxx` (`"ref": "Ps.23.1", "ref_lxx":
+"Ps.22.1"`). Le filtre `only` du YAML suit la numérotation hébraïque.
+
+**Raison :** apparier par numéro identique fait aligner des versets sans
+rapport dans 3 215 cas (Ps 94 % des versets, Jer 51 %) ; pour eflomal, ce
+sont des cooccurrences fausses apprises. Seuls les groupes 1 ↔ 1 gardent
+l'unité « verset » commune à tous les aligneurs, à l'évaluation et aux scores.
+
+**Écarté :**
+- apparier par numéro identique (situation antérieure : correcte seulement
+  là où les versifications coïncident) ;
+- aligner des groupes de versets mis bout à bout (rien de perdu, mais il faut
+  changer l'unité d'alignement, le JSONL et l'évaluation).
+
+**Limite :** ce choix écarte 2,4 % des groupes, justement les plus difficiles
+(débordements, ajouts) : à rappeler en présentant les scores.
+
+**Reste à faire :** les 219 paires écartées pour verset absent viennent de
+formes de `ref_lxx` non lues par `gold_clean` (todo `ref_lxx_forme`) ; les
+corriger les ferait entrer dans la table.
+
+## 2026-11-13 — Module de rapport : tableaux et figures pour l'article
+
+**Statut : décidé**, implémenté pour les tableaux et les figures 1 et 2 ;
+figures 3 (extension de l'`Evaluator`) et 4 (fine-tuning, priors) et page
+`index.html` à faire ; format principal des tableaux à trancher, voir
+« À trancher »
+
+Nouveau module `src/report.py`, piloté comme les expériences par un YAML :
+`python src/report.py reports/article.yaml` → `reports/article/`. Il ne lance
+aucun alignement : il lit seulement les `results/<nom>/` existants
+(`scores.json`, copie de `config.yaml`).
+
+**Le YAML décrit le rapport** : quelles expériences, dans quels tableaux, avec
+quelle méthode et quelles colonnes ; quelles figures.
+
+```yaml
+name: article
+tables:
+  - title: Comparaison des aligneurs
+    experiments: [mbert_formes_sans_accents, xlmr_formes_sans_accents,
+                  glot500_formes_sans_accents, eflomal_lemmes, gemma4_texte_gen3]
+    method: inter
+    columns: [precision, rappel_blocs, f1, nonalign_exactitude]
+  - title: Segmentation et vocalisation (Glot500)
+    experiments: [glot500_formes_sans_accents, glot500_formes_vocalise_sans_accents,
+                  glot500_mots_graphiques_sans_accents,
+                  glot500_mots_graphiques_vocalise_sans_accents]
+    rows_from: [tokens, hebrew_vocalization]   # libellés lus dans config.yaml
+figures: [precision_rappel, par_livre]
+```
+
+**Sorties :**
+- tableaux en `.tex` (booktabs, à inclure dans l'article), `.md` (lecture dans
+  VS Code, reprise dans ce fichier) et `.csv` ;
+- figures matplotlib en `.pdf` (vectoriel, article) et `.png` (slides) ;
+- facultatif : une page `index.html` qui rassemble le tout pour relecture.
+
+**Figures prévues pour l'article :**
+1. **Précision × rappel par blocs**, un point par aligneur : montre le
+   compromis entre aligneurs (le LLM fort en rappel mais faible en
+   non-alignement, Glot500 précis) ;
+2. **Score par livre** : traductions littérales (Genèse, Rois) contre
+   traductions libres (Isaïe, Proverbes, Job) ; résultat philologique autant
+   que technique ;
+3. **Rappel par type de bloc** (1↔1, 1↔n, n↔m, plus / minus) : où les modèles
+   échouent. Demande une extension de l'`Evaluator`, qui ne compte aujourd'hui
+   que des totaux dans `scores.json` : ajouter des comptes par type de bloc ;
+4. **Courbe d'apprentissage** (avec le fine-tuning et les priors eflomal) :
+   score en fonction de la quantité de gold utilisée.
+
+**Garde-fous :**
+- les libellés viennent de la **copie de la config** dans
+  `results/<nom>/config.yaml`, pas du nom du dossier ; le module signale toute
+  différence avec `experiments/<nom>.yaml`. Raison : l'ancien
+  `results/mbert_formes_sans_accents/` contenait des résultats XLM-R (voir
+  l'entrée « Restructuration du code en classes ») ;
+- **exécutions multiples** (LLM non déterministe) : les résultats
+  `<nom>_run1`, `<nom>_run2`… sont regroupés et affichés en moyenne ± écart ;
+- **agrégation micro** recalculée à partir des comptes de `scores.json`
+  (`justes`, `blocs_trouves`, `blocs_evaluables`…), jamais par moyenne de
+  pourcentages.
+
+**Raison :** les expériences se multiplient (aligneurs, segmentation,
+vocalisation, eflomal, fine-tuning) ; il faut choisir lesquelles vont dans
+l'article et produire tableaux et figures sans recopie à la main. Le choix,
+consigné dans un fichier, est reproductible : relancer le rapport après une
+nouvelle expérience met à jour tableaux et figures.
+
+**Écarté :**
+- notebook Jupyter : pratique pour explorer, mais difficile à rejouer
+  proprement et à versionner ; on peut en garder un à côté pour l'exploration ;
+- tableau de bord interactif (Streamlit…) : trop lourd pour ce besoin ; l'app
+  de démo (Gradio) reste un projet séparé, destiné au public.
+
 ## Architecture cible
 
 ```
 gold brut ──► gold_clean.py ──► data/gold_clean/ ──► Gold
-                                                      │
+                                   │                  │
+                                   ▼                  │
+                  make_verse_map.py ──► VerseMap      │
+                  (paires de versets 1 ↔ 1)           │
+                                   │                  │
 textes he/lxx ──► Corpus / Verse ──► Aligner ──► JSONL ┤
-                  (couches t w l g)  (SimAlign, LLM)    ▼
+                  (couches t w l g)  (SimAlign, LLM,    ▼
+                                      eflomal)
                                                   Evaluator → scores, CSV
                   Config (YAML) ──► Experiment : enchaîne le tout
+
+results/*/ ──► report.py (reports/*.yaml) ──► tableaux .tex .md .csv, figures .pdf .png
 ```
 
 ---
 
 ## À trancher
 
-(rien pour l'instant)
+- **Découpage entraînement / test** (priors eflomal, fine-tuning Glot500) :
+  chapitres pairs / impairs, avec ou sans livres entièrement exclus pour
+  mesurer la généralisation ; passages parallèles (Exod 25–31 / 35–40,
+  Sam–Rois / Chr, Ps 18 / 2 Sam 22, Isa 36–39 / 2 Rois 18–20, Ps 14 / 53) à
+  placer du même côté ou à retirer du test ; part réservée au développement.
+- **Format de l'article** (module de rapport) : LaTeX / Overleaf, Word ou
+  Markdown ? Décide du format principal des tableaux (`.tex` par défaut).

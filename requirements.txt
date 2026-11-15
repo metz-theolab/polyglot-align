@@ -1,3 +1,18 @@
+# Export des textes (data/export_bhsa_tf.py, data/export_lxx_tf.py)
 text-fabric[github]
-simalign
+
+# Configuration des expériences (YAML)
 pyyaml
+
+# Aligneur SimAlign (installe aussi torch et transformers)
+simalign
+sentencepiece        # tokeniseur de Glot500 (cis-lmu/glot500-base)
+
+# Aligneur statistique (aligner: eflomal)
+eflomal
+
+# Rapport : figures de l'article (src/report.py)
+matplotlib
+
+# Aligneur LLM : aucun paquet Python (appel HTTP à Ollama par la bibliothèque standard),
+# mais Ollama doit être installé à part : https://ollama.com

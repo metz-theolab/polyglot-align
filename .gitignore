@@ -2,3 +2,9 @@ venv/
 __pycache__/
 *.pyc
 .DS_Store
+CLAUDE.md
+DECISIONS.md
+TODO_gold_clean.md
+TODO.md
+exeperiments/.trash
+results/.trash

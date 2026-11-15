@@ -16,6 +16,7 @@ from pathlib import Path
 from align import align
 from aligners import make_aligner
 from config import Config
+from corpus import VerseMap
 from evaluate import Evaluator, measures
 
 COLUMNS = ["precision", "rappel_blocs", "f1", "nonalign_exactitude", "aer",
@@ -29,6 +30,7 @@ class Experiment:
         self.data = Path(data_root)
         self.out = Path(results_root) / cfg.name
         self.scores = {}                 # passage -> résultats ; puis "TOTAL"
+        self.verse_map = VerseMap.load(self.data)   # appariement des versets hébreu ↔ LXX
 
     @classmethod
     def from_yaml(cls, path, **kwargs) -> "Experiment":
@@ -40,6 +42,7 @@ class Experiment:
         un autre Aligner peut être fourni (tests)."""
         self.prepare()
         aligner = aligner or make_aligner(self.cfg)
+        aligner.fit(self.verse_map, self.data)
         for p in self.cfg.passages:
             n = self.run_passage(aligner, p)
             print(f"{p.label} : {n} versets alignés et évalués")
@@ -61,7 +64,8 @@ class Experiment:
         Renvoie le nombre de versets alignés."""
         jsonl = self.out / f"{p.label}.jsonl"
         n = align(aligner, self.data / "he" / f"{p.book}.json",
-                  self.data / "lxx" / f"{p.lxx_book}.json", jsonl, p.only)
+                  self.data / "lxx" / f"{p.lxx_book}.json",
+                  self.verse_map.pairs(p.book, p.lxx_book), jsonl, p.only)
         evaluator = Evaluator.for_books(p.book, p.lxx_book, root=self.data, layer=self.cfg.tokens)
         self.scores[p.label] = evaluator.evaluate(jsonl)
         evaluator.export_csv(jsonl, self.out / f"{p.label}.csv")

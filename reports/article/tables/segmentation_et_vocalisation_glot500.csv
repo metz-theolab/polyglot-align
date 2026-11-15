@@ -1,0 +1,5 @@
+ligne,precision,precision_ecart,rappel_blocs,rappel_blocs_ecart,f1,f1_ecart,nonalign_exactitude,nonalign_exactitude_ecart,versets
+"tokens = w, hebrew_vocalization = False",0.8279,,0.6943,,0.7552,,0.875,,82
+"tokens = w, hebrew_vocalization = True",0.8495,,0.7561,,0.8001,,0.8015,,82
+"tokens = g, hebrew_vocalization = False",0.7966,,0.6511,,0.7165,,0.808,,82
+"tokens = g, hebrew_vocalization = True",0.8438,,0.7019,,0.7663,,0.776,,82

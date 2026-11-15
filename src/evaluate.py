@@ -61,18 +61,20 @@ class Evaluator:
         """Tokens et rattachement au gold d'une ligne du JSONL, ou None si le
         verset n'est pas évaluable (pas de gold, ou tokens ≠ export)."""
         key = d["ref"].split(".", 1)[1]
-        if not self.gold.covers(key):
+        lxx_key = d.get("ref_lxx", d["ref"]).split(".", 1)[1]   # verset LXX apparié
+        if not self.gold.covers(key, lxx_key):
             return None, "verset_sans_gold"
         hb = self.he[key].tokens(self.layer) if key in self.he else []
-        gr = self.lxx[key].tokens(self.layer) if key in self.lxx else []
+        gr = self.lxx[lxx_key].tokens(self.layer) if lxx_key in self.lxx else []
         if len(d["src"]) != len(hb) or len(d["tgt"]) != len(gr):
             return None, "tokens_differents_de_l_export"
-        hb_unit, gr_unit = self.gold.attach(key, hb, gr)
-        return (key, hb, gr, hb_unit, gr_unit), None
+        hb_unit, gr_unit = self.gold.attach(key, hb, gr, lxx_key)
+        return (key, lxx_key, hb, gr, hb_unit, gr_unit), None
 
-    def count_verse(self, links, hb_unit, gr_unit, key) -> Counter:
+    def count_verse(self, links, hb_unit, gr_unit, key, lxx_key=None) -> Counter:
         """Compte un verset. links = [(i, j)] ; hb_unit[i], gr_unit[j] = uid ou None.
-        key = "ch.vs" du verset donné à l'aligneur (même numéro des deux côtés)."""
+        key = "ch.vs" du verset TM, lxx_key celui du verset LXX apparié (par
+        défaut, même numéro)."""
         units, recon = self.gold.units, self.gold.recon
         c = Counter()
         found = set()      # unités align ayant au moins un lien juste interne
@@ -107,7 +109,7 @@ class Evaluator:
             if hb_of[uid] and gr_of[uid]:
                 c["blocs_evaluables"] += 1
                 c["blocs_trouves"] += uid in found
-            elif hb_of[uid] and u["ref_lxx"].split(".", 1)[1] != key:
+            elif hb_of[uid] and u["ref_lxx"].split(".", 1)[1] != (lxx_key or key):
                 c["blocs_hors_portee"] += 1   # grec dans un autre verset LXX
 
         # non-alignements : tokens des unités plus / minus touchés par aucun lien
@@ -150,9 +152,9 @@ class Evaluator:
             if verse is None:
                 skipped[reason] += 1
                 continue
-            key, _, _, hb_unit, gr_unit = verse
+            key, lxx_key, _, _, hb_unit, gr_unit = verse
             for m, raw in d["links"].items():
-                counts[m] += self.count_verse(parse_links(raw), hb_unit, gr_unit, key)
+                counts[m] += self.count_verse(parse_links(raw), hb_unit, gr_unit, key, lxx_key)
                 counts[m]["versets"] += 1
         return {"versets_ignores": dict(skipped),
                 "methodes": {m: {"mesures": measures(c), "comptes": dict(c)}
@@ -172,7 +174,7 @@ class Evaluator:
                 verse, _ = self._verse(d)
                 if verse is None:
                     continue
-                _, hb, gr, hb_unit, gr_unit = verse
+                _, _, hb, gr, hb_unit, gr_unit = verse
                 for m, raw in d["links"].items():
                     links = parse_links(raw)
                     for i, tok in enumerate(hb):

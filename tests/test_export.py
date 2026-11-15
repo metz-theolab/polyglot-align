@@ -114,13 +114,21 @@ class TestLXX(FormatChecks, unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.books = load_dir(DATA / "lxx")
+        cls.aligned = set(load_dir(DATA / "lxx"))
+        cls.non_aligned = set(load_dir(DATA / "lxx" / "non_aligned"))
+        cls.books = {**load_dir(DATA / "lxx"), **load_dir(DATA / "lxx" / "non_aligned")}
 
     def test_noms_de_livres(self):
-        for name in ("Song", "Eccl", "Sir", "JoshA", "JudgA"):
-            self.assertIn(name, self.books)
+        for name in ("Song", "Eccl", "JoshA", "JudgA", "DanTh", "2Esdr"):
+            self.assertIn(name, self.aligned)
         for name in ("Cant", "Qoh"):
-            self.assertNotIn(name, self.books)
+            self.assertNotIn(name, set(self.books))
+
+    def test_livres_sans_hebreu_a_part(self):
+        # livres sans équivalent hébreu : dans lxx/non_aligned, pas dans lxx/
+        for name in ("Sir", "Wis", "1Mac", "TobS", "Sus", "Bel", "Od", "PsSol", "1Esdr"):
+            self.assertIn(name, self.non_aligned)
+            self.assertNotIn(name, self.aligned)
 
     def test_t_egal_w(self):
         # CenterBLC : texte déjà tokenisé, sans ponctuation

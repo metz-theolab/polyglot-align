@@ -1,0 +1,55 @@
+# eflomal sur les formes, évalué sur toute la Bible : les 40 livres grecs de la
+# table des versets (data/verse_map.json), une ligne par livre dans scores.csv.
+# Mêmes réglages que eflomal_formes_sans_accents (Gen 1, Gen 3, 1 S 9).
+# Daniel compte deux fois (Dan = OG, DanTh = Théodotion), Josué et Juges ont
+# aussi leur texte A (JoshA, JudgA) : à garder en tête pour le TOTAL.
+# Lancer (depuis la racine du projet) : python src/run.py experiments/eflomal_formes_bible.yaml
+
+name: eflomal_formes_bible
+
+passages:
+  - {book: Gen}
+  - {book: Exod}
+  - {book: Lev}
+  - {book: Num}
+  - {book: Deut}
+  - {book: Josh}
+  - {book: Josh, lxx_book: JoshA}
+  - {book: Judg}
+  - {book: Judg, lxx_book: JudgA}
+  - {book: Ruth}
+  - {book: 1Sam}
+  - {book: 2Sam}
+  - {book: 1Kgs}
+  - {book: 2Kgs}
+  - {book: 1Chr}
+  - {book: 2Chr}
+  - {book: Esth}
+  - {book: Job}
+  - {book: Ps}
+  - {book: Prov}
+  - {book: Eccl}
+  - {book: Song}
+  - {book: Isa}
+  - {book: Jer}
+  - {book: Lam}
+  - {book: Ezek}
+  - {book: Dan}
+  - {book: Dan, lxx_book: DanTh}
+  - {book: Hos}
+  - {book: Joel}
+  - {book: Amos}
+  # - {book: Obad}    # exclu : le gold CATSS numérote Abdias en chapitre 0 (aucune paire dans la table)
+  - {book: Jonah}
+  - {book: Mic}
+  - {book: Nah}
+  - {book: Hab}
+  - {book: Zeph}
+  - {book: Hag}
+  - {book: Zech}
+  - {book: Mal}
+
+aligner: eflomal
+tokens: w                   # w = mots BHSA, g = mots graphiques, l = lemmes
+greek_accents: false
+hebrew_vocalization: false

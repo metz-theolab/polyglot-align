@@ -109,15 +109,17 @@ class Gold:
         """Gold d'un livre grec : Gold.load("Gen"), Gold.load("JudgA")."""
         return cls(Path(root) / "gold_clean" / f"{book}.json")
 
-    def covers(self, key: str) -> bool:
-        """Le gold a-t-il des unités pour ce verset, des deux côtés ?"""
-        return key in self._hb and key in self._gr
+    def covers(self, key: str, lxx_key: str = None) -> bool:
+        """Le gold a-t-il des unités pour le verset TM `key` et le verset LXX
+        `lxx_key` (par défaut, même numéro) ?"""
+        return key in self._hb and (lxx_key or key) in self._gr
 
-    def attach(self, key: str, he_tokens: list, lxx_tokens: list):
-        """Rattache chaque token du verset `key` ("ch.vs") à son unité.
+    def attach(self, key: str, he_tokens: list, lxx_tokens: list, lxx_key: str = None):
+        """Rattache chaque token du verset TM `key` ("ch.vs") et du verset LXX
+        `lxx_key` (par défaut, même numéro) à son unité.
         Renvoie (hb_unit, gr_unit) : un uid (ou None) par token."""
         return (project(he_tokens, self._hb[key], heb_letters),
-                project(lxx_tokens, self._gr[key], grc_letters))
+                project(lxx_tokens, self._gr[lxx_key or key], grc_letters))
 
     def is_correct(self, uh: str, ug: str) -> bool:
         """Lien entre un token de l'unité uh et un token de l'unité ug : juste

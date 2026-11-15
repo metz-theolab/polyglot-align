@@ -33,11 +33,11 @@ class Config:
 
     # texte donné à l'aligneur
     tokens: str = "w"             # w = mots BHSA (בְּ רֵאשִׁית), g = mots graphiques (בְּרֵאשִׁית), l = lemmes
-    greek_accents: bool = True    # False = accents grecs retirés (SimAlign)
-    hebrew_vocalization: bool = False  # True = voyelles hébraïques gardées (SimAlign)
+    greek_accents: bool = True    # False = accents grecs retirés (SimAlign, eflomal)
+    hebrew_vocalization: bool = False  # True = voyelles hébraïques gardées (SimAlign, eflomal)
 
     # aligneur
-    aligner: str = "simalign"     # simalign ou llm
+    aligner: str = "simalign"     # simalign, llm ou eflomal
 
     # SimAlign
     model: str = "bert"           # bert (mBERT), xlmr, ou nom d'un modèle HuggingFace
@@ -69,8 +69,8 @@ class Config:
             problems.append("aucun passage")
         if self.tokens not in ("w", "g", "l"):
             problems.append(f"tokens = {self.tokens!r} (attendu : w, g ou l)")
-        if self.aligner not in ("simalign", "llm"):
-            problems.append(f"aligner = {self.aligner!r} (attendu : simalign ou llm)")
+        if self.aligner not in ("simalign", "llm", "eflomal"):
+            problems.append(f"aligner = {self.aligner!r} (attendu : simalign, llm ou eflomal)")
         if self.aligner == "llm" and not self.llm_model:
             problems.append("aligner = llm mais llm_model n'est pas donné")
         if self.aligner == "simalign" and not set(self.methods) <= set("mai"):

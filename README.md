@@ -35,8 +35,27 @@ Python 3.11 ou plus récent (testé avec 3.13).
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-pip install sentencepiece        # nécessaire pour Glot500
 ```
+
+`requirements.txt` contient tout : Text-Fabric, PyYAML, SimAlign avec
+`sentencepiece` (nécessaire pour Glot500), eflomal (extension C, compilée à
+l'installation).
+
+**eflomal sur Mac.** eflomal se compile avec OpenMP, que le clang d'Apple ne
+gère pas (`unsupported option '-fopenmp'`), et son Makefile demande la
+bibliothèque GNU `gomp` (`library 'gomp' not found`). Compiler avec le clang de
+Homebrew et faire passer `libomp` pour `gomp` le temps de la compilation :
+
+```
+brew install llvm libomp
+export CC="$(brew --prefix llvm)/bin/clang"
+mkdir -p /tmp/gomp && ln -sf "$(brew --prefix libomp)/lib/libomp.dylib" /tmp/gomp/libgomp.dylib
+export LIBRARY_PATH=/tmp/gomp
+pip install --no-cache-dir eflomal
+```
+
+Le programme compilé utilise ensuite directement `libomp` ; `/tmp/gomp` peut
+être supprimé.
 
 Les modèles Hugging Face (mBERT, XLM-R, Glot500) sont téléchargés au premier
 lancement. Pour l'aligneur LLM : installer [Ollama](https://ollama.com) et un
@@ -81,7 +100,9 @@ device: cpu              # cpu, mps (GPU Apple), cuda
 
 # pour aligner: llm
 # llm_model: gemma4:12b
-# llm_think: false
+# llm_url: http://localhost:11434
+# llm_think: false       # true = le modèle « réfléchit » avant de répondre (beaucoup plus lent)
+
 ```
 
 Une seule commande :

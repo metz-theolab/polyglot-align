@@ -1,0 +1,4 @@
+ligne,precision,precision_ecart,rappel_blocs,rappel_blocs_ecart,f1,f1_ecart,nonalign_exactitude,nonalign_exactitude_ecart,versets
+Glot500 · mots BHSA · voyelles,0.8553,,0.7802,,0.816,,0.8182,,24
+eflomal · mots BHSA,0.9911,,0.9814,,0.9862,,0.9091,,24
+gemma4:12b · mots BHSA (llm),0.9426,,0.9381,,0.9403,,0.1818,,24

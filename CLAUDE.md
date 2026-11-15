@@ -30,14 +30,20 @@ config).
 Classes (`src/`) :
 - `config.py` — `Config`, `Passage` : lecture et vérification du YAML
 - `corpus.py` — `Corpus`, `Verse` : textes exportés (seul lecteur des couches
-  `t` / `w` / `l` / `g`)
-- `aligners.py` — `Aligner` (interface), `SimAlignAligner`, `make_aligner` ;
-  `llm_align.py` — `OllamaAligner` (LLM local, tableau → liens)
+  `t` / `w` / `l` / `g`) ; `VerseMap` : appariement des versets hébreu ↔ LXX
+  (`data/verse_map.json`), seule source d'appariement pour tous les aligneurs
+- `aligners.py` — `Aligner` (interface : `fit`, `align`), `SimAlignAligner`,
+  `make_aligner` ; `llm_align.py` — `OllamaAligner` (LLM local, tableau →
+  liens) ; `eflomal_align.py` — `EflomalAligner` (statistique, apprend sur
+  toute la table des versets)
 - `gold.py` — `Gold` : unités CATSS, rattachement des tokens aux blocs, règle
   « lien juste »
 - `evaluate.py` — `Evaluator` : jugement des liens, mesures, CSV de relecture
 - `experiment.py` — `Experiment` : enchaîne alignement, évaluation, total, écriture
 - `align.py` — parcours des versets d'un passage et écriture du JSONL
+- `report.py` — `Report`, `Table`, `Figures`, `ResultGroup`,
+  `ExperimentResult` : tableaux (.tex .md .csv) et figures (.pdf .png) de
+  l'article à partir de `results/` (`python src/report.py reports/article.yaml`)
 
 Fonctions et scripts : `normalize.py` (normalisation des tokens),
 `gold_clean.py` (gold CATSS → `data/gold_clean/<livre>.json`), `show.py`
@@ -45,7 +51,10 @@ Fonctions et scripts : `normalize.py` (normalisation des tokens),
 `run.py` (ligne de commande).
 
 Données : `data/export_bhsa_tf.py`, `data/export_lxx_tf.py` (export Text-Fabric,
-à lancer depuis `data/`) → `data/he/`, `data/lxx/` (format dans `DECISIONS.md`) ;
+à lancer depuis `data/`) → `data/he/`, `data/lxx/` (livres sans équivalent
+hébreu dans `data/lxx/non_aligned/` ; format dans `DECISIONS.md`) ;
+`data/make_verse_map.py` (gold_clean → `data/verse_map.json`, paires de
+versets 1 ↔ 1) ;
 `data/gold/` (CATSS brut).
 
 Tests : `python -m unittest discover -s tests` ; non-régression :

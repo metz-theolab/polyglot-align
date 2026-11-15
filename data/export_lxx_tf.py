@@ -19,6 +19,7 @@ from tf.app import use
 CORPUS = "CenterBLC/LXX"
 VERSION = "1935"
 OUT_DIR = Path("lxx")
+NON_ALIGNED_DIR = OUT_DIR / "non_aligned"   # livres sans équivalent hébreu (Sir, Wis, 1Mac…)
 
 # Noms de livres (sans "_", en minuscules) -> abréviations OSIS, communs BHSA / LXX
 ABBREV = {
@@ -33,6 +34,10 @@ ABBREV = {
     "micah": "Mic", "nahum": "Nah", "habakkuk": "Hab", "zephaniah": "Zeph",
     "haggai": "Hag", "zechariah": "Zech", "malachi": "Mal", "cant": "Song", "qoh": "Eccl",
 }
+
+# Livres grecs avec un équivalent hébreu sans être dans ABBREV : 2 Esdras (= Esdras–Néhémie),
+# Daniel de Théodotion ; les textes A (JoshA, JudgA) suivent leur livre
+WITH_HEBREW = set(ABBREV.values()) | {"2Esdr", "DanTh"}
 
 A = use(CORPUS, version=VERSION, silent="deep")
 T, F, L = A.api.T, A.api.F, A.api.L
@@ -63,9 +68,10 @@ for v in F.otype.s("verse"):
     assert str(vs) not in books[book_id][str(ch)], f"référence en double : {book_id}.{ch}.{vs}"
     books[book_id][str(ch)][str(vs)] = export_verse(v)
 
-OUT_DIR.mkdir(parents=True, exist_ok=True)
+NON_ALIGNED_DIR.mkdir(parents=True, exist_ok=True)
 for book_id, chapters in books.items():
-    path = OUT_DIR / f"{book_id}.json"
+    aligned = book_id in WITH_HEBREW or book_id.removesuffix("A") in ABBREV.values()
+    path = (OUT_DIR if aligned else NON_ALIGNED_DIR) / f"{book_id}.json"
     path.write_text(json.dumps({book_id: chapters}, ensure_ascii=False, indent=1), encoding="utf-8")
 
-print(f"{len(books)} livres exportés dans {OUT_DIR}")
+print(f"{len(books)} livres exportés dans {OUT_DIR} (sans équivalent hébreu : {NON_ALIGNED_DIR})")

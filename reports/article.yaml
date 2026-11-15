@@ -1,0 +1,41 @@
+# Rapport pour l'article : tableaux et figures tirés de results/ (aucun alignement relancé).
+# Lancer (depuis la racine du projet) : python src/report.py reports/article.yaml
+# Sorties : reports/article/tables/*.tex|md|csv, reports/article/figures/*.pdf|png
+
+name: article
+
+tables:
+  - title: Comparaison des aligneurs (Gen 1, Gen 3, 1 S 9)
+    experiments: [mbert_formes_sans_accents, xlmr_formes_sans_accents,
+                  glot500_formes_sans_accents, glot500_formes_vocalise_sans_accents,
+                  eflomal_formes_sans_accents, eflomal_lemmes_sans_accents]
+    method: inter
+    columns: [precision, rappel_blocs, f1, nonalign_exactitude]
+
+  - title: Comparaison avec le LLM (Gen 3)
+    passages: [Gen.3]               # le LLM n'a été lancé que sur Gen 3
+    experiments: [glot500_formes_vocalise_sans_accents, eflomal_formes_sans_accents,
+                  gemma4_texte_gen3]
+    method: inter
+
+  - title: Segmentation et vocalisation (Glot500)
+    experiments: [glot500_formes_sans_accents, glot500_formes_vocalise_sans_accents,
+                  glot500_mots_graphiques_sans_accents,
+                  glot500_mots_graphiques_vocalise_sans_accents]
+    rows_from: [tokens, hebrew_vocalization]
+    method: inter
+
+  - title: eflomal par livre (formes, inter)
+    experiment: eflomal_formes_bible
+    rows: passages
+    method: inter
+
+figures:
+  - figure: precision_rappel
+    title: Précision et rappel par blocs (Gen 1, Gen 3, 1 S 9)
+    experiments: [mbert_formes_sans_accents, xlmr_formes_sans_accents,
+                  glot500_formes_sans_accents, glot500_formes_vocalise_sans_accents,
+                  eflomal_formes_sans_accents, eflomal_lemmes_sans_accents]
+  - figure: par_livre
+    experiment: eflomal_formes_bible
+    method: inter
