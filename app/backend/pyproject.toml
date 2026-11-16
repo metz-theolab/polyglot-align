@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+# API REST de l'app de test (voir decisions-app.md). Paquet indépendant :
+# il dépend de polyglot-align (la bibliothèque) et l'importe ; l'inverse
+# n'existe pas.
+# Installation (depuis la racine du dépôt, dans le venv) :
+#     pip install -e '.[simalign,eflomal]'     # bibliothèque (+ torch pour dictabert-seg, eflomal)
+#     pip install -e app/backend               # API
+[project]
+name = "polyglot-api"
+version = "0.1.0"
+description = "API REST de l'app de test de polyglot-align : aligner un texte hébreu et un texte grec saisis"
+requires-python = ">=3.10"
+dependencies = [
+  "polyglot-align",
+  "fastapi>=0.163",
+  "uvicorn>=0.54",
+  "pydantic-settings>=2.16",
+]
+
+[project.optional-dependencies]
+# tests (client de test FastAPI)
+dev = ["httpx>=0.28"]
+
+[project.scripts]
+polyglot-api = "polyglot_api.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
