@@ -1,5 +1,6 @@
 """Aligneur SimAlign (Jalili Sabet et al. 2020)."""
-from polyglot_align.aligners.base import Aligner, VerseAlignment
+from polyglot_align.aligners.base import Aligner
+from polyglot_align.alignment import VerseAlignment
 from polyglot_align.normalize import norm_grc, norm_heb
 
 

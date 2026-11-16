@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.config import Config, Passage
 from polyglot_align.corpus import Corpus, VerseMap
 from polyglot_align.aligners import make_aligner
-from polyglot_align.aligners.eflomal import EflomalAligner, grow_diag_final_and, parse_pharaoh
+from polyglot_align.aligners.eflomal import EflomalAligner, grow_diag_final_and
 
 DATA = ROOT / "data"
 
@@ -40,10 +40,6 @@ class FakeEflomal:
 
 
 class TestSymetrisation(unittest.TestCase):
-    def test_parse(self):
-        self.assertEqual(parse_pharaoh("0-0 2-1"), {(0, 0), (2, 1)})
-        self.assertEqual(parse_pharaoh(""), set())
-
     def test_gdfa_ajoute_voisin_de_mot_non_aligne(self):
         fwd, rev = {(0, 0), (1, 1), (1, 2)}, {(0, 0), (1, 1)}
         self.assertEqual(grow_diag_final_and(fwd, rev), {(0, 0), (1, 1), (1, 2)})

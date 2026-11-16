@@ -4,14 +4,14 @@ Applique DECISIONS.md, « Évaluation par blocs CATSS » : un lien prédit est
 juste s'il reste à l'intérieur d'une unité CATSS de type `align` (ou s'il
 correspond à un lien reconstruit `{...}`).
 
-Evaluator juge les liens d'un passage (sortie JSONL d'align.py) contre un Gold,
+Evaluator juge les liens d'un passage (JSONL, format dans alignment.py) contre un Gold,
 et écrit le CSV de relecture. measures() calcule les mesures à partir des
 comptes bruts (aussi utilisée par experiment.py pour le total).
 """
 import csv
-import json
 from collections import Counter, defaultdict
 
+from polyglot_align.alignment import read_jsonl
 from polyglot_align.corpus import Corpus
 from polyglot_align.evaluation.gold import Gold
 
@@ -35,11 +35,6 @@ def measures(c: Counter) -> dict:
     }
 
 
-def parse_links(raw: str) -> list:
-    """"0-0 1-2" -> [(0, 0), (1, 2)]"""
-    return [tuple(map(int, l.split("-"))) for l in raw.split()]
-
-
 class Evaluator:
     """Évalue les alignements d'un livre contre son gold."""
 
@@ -57,16 +52,16 @@ class Evaluator:
 
     # --- un verset ---
 
-    def _verse(self, d: dict):
-        """Tokens et rattachement au gold d'une ligne du JSONL, ou None si le
-        verset n'est pas évaluable (pas de gold, ou tokens ≠ export)."""
-        key = d["ref"].split(".", 1)[1]
-        lxx_key = d.get("ref_lxx", d["ref"]).split(".", 1)[1]   # verset LXX apparié
+    def _verse(self, rec):
+        """Tokens et rattachement au gold d'une ligne du JSONL
+        (alignment.AlignmentRecord), ou None si le verset n'est pas évaluable
+        (pas de gold, ou tokens ≠ export)."""
+        key, lxx_key = rec.key, rec.lxx_key   # verset TM, verset LXX apparié
         if not self.gold.covers(key, lxx_key):
             return None, "verset_sans_gold"
         hb = self.he[key].tokens(self.layer) if key in self.he else []
         gr = self.lxx[lxx_key].tokens(self.layer) if lxx_key in self.lxx else []
-        if len(d["src"]) != len(hb) or len(d["tgt"]) != len(gr):
+        if len(rec.src) != len(hb) or len(rec.tgt) != len(gr):
             return None, "tokens_differents_de_l_export"
         hb_unit, gr_unit = self.gold.attach(key, hb, gr, lxx_key)
         return (key, lxx_key, hb, gr, hb_unit, gr_unit), None
@@ -146,15 +141,14 @@ class Evaluator:
         """Comptes et mesures, par méthode, pour les versets d'un JSONL."""
         counts = defaultdict(Counter)  # une entrée par méthode présente dans le JSONL
         skipped = Counter()
-        for line in open(jsonl, encoding="utf-8"):
-            d = json.loads(line)
-            verse, reason = self._verse(d)
+        for rec in read_jsonl(jsonl):
+            verse, reason = self._verse(rec)
             if verse is None:
                 skipped[reason] += 1
                 continue
             key, lxx_key, _, _, hb_unit, gr_unit = verse
-            for m, raw in d["links"].items():
-                counts[m] += self.count_verse(parse_links(raw), hb_unit, gr_unit, key, lxx_key)
+            for m, links in rec.links.items():
+                counts[m] += self.count_verse(links, hb_unit, gr_unit, key, lxx_key)
                 counts[m]["versets"] += 1
         return {"versets_ignores": dict(skipped),
                 "methodes": {m: {"mesures": measures(c), "comptes": dict(c)}
@@ -169,14 +163,12 @@ class Evaluator:
             w = csv.writer(f, delimiter=";")
             w.writerow(["ref", "methode", "n", "hebreu", "grec_aligne", "bloc_catss",
                         "catss_hebreu", "catss_grec", "verdict"])
-            for line in open(jsonl, encoding="utf-8"):
-                d = json.loads(line)
-                verse, _ = self._verse(d)
+            for rec in read_jsonl(jsonl):
+                verse, _ = self._verse(rec)
                 if verse is None:
                     continue
                 _, _, hb, gr, hb_unit, gr_unit = verse
-                for m, raw in d["links"].items():
-                    links = parse_links(raw)
+                for m, links in rec.links.items():
                     for i, tok in enumerate(hb):
                         js = [j for a, j in links if a == i]
                         uid = hb_unit[i]
@@ -189,10 +181,10 @@ class Evaluator:
                             ok = [gr_unit[j] is not None and self.gold.is_correct(uid, gr_unit[j])
                                   for j in js]
                             verdict = "juste" if all(ok) else "faux"
-                        w.writerow([d["ref"], m, i, tok, " ".join(gr[j] for j in js),
+                        w.writerow([rec.ref, m, i, tok, " ".join(gr[j] for j in js),
                                     u["n"] if u else "", u["hb"] if u else "", u["gr"] if u else "",
                                     verdict])
                     linked = {j for _, j in links}
                     orphans = [gr[j] for j in range(len(gr)) if j not in linked]
                     if orphans:
-                        w.writerow([d["ref"], m, "", "", "", "", "", "", "grec sans lien : " + " ".join(orphans)])
+                        w.writerow([rec.ref, m, "", "", "", "", "", "", "grec sans lien : " + " ".join(orphans)])

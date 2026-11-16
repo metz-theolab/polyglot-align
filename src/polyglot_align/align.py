@@ -5,14 +5,9 @@ ne fait que choisir les versets et écrire les résultats. Les versets sont
 appariés par la table du gold (corpus.VerseMap) : un verset hébreu n'est aligné
 qu'avec son équivalent LXX.
 
-Sortie : JSONL, une ligne par verset ; src et tgt sont les tokens montrés par
-l'aligneur, dans l'ordre de l'export (indices reliables au gold par la couche g) :
-  {"ref": "Gen.1.1", "src": [...], "tgt": [...], "links": {"inter": "0-0 1-1 ...", ...}}
-ref est la référence hébraïque ; si le verset LXX a un autre numéro, il est donné
-dans ref_lxx (ex. "ref": "Ps.23.1", "ref_lxx": "Ps.22.1").
+Sortie : JSONL, une ligne par verset (format dans alignment.py).
 """
-import json
-
+from polyglot_align.alignment import AlignmentRecord
 from polyglot_align.corpus import Corpus
 
 
@@ -28,8 +23,5 @@ def align(aligner, he_path, lxx_path, pairs, out_path, only=None) -> int:
             hv, gv = he[he_key], lxx[lxx_key]
             print(f"  {hv.ref} ({n}/{len(pairs)})", flush=True)
             res = aligner.align(hv, gv)
-            links = {m: " ".join(f"{a}-{b}" for a, b in sorted(p)) for m, p in res.links.items()}
-            ref_lxx = {"ref_lxx": gv.ref} if lxx_key != he_key else {}
-            out.write(json.dumps({"ref": hv.ref, **ref_lxx, "src": res.src, "tgt": res.tgt,
-                                  "links": links, **res.extra}, ensure_ascii=False) + "\n")
+            out.write(AlignmentRecord.from_alignment(hv, gv, res).to_json() + "\n")
     return len(pairs)

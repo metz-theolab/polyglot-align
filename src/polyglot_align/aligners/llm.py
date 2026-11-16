@@ -6,7 +6,7 @@ une ligne = un mot (ou groupe) hébreu et sa traduction grecque.
 
 Le tableau est ensuite converti en liens entre tokens (couche w) : chaque
 ligne est traitée comme un bloc, et ses mots sont retrouvés dans le verset par
-leurs lettres (même méthode que la projection du gold dans evaluate.py). Un mot
+leurs lettres (normalize.project, comme la projection du gold). Un mot
 inventé par le modèle ne correspond à rien et disparaît. Tous les tokens
 hébreux d'une ligne sont reliés à tous ses tokens grecs. Le tableau brut est
 conservé dans le JSONL (champ "llm_table") pour la relecture.
@@ -14,9 +14,9 @@ conservé dans le JSONL (champ "llm_table") pour la relecture.
 import json
 import urllib.request
 
-from polyglot_align.aligners.base import Aligner, VerseAlignment
-from polyglot_align.evaluation.gold import grc_letters, heb_letters, project
-from polyglot_align.normalize import norm_heb
+from polyglot_align.aligners.base import Aligner
+from polyglot_align.alignment import VerseAlignment
+from polyglot_align.normalize import grc_letters, heb_letters, norm_heb, project
 
 PROMPT = """Align this Hebrew verse with its Greek translation (Septuagint).
 

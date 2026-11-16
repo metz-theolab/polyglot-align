@@ -27,6 +27,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
+from polyglot_align.alignment import format_links, read_jsonl
 from polyglot_align.evaluation.evaluate import Evaluator
 from polyglot_align.aligners.llm import table_to_links
 
@@ -44,17 +45,17 @@ def replay(ref_dir: Path) -> list:
         lxx_book = p.get("lxx_book", he_book)
         label = p.get("only") or lxx_book
         jsonl = ref_dir / f"{label}.jsonl"
-        lines = [json.loads(l) for l in jsonl.read_text(encoding="utf-8").splitlines()]
-        if not lines:
+        records = list(read_jsonl(jsonl))
+        if not records:
             problems.append(f"{label} : JSONL de référence vide (référence invalide)")
             continue
 
         # conversion tableau -> liens (LLM)
-        for d in lines:
-            if "llm_table" in d:
-                links = table_to_links(d["src"], d["tgt"], d["llm_table"])
-                if " ".join(f"{a}-{b}" for a, b in links) != d["links"]["llm"]:
-                    problems.append(f"{label} {d['ref']} : la conversion du tableau donne d'autres liens")
+        for rec in records:
+            if "llm_table" in rec.extra:
+                links = table_to_links(rec.src, rec.tgt, rec.extra["llm_table"])
+                if format_links(links) != format_links(rec.links["llm"]):
+                    problems.append(f"{label} {rec.ref} : la conversion du tableau donne d'autres liens")
 
         # réévaluation
         evaluator = Evaluator.for_books(he_book, lxx_book, root=ROOT / "data")

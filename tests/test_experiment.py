@@ -13,7 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.aligners import Aligner, VerseAlignment
-from polyglot_align.evaluation.evaluate import parse_links
+from polyglot_align.alignment import read_jsonl
 from polyglot_align.experiment import Experiment
 
 REFERENCE = ROOT / "tests" / "reference" / "mbert_formes_sans_accents"
@@ -26,13 +26,12 @@ class ReplayAligner(Aligner):
         super().__init__()
         self.saved = {}
         for jsonl in ref_dir.glob("*.jsonl"):
-            for line in jsonl.read_text(encoding="utf-8").splitlines():
-                d = json.loads(line)
-                self.saved[d["ref"]] = d
+            for rec in read_jsonl(jsonl):
+                self.saved[rec.ref] = rec
 
     def align(self, hv, gv) -> VerseAlignment:
-        d = self.saved[hv.ref]
-        return VerseAlignment(d["src"], d["tgt"], {m: parse_links(r) for m, r in d["links"].items()})
+        rec = self.saved[hv.ref]
+        return VerseAlignment(rec.src, rec.tgt, rec.links)
 
 
 class TestExperiment(unittest.TestCase):

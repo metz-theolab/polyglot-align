@@ -16,14 +16,10 @@ Installation : pip install eflomal (à lancer à la main dans le venv).
 import tempfile
 from pathlib import Path
 
-from polyglot_align.aligners.base import Aligner, VerseAlignment
+from polyglot_align.aligners.base import Aligner
+from polyglot_align.alignment import VerseAlignment, parse_links
 from polyglot_align.corpus import Corpus
 from polyglot_align.normalize import norm_grc, norm_heb
-
-
-def parse_pharaoh(line: str) -> set:
-    """"0-0 1-2" -> {(0, 0), (1, 2)}."""
-    return {tuple(map(int, p.split("-"))) for p in line.split()}
 
 
 def grow_diag_final_and(fwd: set, rev: set) -> set:
@@ -95,7 +91,7 @@ class EflomalAligner(Aligner):
             fwd_lines = fwd_path.read_text(encoding="utf-8").splitlines()
             rev_lines = rev_path.read_text(encoding="utf-8").splitlines()
         for key, f, r in zip(keys, fwd_lines, rev_lines, strict=True):
-            fwd, rev = parse_pharaoh(f), parse_pharaoh(r)
+            fwd, rev = set(parse_links(f)), set(parse_links(r))
             self.links[key] = {"inter": fwd & rev, "gdfa": grow_diag_final_and(fwd, rev)}
         self.stats["versets appris"] = len(keys)
 

@@ -6,49 +6,10 @@ projection ; étape 2 : jugement des liens).
 """
 import json
 import re
-import unicodedata
-from collections import Counter, defaultdict
-from difflib import SequenceMatcher
+from collections import defaultdict
 from pathlib import Path
 
-
-# --- Squelettes de comparaison (fonctions pures) -----------------------------
-
-
-def heb_letters(text: str) -> str:
-    """Lettres hébraïques seules (sans points, accents, shin/sin), finales = non finales."""
-    text = text.translate(str.maketrans("ךםןףץ", "כמנפצ"))
-    return re.sub(r"[^א-ת]", "", text)
-
-
-def grc_letters(text: str) -> str:
-    """Lettres grecques seules, sans accents, minuscules, σ = ς."""
-    text = unicodedata.normalize("NFD", text.lower())
-    text = "".join(c for c in text if not unicodedata.combining(c)).replace("ς", "σ")
-    return re.sub(r"[^α-ω]", "", text)
-
-
-def project(tokens: list, pieces: list, letters) -> list:
-    """Apparie, dans l'ordre et lettre par lettre, des tokens à des morceaux de
-    texte. pieces = [(id, texte)], dans l'ordre. Renvoie, pour chaque token,
-    l'id de la majorité de ses lettres (None si aucune lettre appariée).
-    Sert à rattacher les tokens aux unités du gold, et les tokens aux lignes
-    du tableau du LLM."""
-    a, a_tok = [], []
-    for i, t in enumerate(tokens):
-        for c in letters(t):
-            a.append(c)
-            a_tok.append(i)
-    b, b_unit = [], []
-    for uid, text in pieces:
-        for c in letters(text):
-            b.append(c)
-            b_unit.append(uid)
-    votes = [Counter() for _ in tokens]
-    for blk in SequenceMatcher(None, a, b, autojunk=False).get_matching_blocks():
-        for k in range(blk.size):
-            votes[a_tok[blk.a + k]][b_unit[blk.b + k]] += 1
-    return [v.most_common(1)[0][0] if v else None for v in votes]
+from polyglot_align.normalize import grc_letters, heb_letters, project
 
 
 def position(n: str) -> int:

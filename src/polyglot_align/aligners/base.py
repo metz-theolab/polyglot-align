@@ -8,16 +8,8 @@ d'Aligner (un module de ce sous-paquet) et la déclarer dans make_aligner
 """
 from abc import ABC, abstractmethod
 from collections import Counter
-from dataclasses import dataclass, field
 
-
-@dataclass
-class VerseAlignment:
-    """Résultat de l'alignement d'un verset."""
-    src: list                    # tokens hébreux montrés (un par token de la couche)
-    tgt: list                    # tokens grecs montrés
-    links: dict                  # méthode -> [(i, j), ...] (i : hébreu, j : grec)
-    extra: dict = field(default_factory=dict)  # informations propres à l'aligneur (ex. llm_table)
+from polyglot_align.alignment import VerseAlignment
 
 
 class Aligner(ABC):
