@@ -95,8 +95,13 @@ class PerfMeter:
             p["cpu_s"] += cpu_seconds() - c0
 
     def report(self, versets: int, tokens_hb: int, tokens_gr: int,
-               device: str | None = None, aligner_stats: dict | None = None) -> dict:
-        """Le contenu de perf.json."""
+               device: str | None = None, aligner_stats: dict | None = None,
+               versets_repris: int = 0) -> dict:
+        """Le contenu de perf.json. versets : versets alignés pendant
+        l'exécution ; versets_repris : déjà alignés par une exécution
+        précédente (reprise), non comptés dans les débits. tokens_hb,
+        tokens_gr : tokens de tous les versets évalués ; le débit en tokens
+        n'est donné que sans reprise."""
         get = lambda name, key: self.phases.get(name, {}).get(key, 0.0)
         cost = get("apprentissage", "duree_s") + get("alignement", "duree_s")
         cost_cpu = get("apprentissage", "cpu_s") + get("alignement", "cpu_s")
@@ -115,8 +120,9 @@ class PerfMeter:
             "cout_methode": {"duree_s": round(cost, 3), "cpu_s": round(cost_cpu, 3),
                              "s_par_1000_versets": round(1000 * cost / versets, 3) if versets else None},
             "debit_alignement": {"versets_par_s": rate(versets, align_s),
-                                 "tokens_par_s": rate(tokens, align_s)},
-            "volume": {"versets": versets, "tokens_hb": tokens_hb, "tokens_gr": tokens_gr},
+                                 "tokens_par_s": None if versets_repris else rate(tokens, align_s)},
+            "volume": {"versets": versets, "versets_repris": versets_repris,
+                       "tokens_hb": tokens_hb, "tokens_gr": tokens_gr},
             "memoire_max_mo": round(peak_memory_mb(), 1),
             "machine": machine(device),
             "aligneur": aligner_stats,

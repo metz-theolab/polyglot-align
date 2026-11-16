@@ -7,17 +7,19 @@ Usage (depuis la racine du projet) :
 from polyglot_align.alignment import read_jsonl
 
 
-def show(jsonl_path, ref, method="inter"):
-    """Pour chaque mot hébreu, ses correspondants grecs (∅ = non aligné)."""
+def show(jsonl_path, ref, method="inter") -> str:
+    """Pour chaque mot hébreu, ses correspondants grecs (∅ = non aligné) ;
+    renvoie le texte à afficher."""
     for rec in read_jsonl(jsonl_path):
         if rec.ref != ref:
             continue
         pairs = rec.links[method]
+        lines = []
         for i, w in enumerate(rec.src):
             tgt = [rec.tgt[b] for a, b in pairs if a == i]
-            print(f"{w:>12}  ↔  {' '.join(tgt) or '∅'}")
+            lines.append(f"{w:>12}  ↔  {' '.join(tgt) or '∅'}")
         aligned = {b for _, b in pairs}
         orphans = [w for j, w in enumerate(rec.tgt) if j not in aligned]
-        print(f"{'grec non aligné':>12}  :  {' '.join(orphans) or '—'}")
-        return
-    print(f"{ref} absent de {jsonl_path}")
+        lines.append(f"{'grec non aligné':>12}  :  {' '.join(orphans) or '—'}")
+        return "\n".join(lines)
+    return f"{ref} absent de {jsonl_path}"

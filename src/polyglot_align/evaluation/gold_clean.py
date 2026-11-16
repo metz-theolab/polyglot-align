@@ -19,10 +19,13 @@ Format de sortie : {"Gen": {"1": {"1": [unité, …]}}}, une unité =
 Usage (depuis la racine du projet) : polyglot-align clean-gold
 """
 import json
+import logging
 import re
 import unicodedata
 from collections import Counter
 from pathlib import Path
+
+log = logging.getLogger(__name__)
 
 GOLD = Path("data/gold")
 OUT = Path("data/gold_clean")
@@ -325,7 +328,7 @@ def main():
                                          encoding="utf-8")
     (OUT / "_rapport.json").write_text(json.dumps(dict(report.most_common()), ensure_ascii=False, indent=1),
                                        encoding="utf-8")
-    print(f"{len(books)} livres écrits dans {OUT}")
+    log.info("%d livres écrits dans %s", len(books), OUT)
     for k, n in report.most_common():
-        print(f"{n:>8}  {k}")
+        log.info("%8d  %s", n, k)
 

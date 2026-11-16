@@ -179,6 +179,20 @@ class Config:
         if problems:
             raise ValueError(f"{source} : " + " ; ".join(problems))
 
+    def flat(self) -> dict:
+        """Options à plat, sans le nom, pour les libellés et les comparaisons :
+        {"passages": …, "tokens": …, "hebrew": …, "greek": …, "aligner.type": …,
+        "aligner.model": …}."""
+        d = self.to_dict()
+        d.pop("name")
+        aligner = d.pop("aligner")
+        return d | {f"aligner.{k}": v for k, v in aligner.items()}
+
+    def differences(self, other: "Config") -> list:
+        """Options (à plat) dont la valeur diffère entre self et other."""
+        a, b = self.flat(), other.flat()
+        return sorted(k for k in set(a) | set(b) if a.get(k) != b.get(k))
+
     def to_dict(self) -> dict:
         """Options sous forme de dictionnaire (format actuel), passages compris."""
         return {"name": self.name,

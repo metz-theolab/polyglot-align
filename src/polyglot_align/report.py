@@ -17,6 +17,7 @@ Garde-fous :
 """
 import csv
 import json
+import logging
 import re
 import statistics
 import unicodedata
@@ -27,6 +28,8 @@ import yaml
 
 from polyglot_align.config import Config
 from polyglot_align.evaluation.evaluate import measures
+
+log = logging.getLogger(__name__)
 
 # libellés des colonnes (mesures de evaluate.measures)
 COLUMN_LABELS = {
@@ -57,15 +60,6 @@ def yaml_data(path: Path) -> dict:
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
-def flat_config(cfg: Config) -> dict:
-    """Config à plat, pour les libellés et les comparaisons :
-    {"passages": …, "tokens": …, "hebrew": …, "greek": …, "aligner.type": …, "aligner.model": …}."""
-    d = cfg.to_dict()
-    d.pop("name")
-    aligner = d.pop("aligner")
-    return d | {f"aligner.{k}": v for k, v in aligner.items()}
-
-
 # --- résultats ---
 
 class ExperimentResult:
@@ -81,7 +75,7 @@ class ExperimentResult:
         # dans l'ancien format plat, options absentes complétées par leurs défauts
         self.cfg = Config.from_dict(yaml_data(self.dir / "config.yaml"),
                                     source=self.dir / "config.yaml", check=False)
-        self.config = flat_config(self.cfg)   # {"tokens": …, "aligner.model": …}
+        self.config = self.cfg.flat()   # {"tokens": …, "aligner.model": …}
         self.warnings = []
         self._check_config(Path(experiments_root))
 
@@ -91,9 +85,7 @@ class ExperimentResult:
         source = experiments_root / f"{base}.yaml"
         if not source.exists():
             return
-        current = flat_config(Config.from_dict(yaml_data(source), source=source, check=False))
-        diff = sorted(k for k in set(current) | set(self.config)
-                      if k != "name" and current.get(k) != self.config.get(k))
+        diff = self.cfg.differences(Config.from_dict(yaml_data(source), source=source, check=False))
         if diff:
             self.warnings.append(f"{self.name} : config des résultats ≠ {source} ({', '.join(diff)}) ; "
                                  "libellés tirés des résultats")
@@ -434,10 +426,10 @@ class Report:
         for t in tables:
             t.write(self.out / "tables")
             self.warnings += t.warnings
-            print(f"tableau : {self.out}/tables/{slug(t.title)}.(tex|md|csv)")
+            log.info("tableau : %s/tables/%s.(tex|md|csv)", self.out, slug(t.title))
         self.figures(tables)
         for w in dict.fromkeys(self.warnings):
-            print(f"ATTENTION : {w}")
+            log.warning("ATTENTION : %s", w)
 
     def figures(self, tables) -> None:
         specs = self.spec.get("figures", [])
@@ -447,7 +439,7 @@ class Report:
         try:
             figs = Figures(self.out / "figures", *self.roots)
         except ImportError:
-            print("matplotlib absent (pip install -r requirements.txt) : figures non produites")
+            log.warning("matplotlib absent (pip install -e '.[report]') : figures non produites")
             return
         default_experiments = list(dict.fromkeys(
             e for t in self.spec.get("tables", []) for e in t.get("experiments", [])
@@ -462,6 +454,6 @@ class Report:
             if not hasattr(figs, kind) or kind.startswith("_"):
                 raise ValueError(f"figure inconnue : {kind} (precision_rappel, par_livre)")
             getattr(figs, kind)(spec)
-            print(f"figure : {self.out}/figures/{spec.get('file', kind)}.(pdf|png)")
+            log.info("figure : %s/figures/%s.(pdf|png)", self.out, spec.get("file", kind))
         self.warnings += figs.warnings
 

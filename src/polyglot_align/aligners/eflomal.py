@@ -14,11 +14,14 @@ Deux symétrisations des deux sens (hébreu → grec, grec → hébreu) :
 
 Installation : pip install eflomal (à lancer à la main dans le venv).
 """
+import logging
 import tempfile
 from pathlib import Path
 
 from polyglot_align.aligners.base import Aligner
 from polyglot_align.alignment import VerseAlignment, parse_links
+
+log = logging.getLogger(__name__)
 
 
 def grow_diag_final_and(fwd: set, rev: set) -> set:
@@ -80,7 +83,7 @@ class EflomalAligner(Aligner):
                 tgt_lines.append(" ".join(tgt) + "\n")
             else:
                 self.stats["versets vides ignorés"] += 1
-        print(f"eflomal : apprentissage sur {len(keys)} versets", flush=True)
+        log.info("eflomal : apprentissage sur %d versets", len(keys))
         with tempfile.TemporaryDirectory() as tmp:
             fwd_path, rev_path = Path(tmp) / "fwd", Path(tmp) / "rev"
             Eflomal().align(src_lines, tgt_lines, links_filename_fwd=str(fwd_path),
