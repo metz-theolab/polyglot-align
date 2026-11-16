@@ -1,4 +1,5 @@
-# 📜 polyglot-align: word alignment of the Hebrew Bible and the Septuagint
+# 📜 polyglot-align:
+# Multilingual word alignments : Ancient Hebrew and its Greek translations
 
 **polyglot-align** is a Python package for automatic word-by-word alignment
 of the Hebrew text of the Bible (BHSA) with its Greek translation, the
@@ -336,3 +337,9 @@ flake8                                     # style (configuration: .flake8)
 The non-regression check re-evaluates, with the current code, the reference
 alignments stored in `tests/reference/` (fast, no model): links, scores and
 review CSVs must be identical.
+
+## 👥 Authors
+
+Developed by:
+
+👩‍🔬 **Frédérique Michèle Rey** (Humboldt-Universität zu Berlin)
