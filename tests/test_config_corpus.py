@@ -40,7 +40,7 @@ class TestConfig(unittest.TestCase):
         c = config_from("name: x\npassages: [{book: Gen}]\naligner: {type: llm, model: gemma4:12b}")
         self.assertEqual(c.aligner_type, "llm")
         self.assertEqual(c.aligner_params, {"model": "gemma4:12b", "url": "http://localhost:11434",
-                                            "think": False, "seed": 1})
+                                            "think": False, "seed": 1, "num_predict": 4096})
 
     def test_toutes_combinaisons_acceptees(self):
         """Tout aligneur accepte toutes les valeurs de hebrew et greek."""
@@ -60,6 +60,7 @@ class TestConfig(unittest.TestCase):
         c = config_from("name: x\npassages: [{book: Gen}]\naligner: llm\nllm_model: g\n"
                         "greek_accents: false\nmodel: ignoré")
         self.assertEqual((c.hebrew, c.greek, c.aligner["model"]), ("pointed", "accented", "g"))
+        self.assertIsNone(c.aligner["num_predict"])   # pas de limite de génération à l'époque
 
     def test_passage(self):
         self.assertEqual(Passage("Gen", only="Gen.1").label, "Gen.1")
@@ -76,6 +77,8 @@ class TestConfig(unittest.TestCase):
                           ("aligner: {type: llm}", "model"), ("aligner: {type: autre}", "aligner"),
                           ("aligner: {type: simalign, methods: xyz}", "methods"),
                           ("aligner: {type: eflomal, model: x}", "inconnue"),
+                          ("aligner: {type: llm, model: m, num_predict: 0}", "num_predict"),
+                          ("aligner: {type: llm, model: m, num_predict: beaucoup}", "num_predict"),
                           ("aligner: {model: x}", "type")]:
             with self.assertRaisesRegex(ValueError, msg):
                 config_from(f"name: x\npassages: [{{book: Gen}}]\n{text}")

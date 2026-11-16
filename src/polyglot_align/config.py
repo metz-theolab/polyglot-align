@@ -79,6 +79,7 @@ def upgrade_legacy(raw: dict) -> dict:
       accented / unaccented ;
     - LLM : llm_hebrew (défaut pointed) -> hebrew ; greek = accented (le LLM
       recevait toujours le grec accentué, greek_accents était ignoré) ;
+      num_predict = null (pas de limite de génération à l'époque) ;
     - options des autres aligneurs (présentes mais ignorées) : retirées."""
     raw = dict(raw)
     kind = raw.pop("aligner", "simalign")
@@ -94,6 +95,7 @@ def upgrade_legacy(raw: dict) -> dict:
                     section[new] = value
     if kind == "llm":
         raw["hebrew"], raw["greek"] = llm_hebrew, "accented"
+        section["num_predict"] = None   # pas de limite de génération à l'époque
     else:
         raw["hebrew"] = "vocalized" if vocalization else "unvocalized"
         raw["greek"] = "accented" if accents else "unaccented"

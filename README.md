@@ -108,7 +108,13 @@ aligner:
   url: http://localhost:11434
   think: false       # true = le modèle « réfléchit » avant de répondre (beaucoup plus lent)
   seed: 1
+  num_predict: 4096  # tokens générés au plus par verset (coupe les boucles de répétition)
 ```
+
+Une réponse du LLM coupée par `num_predict` garde ses lignes complètes ; un
+délai dépassé laisse le verset sans réponse ; un serveur Ollama injoignable
+arrête l'expérience, qui reprendra au même endroit une fois le serveur
+démarré.
 
 Une seule commande aligne, évalue et écrit les résultats :
 
