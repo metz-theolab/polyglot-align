@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.aligners import Aligner, VerseAlignment, make_aligner
-from polyglot_align.config import Config, Passage
+from polyglot_align.config import Config
 from polyglot_align.corpus import Corpus
 from polyglot_align.aligners.llm import OllamaAligner
 
@@ -75,6 +75,14 @@ class TestOllamaAligner(unittest.TestCase):
         self.assertIn("בראשית ברא אלהים", a.prompts[0])
         self.assertTrue({(0, 0), (0, 1), (1, 0), (1, 1)} <= set(res.links["llm"]))
 
+    def test_prompt_grec_sans_accents(self):
+        a = FakeOllama(json.dumps(TABLE_GN_1_1))
+        a.greek = "unaccented"
+        res = a.align(self.hv, self.gv)
+        self.assertIn("εν αρχη εποιησεν ο θεος", a.prompts[0])
+        # les liens ne dépendent pas des accents (lettres comparées sans accents)
+        self.assertTrue({(0, 0), (0, 1), (1, 0), (1, 1)} <= set(res.links["llm"]))
+
     def test_reponse_invalide(self):
         a = FakeOllama("ceci n'est pas du JSON")
         res = a.align(self.hv, self.gv)
@@ -84,10 +92,11 @@ class TestOllamaAligner(unittest.TestCase):
 
 class TestMakeAligner(unittest.TestCase):
     def test_llm(self):
-        cfg = Config("x", [Passage("Gen")], aligner="llm", llm_model="gemma4:12b", tokens="l")
+        cfg = Config.from_dict({"name": "x", "passages": [{"book": "Gen"}], "tokens": "l",
+                                "hebrew": "vocalized", "aligner": {"type": "llm", "model": "gemma4:12b"}})
         a = make_aligner(cfg)
         self.assertIsInstance(a, OllamaAligner)
-        self.assertEqual((a.model, a.layer), ("gemma4:12b", "l"))
+        self.assertEqual((a.model, a.layer, a.hebrew, a.greek), ("gemma4:12b", "l", "vocalized", "accented"))
 
 
 if __name__ == "__main__":

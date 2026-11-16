@@ -26,14 +26,39 @@ def config_from(text: str) -> Config:
 
 class TestConfig(unittest.TestCase):
     def test_tokens_g_et_vocalisation(self):
-        c = config_from("name: x\npassages: [{book: Gen}]\ntokens: g\nhebrew_vocalization: true")
-        self.assertEqual((c.tokens, c.hebrew_vocalization), ("g", True))
+        c = config_from("name: x\npassages: [{book: Gen}]\ntokens: g\nhebrew: vocalized")
+        self.assertEqual((c.tokens, c.hebrew), ("g", "vocalized"))
 
     def test_valeurs_par_defaut(self):
         c = config_from("name: x\npassages: [{book: Gen, only: Gen.1}]")
-        self.assertEqual((c.tokens, c.aligner, c.model, c.layer, c.methods), ("w", "simalign", "bert", 8, "mai"))
-        self.assertTrue(c.greek_accents)
-        self.assertFalse(c.hebrew_vocalization)
+        self.assertEqual((c.tokens, c.hebrew, c.greek), ("w", "unvocalized", "accented"))
+        self.assertEqual(c.aligner, {"type": "simalign", "model": "bert", "bert_layer": 8,
+                                     "methods": "mai", "device": "cpu"})
+
+    def test_section_aligneur_completee(self):
+        c = config_from("name: x\npassages: [{book: Gen}]\naligner: {type: llm, model: gemma4:12b}")
+        self.assertEqual(c.aligner_type, "llm")
+        self.assertEqual(c.aligner_params, {"model": "gemma4:12b", "url": "http://localhost:11434",
+                                            "think": False, "seed": 1})
+
+    def test_toutes_combinaisons_acceptees(self):
+        """Tout aligneur accepte toutes les valeurs de hebrew et greek."""
+        for aligner in ["{type: simalign}", "{type: eflomal}", "{type: llm, model: m}"]:
+            for hebrew in ["pointed", "vocalized", "unvocalized"]:
+                for greek in ["accented", "unaccented"]:
+                    config_from(f"name: x\npassages: [{{book: Gen}}]\nhebrew: {hebrew}\n"
+                                f"greek: {greek}\naligner: {aligner}")
+
+    def test_ancien_format_converti(self):
+        c = config_from("name: x\npassages: [{book: Gen}]\nmodel: xlmr\nlayer: 6\n"
+                        "greek_accents: false\nhebrew_vocalization: true\nllm_model: ignoré")
+        self.assertEqual((c.hebrew, c.greek), ("vocalized", "unaccented"))
+        self.assertEqual(c.aligner, {"type": "simalign", "model": "xlmr", "bert_layer": 6,
+                                     "methods": "mai", "device": "cpu"})
+        # LLM : grec toujours accentué (greek_accents était ignoré), hébreu pointé par défaut
+        c = config_from("name: x\npassages: [{book: Gen}]\naligner: llm\nllm_model: g\n"
+                        "greek_accents: false\nmodel: ignoré")
+        self.assertEqual((c.hebrew, c.greek, c.aligner["model"]), ("pointed", "accented", "g"))
 
     def test_passage(self):
         self.assertEqual(Passage("Gen", only="Gen.1").label, "Gen.1")
@@ -46,8 +71,11 @@ class TestConfig(unittest.TestCase):
             config_from("name: x\npassages: [{book: Gen}]\ntoken: w")
 
     def test_valeurs_invalides(self):
-        for text, msg in [("tokens: x", "tokens"), ("aligner: llm", "llm_model"),
-                          ("aligner: autre", "aligner"), ("methods: xyz", "methods")]:
+        for text, msg in [("tokens: x", "tokens"), ("hebrew: oui", "hebrew"), ("greek: grc", "greek"),
+                          ("aligner: {type: llm}", "model"), ("aligner: {type: autre}", "aligner"),
+                          ("aligner: {type: simalign, methods: xyz}", "methods"),
+                          ("aligner: {type: eflomal, model: x}", "inconnue"),
+                          ("aligner: {model: x}", "type")]:
             with self.assertRaisesRegex(ValueError, msg):
                 config_from(f"name: x\npassages: [{{book: Gen}}]\n{text}")
 
@@ -58,6 +86,8 @@ class TestConfig(unittest.TestCase):
     def test_experiences_de_reference(self):
         for path in sorted((ROOT / "experiments").glob("*.yaml")):
             Config.from_yaml(path)  # ne doit pas lever d'erreur
+        for path in sorted((ROOT / "tests" / "reference").glob("*/config.yaml")):
+            Config.from_yaml(path)  # ancien format, converti
 
 
 class TestCorpus(unittest.TestCase):

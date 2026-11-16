@@ -4,25 +4,22 @@
     eflomal.py    EflomalAligner (statistique, apprend sur toute la table des versets)
     llm.py        OllamaAligner (LLM local)
 
-Les modules lourds (simalign, eflomal) ne sont importés qu'à la construction
-de l'aligneur choisi.
+ALIGNERS est le registre : valeur de `type` dans la section `aligner:` de la
+config -> classe. Les bibliothèques lourdes (simalign, eflomal) ne sont
+importées qu'à la construction ou à l'apprentissage de l'aligneur choisi.
 """
 from polyglot_align.aligners.base import Aligner, VerseAlignment
+from polyglot_align.aligners.eflomal import EflomalAligner
+from polyglot_align.aligners.llm import OllamaAligner
+from polyglot_align.aligners.simalign import SimAlignAligner
 
-__all__ = ["Aligner", "VerseAlignment", "make_aligner"]
+__all__ = ["Aligner", "VerseAlignment", "ALIGNERS", "make_aligner"]
+
+ALIGNERS = {cls.name: cls for cls in (SimAlignAligner, EflomalAligner, OllamaAligner)}
 
 
 def make_aligner(cfg) -> Aligner:
-    """Choisit et construit l'aligneur décrit par la configuration (config.Config)."""
-    if cfg.aligner == "llm":
-        from polyglot_align.aligners.llm import OllamaAligner
-        return OllamaAligner(cfg.llm_model, cfg.llm_url, think=cfg.llm_think, layer=cfg.tokens,
-                             hebrew=cfg.llm_hebrew)
-    if cfg.aligner == "eflomal":
-        from polyglot_align.aligners.eflomal import EflomalAligner
-        return EflomalAligner(layer=cfg.tokens, greek_accents=cfg.greek_accents,
-                              hebrew_vocalization=cfg.hebrew_vocalization)
-    from polyglot_align.aligners.simalign import SimAlignAligner
-    return SimAlignAligner(cfg.model, cfg.layer, cfg.methods, cfg.device, layer=cfg.tokens,
-                           greek_accents=cfg.greek_accents,
-                           hebrew_vocalization=cfg.hebrew_vocalization)
+    """Construit l'aligneur décrit par la configuration (config.Config) :
+    options propres (section `aligner:`) et options communes (tokens, hebrew, greek)."""
+    cls = ALIGNERS[cfg.aligner_type]
+    return cls(**cfg.aligner_params, layer=cfg.tokens, hebrew=cfg.hebrew, greek=cfg.greek)

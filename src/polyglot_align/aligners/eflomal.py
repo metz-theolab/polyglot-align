@@ -19,7 +19,6 @@ from pathlib import Path
 
 from polyglot_align.aligners.base import Aligner
 from polyglot_align.alignment import VerseAlignment, parse_links
-from polyglot_align.normalize import norm_grc, norm_heb
 
 
 def grow_diag_final_and(fwd: set, rev: set) -> set:
@@ -56,18 +55,18 @@ class EflomalAligner(Aligner):
     """eflomal sur la couche `layer` (w, g ou l), tokens normalisés comme pour
     SimAlign (normalize.py)."""
 
-    def __init__(self, layer="w", greek_accents=True, hebrew_vocalization=False):
-        super().__init__(layer)
-        self.greek_accents = greek_accents
-        self.hebrew_vocalization = hebrew_vocalization
+    name = "eflomal"
+    PARAMS = {}                  # aucune option propre
+
+    def __init__(self, layer="w", hebrew="unvocalized", greek="accented"):
+        super().__init__(layer, hebrew, greek)
         self.links = {}          # (livre hébreu, livre grec, "ch.vs") -> {"inter": set, "gdfa": set}
 
     def tokens(self, hv, gv):
         """Tokens montrés et donnés à eflomal ; un token ne doit pas contenir
         d'espace (norm_heb rend בית_אל en « בית אל » : on remet le _)."""
-        src = [norm_heb(t, self.hebrew_vocalization).replace(" ", "_") for t in hv.tokens(self.layer)]
-        tgt = [norm_grc(t, self.greek_accents).replace(" ", "_") for t in gv.tokens(self.layer)]
-        return src, tgt
+        src, tgt = self.normalized_tokens(hv, gv)
+        return [t.replace(" ", "_") for t in src], [t.replace(" ", "_") for t in tgt]
 
     def fit(self, pairs) -> None:
         """Aligne ensemble toutes les paires de versets (hébreu, grec) reçues."""

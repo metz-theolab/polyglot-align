@@ -110,7 +110,7 @@ class Experiment:
         """Écrit perf.json et en affiche le résumé."""
         comptes = next(iter(self.scores["TOTAL"]["methodes"].values()), {}).get("comptes", {})
         perf = self.perf.report(self.n_verses, comptes.get("tokens_hb", 0), comptes.get("tokens_gr", 0),
-                                device=getattr(self.cfg, "device", None),
+                                device=self.cfg.aligner.get("device"),
                                 aligner_stats=dict(aligner.stats))
         (self.out / "perf.json").write_text(json.dumps(perf, ensure_ascii=False, indent=1),
                                             encoding="utf-8")

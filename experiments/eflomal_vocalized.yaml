@@ -46,8 +46,9 @@ passages:
   - {book: Zech}
   - {book: Mal}
 
-
-aligner: eflomal
 tokens: w                   # w = mots BHSA, g = mots graphiques, l = lemmes
-greek_accents: false
-hebrew_vocalization: true
+hebrew: vocalized           # pointed = tel qu'exporté, vocalized = voyelles, unvocalized = consonantique
+greek: unaccented           # accented | unaccented (accents et esprits retirés, minuscules)
+
+aligner:
+  type: eflomal

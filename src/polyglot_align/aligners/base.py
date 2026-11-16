@@ -1,9 +1,14 @@
 """Aligneurs : une interface commune, une classe par méthode d'alignement.
 
 Tout aligneur reçoit un verset hébreu et un verset grec (corpus.Verse) et
-renvoie un VerseAlignment. Il sait lui-même sur quelle couche il travaille et
-comment préparer le texte. Ajouter une méthode = écrire une sous-classe
-d'Aligner (un module de ce sous-paquet) et la déclarer dans make_aligner
+renvoie un VerseAlignment. Options communes, données par la config et comprises
+par tous les aligneurs : `layer` (couche de tokens reliés : w, g, l), `hebrew`
+(pointed, vocalized, unvocalized) et `greek` (accented, unaccented).
+
+Ajouter une méthode = écrire une sous-classe d'Aligner (un module de ce
+sous-paquet) qui déclare `name` (valeur de `type` dans la section `aligner:`
+de la config), `PARAMS` (ses options et leurs valeurs par défaut) et, au
+besoin, `check_params` ; puis l'ajouter au registre ALIGNERS
 (aligners/__init__.py).
 """
 from abc import ABC, abstractmethod
@@ -12,14 +17,31 @@ from typing import Iterable
 
 from polyglot_align.alignment import VerseAlignment
 from polyglot_align.corpus import Verse
+from polyglot_align.normalize import norm_grc, norm_heb
 
 
 class Aligner(ABC):
     """Interface commune à tous les aligneurs."""
 
-    def __init__(self, layer: str = "w"):
+    name = None                  # valeur de `type` dans la config (registre : aligners/__init__.py)
+    PARAMS = {}                  # options propres à l'aligneur -> valeur par défaut
+
+    def __init__(self, layer: str = "w", hebrew: str = "unvocalized", greek: str = "accented"):
         self.layer = layer       # couche dont les tokens sont reliés (w, g ou l)
+        self.hebrew = hebrew     # pointed, vocalized, unvocalized (normalize.norm_heb)
+        self.greek = greek       # accented, unaccented (normalize.norm_grc)
         self.stats = Counter()   # compteurs affichés en fin d'expérience (vide si rien à dire)
+
+    @classmethod
+    def check_params(cls, params: dict) -> list:
+        """Problèmes dans les options propres à l'aligneur (vérifiées par
+        Config au démarrage, avant tout calcul) ; liste vide si tout va bien."""
+        return []
+
+    def normalized_tokens(self, hv, gv) -> tuple[list, list]:
+        """Tokens de la couche `layer`, normalisés selon `hebrew` et `greek`."""
+        return ([norm_heb(t, self.hebrew) for t in hv.tokens(self.layer)],
+                [norm_grc(t, self.greek) for t in gv.tokens(self.layer)])
 
     def fit(self, pairs: Iterable[tuple[Verse, Verse]]) -> None:
         """Apprentissage sur des paires de versets (hébreu, grec), appelé une

@@ -1,13 +1,42 @@
 """Configuration d'une expérience : lecture et vérification du YAML.
 
-Toutes les options et leurs valeurs par défaut sont ici, à un seul endroit.
+Format (voir DECISIONS.md « Paquet Python installable… », choix « Config par
+aligneur ») :
+
+    name: glot500_vocalized          # dossier des résultats : results/<name>/
+    passages:
+      - {book: Gen}                  # tout le livre
+      - {book: Judg, lxx_book: JudgA}
+      - {book: Gen, only: Gen.1}     # un chapitre (ou un verset)
+    tokens: w                        # w = mots BHSA, g = mots graphiques, l = lemmes
+    hebrew: vocalized                # pointed | vocalized | unvocalized
+    greek: unaccented                # accented | unaccented
+    aligner:                         # options propres à l'aligneur
+      type: simalign                 # simalign | eflomal | llm (registre : aligners/__init__.py)
+      model: cis-lmu/glot500-base
+      bert_layer: 8
+
+Options communes (tokens, hebrew, greek) : comprises par tous les aligneurs.
+Options de la section `aligner` : déclarées par la classe de l'aligneur
+(Aligner.PARAMS, avec leurs valeurs par défaut) et vérifiées par elle
+(Aligner.check_params).
+
 Une erreur de configuration (clé inconnue, valeur invalide, option manquante)
 arrête le programme dès le démarrage, avant tout calcul.
+
+L'ancien format plat (aligner: simalign, model, layer, llm_model,
+greek_accents, hebrew_vocalization…), celui des résultats déjà produits et de
+tests/reference/, est lu et converti par upgrade_legacy.
 """
 from dataclasses import dataclass, field, fields
 from pathlib import Path
 
 import yaml
+
+from polyglot_align.aligners import ALIGNERS
+from polyglot_align.normalize import GREEK, HEBREW
+
+TOKENS = ("w", "g", "l")
 
 
 @dataclass
@@ -26,58 +55,133 @@ class Passage:
         return self.only or self.lxx_book
 
 
+# --- ancien format plat ------------------------------------------------------
+
+# options plates de l'ancien format -> option de la section `aligner`, par aligneur
+LEGACY_PARAMS = {
+    "simalign": {"model": "model", "layer": "bert_layer", "methods": "methods", "device": "device"},
+    "llm": {"llm_model": "model", "llm_url": "url", "llm_think": "think"},
+    "eflomal": {},
+}
+LEGACY_KEYS = ({k for m in LEGACY_PARAMS.values() for k in m}
+               | {"greek_accents", "hebrew_vocalization", "llm_hebrew"})
+
+
+def is_legacy(raw: dict) -> bool:
+    return isinstance(raw.get("aligner"), str) or bool(LEGACY_KEYS & set(raw))
+
+
+def upgrade_legacy(raw: dict) -> dict:
+    """Ancien format plat -> format actuel, à l'identique de ce que recevait
+    l'aligneur :
+    - SimAlign, eflomal : hebrew_vocalization (défaut faux) -> hebrew
+      vocalized / unvocalized ; greek_accents (défaut vrai) -> greek
+      accented / unaccented ;
+    - LLM : llm_hebrew (défaut pointed) -> hebrew ; greek = accented (le LLM
+      recevait toujours le grec accentué, greek_accents était ignoré) ;
+    - options des autres aligneurs (présentes mais ignorées) : retirées."""
+    raw = dict(raw)
+    kind = raw.pop("aligner", "simalign")
+    accents = raw.pop("greek_accents", True)
+    vocalization = raw.pop("hebrew_vocalization", False)
+    llm_hebrew = raw.pop("llm_hebrew", "pointed")
+    section = {"type": kind}
+    for aligner, mapping in LEGACY_PARAMS.items():
+        for old, new in mapping.items():
+            if old in raw:
+                value = raw.pop(old)
+                if aligner == kind:
+                    section[new] = value
+    if kind == "llm":
+        raw["hebrew"], raw["greek"] = llm_hebrew, "accented"
+    else:
+        raw["hebrew"] = "vocalized" if vocalization else "unvocalized"
+        raw["greek"] = "accented" if accents else "unaccented"
+    raw["aligner"] = section
+    return raw
+
+
+# --- configuration -----------------------------------------------------------
+
+
 @dataclass
 class Config:
     name: str                                     # dossier des résultats : results/<name>/
     passages: list = field(default_factory=list)  # liste de Passage
 
-    # texte donné à l'aligneur
+    # texte donné à l'aligneur (options communes à tous les aligneurs)
     tokens: str = "w"             # w = mots BHSA (בְּ רֵאשִׁית), g = mots graphiques (בְּרֵאשִׁית), l = lemmes
-    greek_accents: bool = True    # False = accents grecs retirés (SimAlign, eflomal)
-    hebrew_vocalization: bool = False  # True = voyelles hébraïques gardées (SimAlign, eflomal)
+    hebrew: str = "unvocalized"   # pointed = tel qu'exporté, vocalized = voyelles sans accents,
+                                  # unvocalized = consonantique
+    greek: str = "accented"       # accented, unaccented = accents et esprits retirés, minuscules
 
-    # aligneur
-    aligner: str = "simalign"     # simalign, llm ou eflomal
-
-    # SimAlign
-    model: str = "bert"           # bert (mBERT), xlmr, ou nom d'un modèle HuggingFace
-    layer: int = 8
-    methods: str = "mai"          # m = mwmf, a = inter (argmax), i = itermax
-    device: str = "cpu"
-
-    # LLM (Ollama)
-    llm_model: str = None
-    llm_url: str = "http://localhost:11434"
-    llm_think: bool = False
-    llm_hebrew: str = "pointed"   # hébreu du prompt : pointed = texte d'origine (voyelles + accents),
-                                  # vocalized = voyelles sans accents, unvocalized = consonantique
+    # aligneur : {"type": ..., options propres complétées par leurs valeurs par défaut}
+    aligner: dict = field(default_factory=lambda: {"type": "simalign"})
 
     @classmethod
     def from_yaml(cls, path) -> "Config":
         raw = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+        return cls.from_dict(raw, source=path)
+
+    @classmethod
+    def from_dict(cls, raw: dict, source="config", check: bool = True) -> "Config":
+        """check=False : sans vérification (lecture de résultats anciens par report.py)."""
+        if is_legacy(raw):
+            raw = upgrade_legacy(raw)
         known = {f.name for f in fields(cls)}
         unknown = set(raw) - known
         if unknown:
-            raise ValueError(f"{path} : option(s) inconnue(s) : {', '.join(sorted(unknown))}")
+            raise ValueError(f"{source} : option(s) inconnue(s) : {', '.join(sorted(unknown))}")
+        raw = dict(raw)
         raw["passages"] = [Passage(**p) for p in raw.get("passages", [])]
+        section = raw.get("aligner", {"type": "simalign"})
+        if not isinstance(section, dict) or "type" not in section:
+            raise ValueError(f"{source} : `aligner` doit être une section avec `type` "
+                             f"({', '.join(ALIGNERS)})")
+        if section["type"] in ALIGNERS:   # valeurs par défaut de l'aligneur
+            section = {"type": section["type"], **ALIGNERS[section["type"]].PARAMS, **section}
+        raw["aligner"] = section
         cfg = cls(**raw)
-        cfg.check(path)
+        if check:
+            cfg.check(source)
         return cfg
 
-    def check(self, path="config") -> None:
+    @property
+    def aligner_type(self) -> str:
+        return self.aligner["type"]
+
+    @property
+    def aligner_params(self) -> dict:
+        """Options propres à l'aligneur, sans `type`."""
+        return {k: v for k, v in self.aligner.items() if k != "type"}
+
+    def check(self, source="config") -> None:
         """Vérifie la cohérence des options."""
         problems = []
         if not self.passages:
             problems.append("aucun passage")
-        if self.tokens not in ("w", "g", "l"):
+        if self.tokens not in TOKENS:
             problems.append(f"tokens = {self.tokens!r} (attendu : w, g ou l)")
-        if self.aligner not in ("simalign", "llm", "eflomal"):
-            problems.append(f"aligner = {self.aligner!r} (attendu : simalign, llm ou eflomal)")
-        if self.aligner == "llm" and not self.llm_model:
-            problems.append("aligner = llm mais llm_model n'est pas donné")
-        if self.llm_hebrew not in ("pointed", "vocalized", "unvocalized"):
-            problems.append(f"llm_hebrew = {self.llm_hebrew!r} (attendu : pointed, vocalized ou unvocalized)")
-        if self.aligner == "simalign" and not set(self.methods) <= set("mai"):
-            problems.append(f"methods = {self.methods!r} (lettres possibles : m, a, i)")
+        if self.hebrew not in HEBREW:
+            problems.append(f"hebrew = {self.hebrew!r} (attendu : {', '.join(HEBREW)})")
+        if self.greek not in GREEK:
+            problems.append(f"greek = {self.greek!r} (attendu : {', '.join(GREEK)})")
+        cls = ALIGNERS.get(self.aligner_type)
+        if cls is None:
+            problems.append(f"aligner type = {self.aligner_type!r} (attendu : {', '.join(ALIGNERS)})")
+        else:
+            unknown = set(self.aligner_params) - set(cls.PARAMS)
+            if unknown:
+                problems.append(f"aligner {self.aligner_type} : option(s) inconnue(s) : "
+                                f"{', '.join(sorted(unknown))} (possibles : {', '.join(cls.PARAMS) or 'aucune'})")
+            else:
+                problems += cls.check_params(self.aligner_params)
         if problems:
-            raise ValueError(f"{path} : " + " ; ".join(problems))
+            raise ValueError(f"{source} : " + " ; ".join(problems))
+
+    def to_dict(self) -> dict:
+        """Options sous forme de dictionnaire (format actuel), passages compris."""
+        return {"name": self.name,
+                "passages": [{k: v for k, v in vars(p).items()} for p in self.passages],
+                "tokens": self.tokens, "hebrew": self.hebrew, "greek": self.greek,
+                "aligner": dict(self.aligner)}

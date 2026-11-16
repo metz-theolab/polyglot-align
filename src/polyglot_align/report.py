@@ -57,6 +57,15 @@ def yaml_data(path: Path) -> dict:
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
+def flat_config(cfg: Config) -> dict:
+    """Config à plat, pour les libellés et les comparaisons :
+    {"passages": …, "tokens": …, "hebrew": …, "greek": …, "aligner.type": …, "aligner.model": …}."""
+    d = cfg.to_dict()
+    d.pop("name")
+    aligner = d.pop("aligner")
+    return d | {f"aligner.{k}": v for k, v in aligner.items()}
+
+
 # --- résultats ---
 
 class ExperimentResult:
@@ -68,11 +77,11 @@ class ExperimentResult:
         if not (self.dir / "scores.json").exists():
             raise FileNotFoundError(f"{self.dir}/scores.json absent : lancer d'abord l'expérience")
         self.scores = json.loads((self.dir / "scores.json").read_text(encoding="utf-8"))
-        raw = yaml_data(self.dir / "config.yaml")
-        # options absentes des anciennes configs : valeurs par défaut de Config
-        self.config = {f: getattr(Config, f) for f in Config.__dataclass_fields__
-                       if hasattr(Config, f)} | raw
-        self._raw_config = raw
+        # copie de la config des résultats, convertie au format actuel si elle est
+        # dans l'ancien format plat, options absentes complétées par leurs défauts
+        self.cfg = Config.from_dict(yaml_data(self.dir / "config.yaml"),
+                                    source=self.dir / "config.yaml", check=False)
+        self.config = flat_config(self.cfg)   # {"tokens": …, "aligner.model": …}
         self.warnings = []
         self._check_config(Path(experiments_root))
 
@@ -82,8 +91,7 @@ class ExperimentResult:
         source = experiments_root / f"{base}.yaml"
         if not source.exists():
             return
-        defaults = {f: getattr(Config, f) for f in Config.__dataclass_fields__ if hasattr(Config, f)}
-        current = defaults | yaml_data(source)
+        current = flat_config(Config.from_dict(yaml_data(source), source=source, check=False))
         diff = sorted(k for k in set(current) | set(self.config)
                       if k != "name" and current.get(k) != self.config.get(k))
         if diff:
@@ -111,27 +119,27 @@ class ExperimentResult:
 
     def family(self) -> str:
         """mBERT, XLM-R, Glot500, eflomal, LLM : famille d'aligneur (couleur des figures)."""
-        aligner = self.config.get("aligner", "simalign")
+        aligner = self.cfg.aligner_type
         if aligner == "llm":
             return "LLM"
         if aligner == "eflomal":
             return "eflomal"
-        model = self.config.get("model", "bert")
+        model = self.cfg.aligner.get("model", "bert")
         return MODEL_LABELS.get(model, model)
 
     def label(self, keys=None) -> str:
-        """Libellé lu dans la config : `keys` donnés (rows_from), sinon description
-        automatique (aligneur, segmentation, vocalisation)."""
-        c = self.config
+        """Libellé lu dans la config : `keys` donnés (rows_from, ex. tokens,
+        hebrew, aligner.model), sinon description automatique (aligneur,
+        segmentation, vocalisation)."""
         if keys:
-            return ", ".join(f"{k} = {c.get(k)}" for k in keys)
-        parts = [self.family() if c.get("aligner") != "llm" else (c.get("llm_model") or "LLM")]
-        parts.append({"w": "mots BHSA", "g": "mots graphiques", "l": "lemmes"}[c.get("tokens", "w")])
-        if c.get("aligner") == "llm":
-            parts.append({"pointed": "texte pointé", "vocalized": "voyelles",
-                          "unvocalized": "non vocalisé"}[c.get("llm_hebrew") or "pointed"])
-        elif c.get("hebrew_vocalization"):
-            parts.append("voyelles")
+            return ", ".join(f"{k} = {self.config.get(k)}" for k in keys)
+        cfg, llm = self.cfg, self.cfg.aligner_type == "llm"
+        parts = [(cfg.aligner.get("model") or "LLM") if llm else self.family()]
+        parts.append({"w": "mots BHSA", "g": "mots graphiques", "l": "lemmes"}[cfg.tokens])
+        hebrew = {"pointed": "texte pointé", "vocalized": "voyelles", "unvocalized": "non vocalisé"}
+        # hébreu non vocalisé : implicite, sauf pour le LLM (dont le défaut ancien était pointé)
+        if llm or cfg.hebrew != "unvocalized":
+            parts.append(hebrew[cfg.hebrew])
         return " · ".join(parts)
 
 

@@ -1,7 +1,9 @@
 """Aligneur par LLM local (Ollama), sur le texte (mots graphiques).
 
-Le modèle reçoit le verset hébreu (pointé) et le verset grec (accentué), mot
-graphique par mot graphique, comme on le lirait, et répond par un tableau :
+Le modèle reçoit le verset hébreu et le verset grec, mot graphique par mot
+graphique, comme on le lirait, normalisés selon les options communes `hebrew`
+et `greek` (par défaut pour cette classe : texte pointé et accentué, tel
+qu'exporté), et répond par un tableau :
 une ligne = un mot (ou groupe) hébreu et sa traduction grecque.
 
 Le tableau est ensuite converti en liens entre tokens (couche w) : chaque
@@ -16,7 +18,7 @@ import urllib.request
 
 from polyglot_align.aligners.base import Aligner
 from polyglot_align.alignment import VerseAlignment
-from polyglot_align.normalize import grc_letters, heb_letters, norm_heb, project
+from polyglot_align.normalize import grc_letters, heb_letters, norm_grc, norm_heb, project
 
 PROMPT = """Align this Hebrew verse with its Greek translation (Septuagint).
 
@@ -54,22 +56,34 @@ def table_to_links(hb_tok: list, gr_tok: list, rows: list) -> list:
 
 
 class OllamaAligner(Aligner):
-    """LLM local (Ollama) : voit le texte d'origine (pointé, accentué), en mots
-    graphiques, et répond par un tableau converti en liens (table_to_links)."""
+    """LLM local (Ollama) : voit le texte en mots graphiques et répond par un
+    tableau converti en liens (table_to_links)."""
 
-    def __init__(self, model: str, url: str = "http://localhost:11434",
-                 think: bool = False, seed: int = 1, layer: str = "w", hebrew: str = "pointed"):
-        super().__init__(layer)
+    name = "llm"
+    PARAMS = {
+        "model": None,           # modèle Ollama, ex. gemma4:12b (obligatoire)
+        "url": "http://localhost:11434",
+        "think": False,          # true = le modèle « réfléchit » avant de répondre (beaucoup plus lent)
+        "seed": 1,
+    }
+
+    @classmethod
+    def check_params(cls, params: dict) -> list:
+        return [] if params["model"] else ["aligner llm : `model` n'est pas donné (ex. gemma4:12b)"]
+
+    def __init__(self, model: str, url: str = "http://localhost:11434", think: bool = False,
+                 seed: int = 1, layer: str = "w", hebrew: str = "pointed", greek: str = "accented"):
+        super().__init__(layer, hebrew, greek)
         self.model, self.url, self.think, self.seed = model, url.rstrip("/"), think, seed
-        self.hebrew = hebrew     # pointed (texte d'origine), vocalized, unvocalized
 
     def hebrew_words(self, hv) -> list:
-        """Mots graphiques hébreux du prompt, selon `hebrew` : texte d'origine, ou
-        normalisé comme pour SimAlign (voyelles gardées ou non, accents retirés)."""
-        words = hv.graphic_words(self.layer)
-        if self.hebrew == "pointed":
-            return words
-        return [norm_heb(w, self.hebrew == "vocalized") for w in words]
+        """Mots graphiques hébreux du prompt, normalisés selon `hebrew`
+        (pointed : texte tel qu'exporté)."""
+        return [norm_heb(w, self.hebrew) for w in hv.graphic_words(self.layer)]
+
+    def greek_words(self, gv) -> list:
+        """Mots graphiques grecs du prompt, normalisés selon `greek`."""
+        return [norm_grc(w, self.greek) for w in gv.graphic_words(self.layer)]
 
     def _ask(self, prompt: str) -> str:
         # think=False : sans cela, les modèles « à réflexion » (gemma4, deepseek-r1…)
@@ -91,7 +105,7 @@ class OllamaAligner(Aligner):
         """Liens sous la méthode "llm" ; le tableau brut est gardé (llm_table)."""
         hb_tok, gr_tok = hv.tokens(self.layer), gv.tokens(self.layer)
         prompt = PROMPT.format(hb=" ".join(self.hebrew_words(hv)),
-                               gr=" ".join(gv.graphic_words(self.layer)))
+                               gr=" ".join(self.greek_words(gv)))
         for _ in range(2):  # un nouvel essai si la réponse n'est pas du JSON valide
             try:
                 rows = json.loads(self._ask(prompt))["rows"]

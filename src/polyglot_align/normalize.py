@@ -22,19 +22,34 @@ HEB_MARKS = re.compile(r"[֑-ׇ]")  # voyelles, accents, points shin/sin, ponctu
 HEB_NON_VOWELS = re.compile(r"[֑-ֽ֯־׀׃ׅׄ׆]")
 
 
-def norm_heb(token: str, vocalization: bool = False) -> str:
-    """Hébreu. vocalization=False : texte consonantique (mBERT a appris l'hébreu
-    moderne, non pointé) ; True : voyelles gardées, cantillation retirée.
+# Valeurs des options `hebrew` et `greek` de la config, comprises par tous les aligneurs
+HEBREW = ("pointed", "vocalized", "unvocalized")
+GREEK = ("accented", "unaccented")
+
+
+def norm_heb(token: str, hebrew: str = "unvocalized") -> str:
+    """Hébreu, selon l'option `hebrew` :
+    pointed     : texte tel qu'exporté (voyelles, cantillation, ponctuation),
+                  sans normalisation Unicode (BHSA n'est pas en NFC) ;
+    vocalized   : voyelles gardées, cantillation retirée (NFC) ;
+    unvocalized : texte consonantique (NFC ; mBERT a appris l'hébreu moderne,
+                  non pointé).
     Nom propre composé (בית_אל) : l'espace le garde comme un seul mot pour SimAlign."""
-    marks = HEB_NON_VOWELS if vocalization else HEB_MARKS
-    token = marks.sub("", unicodedata.normalize("NFC", token))
+    if hebrew not in HEBREW:
+        raise ValueError(f"hebrew = {hebrew!r} (attendu : {', '.join(HEBREW)})")
+    if hebrew != "pointed":
+        marks = HEB_NON_VOWELS if hebrew == "vocalized" else HEB_MARKS
+        token = marks.sub("", unicodedata.normalize("NFC", token))
     return token.replace("_", " ")
 
 
-def norm_grc(token: str, accents: bool = True) -> str:
-    """Grec : forme canonique NFC, accents conservés (mBERT est sensible aux accents).
-    accents=False : accents et esprits retirés, minuscules (ἀρχῇ -> αρχη)."""
-    if accents:
+def norm_grc(token: str, greek: str = "accented") -> str:
+    """Grec, selon l'option `greek` :
+    accented   : forme canonique NFC, accents conservés (mBERT est sensible aux accents) ;
+    unaccented : accents et esprits retirés, minuscules (ἀρχῇ -> αρχη)."""
+    if greek not in GREEK:
+        raise ValueError(f"greek = {greek!r} (attendu : {', '.join(GREEK)})")
+    if greek == "accented":
         return unicodedata.normalize("NFC", token)
     token = unicodedata.normalize("NFD", token.lower())
     return "".join(c for c in token if not unicodedata.combining(c))

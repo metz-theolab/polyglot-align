@@ -13,7 +13,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-from polyglot_align.config import Config, Passage
+from polyglot_align.config import Config
 from polyglot_align.store import DataStore
 from polyglot_align.aligners import make_aligner
 from polyglot_align.aligners.eflomal import EflomalAligner, grow_diag_final_and
@@ -59,7 +59,7 @@ class TestEflomalAligner(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         sys.modules["eflomal"] = types.SimpleNamespace(Aligner=FakeEflomal)
-        cls.aligner = EflomalAligner(layer="w", greek_accents=False)
+        cls.aligner = EflomalAligner(layer="w", greek="unaccented")
         store = DataStore(DATA)
         cls.verse_map = store.verse_map
         cls.aligner.fit(store.table_pairs())
@@ -93,11 +93,11 @@ class TestEflomalAligner(unittest.TestCase):
         self.assertNotIn((0, 1), res.links["gdfa"])   # 0 et 1 déjà alignés
 
     def test_make_aligner(self):
-        cfg = Config(name="t", passages=[Passage("Gen")], aligner="eflomal", tokens="l")
-        cfg.check()
+        cfg = Config.from_dict({"name": "t", "passages": [{"book": "Gen"}], "tokens": "l",
+                                "hebrew": "pointed", "aligner": {"type": "eflomal"}})
         a = make_aligner(cfg)
         self.assertIsInstance(a, EflomalAligner)
-        self.assertEqual(a.layer, "l")
+        self.assertEqual((a.layer, a.hebrew), ("l", "pointed"))
 
 
 if __name__ == "__main__":

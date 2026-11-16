@@ -62,7 +62,7 @@ class TestReport(unittest.TestCase):
         (self.root / "experiments" / "e.yaml").write_text(
             yaml.safe_dump({"name": "e", "aligner": "eflomal", "hebrew_vocalization": False}))
         r = ExperimentResult("e", *self.roots)
-        self.assertTrue(any("hebrew_vocalization" in w for w in r.warnings))
+        self.assertTrue(any("hebrew" in w for w in r.warnings))   # ancien format, converti
         self.assertIn("voyelles", r.label())   # libellé tiré des résultats
 
     def test_versets_differents_signales(self):
