@@ -49,6 +49,8 @@ class Config:
     llm_model: str = None
     llm_url: str = "http://localhost:11434"
     llm_think: bool = False
+    llm_hebrew: str = "pointed"   # hébreu du prompt : pointed = texte d'origine (voyelles + accents),
+                                  # vocalized = voyelles sans accents, unvocalized = consonantique
 
     @classmethod
     def from_yaml(cls, path) -> "Config":
@@ -73,6 +75,8 @@ class Config:
             problems.append(f"aligner = {self.aligner!r} (attendu : simalign, llm ou eflomal)")
         if self.aligner == "llm" and not self.llm_model:
             problems.append("aligner = llm mais llm_model n'est pas donné")
+        if self.llm_hebrew not in ("pointed", "vocalized", "unvocalized"):
+            problems.append(f"llm_hebrew = {self.llm_hebrew!r} (attendu : pointed, vocalized ou unvocalized)")
         if self.aligner == "simalign" and not set(self.methods) <= set("mai"):
             problems.append(f"methods = {self.methods!r} (lettres possibles : m, a, i)")
         if problems:

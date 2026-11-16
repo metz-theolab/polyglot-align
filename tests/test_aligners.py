@@ -70,6 +70,13 @@ class TestOllamaAligner(unittest.TestCase):
         a.align(self.hv, self.gv)
         self.assertIn(" ".join(self.hv.graphic_words()), a.prompts[0])
 
+    def test_prompt_non_vocalise(self):
+        a = FakeOllama(json.dumps(TABLE_GN_1_1))
+        a.hebrew = "unvocalized"
+        res = a.align(self.hv, self.gv)
+        self.assertIn("בראשית ברא אלהים", a.prompts[0])
+        self.assertTrue({(0, 0), (0, 1), (1, 0), (1, 1)} <= set(res.links["llm"]))
+
     def test_reponse_invalide(self):
         a = FakeOllama("ceci n'est pas du JSON")
         res = a.align(self.hv, self.gv)

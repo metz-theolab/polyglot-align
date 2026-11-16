@@ -16,6 +16,7 @@ import urllib.request
 
 from aligners import Aligner, VerseAlignment
 from gold import grc_letters, heb_letters, project
+from normalize import norm_heb
 
 PROMPT = """Align this Hebrew verse with its Greek translation (Septuagint).
 
@@ -57,9 +58,18 @@ class OllamaAligner(Aligner):
     graphiques, et répond par un tableau converti en liens (table_to_links)."""
 
     def __init__(self, model: str, url: str = "http://localhost:11434",
-                 think: bool = False, seed: int = 1, layer: str = "w"):
+                 think: bool = False, seed: int = 1, layer: str = "w", hebrew: str = "pointed"):
         super().__init__(layer)
         self.model, self.url, self.think, self.seed = model, url.rstrip("/"), think, seed
+        self.hebrew = hebrew     # pointed (texte d'origine), vocalized, unvocalized
+
+    def hebrew_words(self, hv) -> list:
+        """Mots graphiques hébreux du prompt, selon `hebrew` : texte d'origine, ou
+        normalisé comme pour SimAlign (voyelles gardées ou non, accents retirés)."""
+        words = hv.graphic_words(self.layer)
+        if self.hebrew == "pointed":
+            return words
+        return [norm_heb(w, self.hebrew == "vocalized") for w in words]
 
     def _ask(self, prompt: str) -> str:
         # think=False : sans cela, les modèles « à réflexion » (gemma4, deepseek-r1…)
@@ -80,7 +90,7 @@ class OllamaAligner(Aligner):
     def align(self, hv, gv) -> VerseAlignment:
         """Liens sous la méthode "llm" ; le tableau brut est gardé (llm_table)."""
         hb_tok, gr_tok = hv.tokens(self.layer), gv.tokens(self.layer)
-        prompt = PROMPT.format(hb=" ".join(hv.graphic_words(self.layer)),
+        prompt = PROMPT.format(hb=" ".join(self.hebrew_words(hv)),
                                gr=" ".join(gv.graphic_words(self.layer)))
         for _ in range(2):  # un nouvel essai si la réponse n'est pas du JSON valide
             try:

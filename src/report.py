@@ -128,7 +128,10 @@ class ExperimentResult:
             return ", ".join(f"{k} = {c.get(k)}" for k in keys)
         parts = [self.family() if c.get("aligner") != "llm" else (c.get("llm_model") or "LLM")]
         parts.append({"w": "mots BHSA", "g": "mots graphiques", "l": "lemmes"}[c.get("tokens", "w")])
-        if c.get("hebrew_vocalization"):
+        if c.get("aligner") == "llm":
+            parts.append({"pointed": "texte pointé", "vocalized": "voyelles",
+                          "unvocalized": "non vocalisé"}[c.get("llm_hebrew") or "pointed"])
+        elif c.get("hebrew_vocalization"):
             parts.append("voyelles")
         return " · ".join(parts)
 

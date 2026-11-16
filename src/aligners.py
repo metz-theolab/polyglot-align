@@ -61,7 +61,8 @@ def make_aligner(cfg) -> Aligner:
     """Choisit et construit l'aligneur décrit par la configuration (config.Config)."""
     if cfg.aligner == "llm":
         from llm_align import OllamaAligner
-        return OllamaAligner(cfg.llm_model, cfg.llm_url, think=cfg.llm_think, layer=cfg.tokens)
+        return OllamaAligner(cfg.llm_model, cfg.llm_url, think=cfg.llm_think, layer=cfg.tokens,
+                             hebrew=cfg.llm_hebrew)
     if cfg.aligner == "eflomal":
         from eflomal_align import EflomalAligner
         return EflomalAligner(layer=cfg.tokens, greek_accents=cfg.greek_accents,
