@@ -31,6 +31,10 @@ class DataStore:
             self._corpora[side, book] = Corpus(self.root / side / f"{book}.json")
         return self._corpora[side, book]
 
+    def books(self, side: str) -> list:
+        """Livres exportés d'un côté ("he" ou "lxx"), triés par nom."""
+        return sorted(p.stem for p in (self.root / side).glob("*.json"))
+
     def gold(self, lxx_book: str) -> Gold:
         """Gold d'un livre grec : store.gold("Gen"), store.gold("JudgA")."""
         if lxx_book not in self._golds:
