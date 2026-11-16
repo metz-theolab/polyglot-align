@@ -7,9 +7,10 @@ import sys
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "data"))
 from polyglot_align.store import DataStore
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "data"))       # script de data/, pas dans le paquet
 from make_verse_map import verse_groups  # noqa: E402
 
 DATA = ROOT / "data"

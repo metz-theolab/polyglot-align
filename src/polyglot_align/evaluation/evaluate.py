@@ -193,4 +193,4 @@ class Evaluator:
                     linked = {j for _, j in links}
                     orphans = [gr[j] for j in range(len(gr)) if j not in linked]
                     if orphans:
-                        w.writerow([rec.ref, m, "", "", "", "", "", "", "grec sans lien : " + " ".join(orphans)])
+                        w.writerow([rec.ref, m] + [""] * 6 + ["grec sans lien : " + " ".join(orphans)])

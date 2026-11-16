@@ -11,10 +11,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.aligners import Aligner, VerseAlignment
 from polyglot_align.alignment import read_jsonl
 from polyglot_align.experiment import Experiment
+
+ROOT = Path(__file__).resolve().parent.parent
 
 REFERENCE = ROOT / "tests" / "reference" / "mbert_formes_sans_accents"
 

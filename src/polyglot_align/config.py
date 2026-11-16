@@ -110,10 +110,12 @@ class Config:
     passages: list = field(default_factory=list)  # liste de Passage
 
     # texte donné à l'aligneur (options communes à tous les aligneurs)
-    tokens: str = "w"             # w = mots BHSA (בְּ רֵאשִׁית), g = mots graphiques (בְּרֵאשִׁית), l = lemmes
-    hebrew: str = "unvocalized"   # pointed = tel qu'exporté, vocalized = voyelles sans accents,
-                                  # unvocalized = consonantique
-    greek: str = "accented"       # accented, unaccented = accents et esprits retirés, minuscules
+    # tokens : w = mots BHSA (בְּ רֵאשִׁית), g = mots graphiques (בְּרֵאשִׁית), l = lemmes
+    # hebrew : pointed = tel qu'exporté, vocalized = voyelles sans accents, unvocalized = consonantique
+    # greek : accented, unaccented = accents et esprits retirés, minuscules
+    tokens: str = "w"
+    hebrew: str = "unvocalized"
+    greek: str = "accented"
 
     # aligneur : {"type": ..., options propres complétées par leurs valeurs par défaut}
     aligner: dict = field(default_factory=lambda: {"type": "simalign"})
@@ -172,8 +174,9 @@ class Config:
         else:
             unknown = set(self.aligner_params) - set(cls.PARAMS)
             if unknown:
+                possible = ", ".join(cls.PARAMS) or "aucune"
                 problems.append(f"aligner {self.aligner_type} : option(s) inconnue(s) : "
-                                f"{', '.join(sorted(unknown))} (possibles : {', '.join(cls.PARAMS) or 'aucune'})")
+                                f"{', '.join(sorted(unknown))} (possibles : {possible})")
             else:
                 problems += cls.check_params(self.aligner_params)
         if problems:

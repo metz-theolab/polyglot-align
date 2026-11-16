@@ -10,8 +10,9 @@ import unicodedata
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.evaluation.gold_clean import BOOKS, clean_verse
+
+ROOT = Path(__file__).resolve().parent.parent
 
 RAW = {}
 for path in sorted((ROOT / "data" / "gold").glob("*.json")):

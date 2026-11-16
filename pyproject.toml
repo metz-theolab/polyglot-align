@@ -7,20 +7,25 @@ name = "polyglot-align"
 version = "0.1.0"
 description = "Alignement mot à mot du texte hébreu et de la Septante, évalué contre le gold CATSS"
 requires-python = ">=3.10"
+# Versions minimales = versions avec lesquelles les résultats de results/ ont
+# été produits (2026-11) ; les versions exactes d'une exécution sont dans
+# results/<nom>/perf.json (machine.versions).
 dependencies = [
-  "pyyaml",
+  "pyyaml>=6.0",
 ]
 
 [project.optional-dependencies]
 # Aligneur SimAlign (installe aussi torch et transformers) ; sentencepiece : tokeniseur de Glot500
-simalign = ["simalign", "sentencepiece"]
-# Aligneur statistique (aligner: eflomal)
-eflomal = ["eflomal"]
+simalign = ["simalign>=0.4", "sentencepiece>=0.2"]
+# Aligneur statistique (aligner: {type: eflomal})
+eflomal = ["eflomal>=2.0"]
 # Figures du rapport (polyglot-align report)
-report = ["matplotlib"]
+report = ["matplotlib>=3.11"]
 # Export des textes (data/export_bhsa_tf.py, data/export_lxx_tf.py)
-export = ["text-fabric[github]"]
-all = ["polyglot-align[simalign,eflomal,report,export]"]
+export = ["text-fabric[github]>=13.1"]
+# Développement : style du code (flake8, configuration dans .flake8)
+dev = ["flake8>=7.5"]
+all = ["polyglot-align[simalign,eflomal,report,export,dev]"]
 # Aligneur LLM : aucun paquet Python (appel HTTP à Ollama), Ollama installé à part
 
 [project.scripts]

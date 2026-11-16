@@ -6,10 +6,11 @@ Usage (depuis la racine du projet) : python -m unittest tests/test_evaluate.py -
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.evaluation.evaluate import Evaluator, measures
 from polyglot_align.evaluation.gold import Gold
 from polyglot_align.store import DataStore
+
+ROOT = Path(__file__).resolve().parent.parent
 
 DATA = ROOT / "data"
 STORE = DataStore(DATA)

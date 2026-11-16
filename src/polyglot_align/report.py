@@ -140,7 +140,8 @@ class ResultGroup:
 
     def __init__(self, name: str, results_root="results", experiments_root="experiments"):
         root = Path(results_root)
-        runs = sorted((p.name for p in root.glob(f"{name}_run*") if re.fullmatch(rf"{re.escape(name)}_run\d+", p.name)),
+        pattern = rf"{re.escape(name)}_run\d+"
+        runs = sorted((p.name for p in root.glob(f"{name}_run*") if re.fullmatch(pattern, p.name)),
                       key=lambda n: int(n.rsplit("run", 1)[1]))
         names = runs or [name]
         self.name = name
@@ -199,7 +200,8 @@ class Table:
         self.columns = spec.get("columns", DEFAULT_COLUMNS)
         unknown = set(self.columns) - set(COLUMN_LABELS)
         if unknown:
-            raise ValueError(f"tableau « {self.title} » : colonne(s) inconnue(s) {', '.join(sorted(unknown))}")
+            raise ValueError(f"tableau « {self.title} » : "
+                             f"colonne(s) inconnue(s) {', '.join(sorted(unknown))}")
         self.roots = (results_root, experiments_root)
         self.rows = []          # (libellé, {colonne: (moyenne, écart)}, nombre de versets)
         self.warnings = []
@@ -269,7 +271,8 @@ class Table:
         lines = [f"**{self.title}**", "", "| " + " | ".join(self.header()) + " |",
                  "|" + "---|" + "---:|" * (len(self.columns) + 1)]
         for label, vals, n in self.rows:
-            lines.append("| " + " | ".join([label] + [self.fmt(*vals[c]) for c in self.columns] + [str(n)]) + " |")
+            cells = [label] + [self.fmt(*vals[c]) for c in self.columns] + [str(n)]
+            lines.append("| " + " | ".join(cells) + " |")
         if self.multi_run:
             lines += ["", "Moyenne ± écart-type sur les exécutions répétées."]
         path.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -456,4 +459,3 @@ class Report:
             getattr(figs, kind)(spec)
             log.info("figure : %s/figures/%s.(pdf|png)", self.out, spec.get("file", kind))
         self.warnings += figs.warnings
-

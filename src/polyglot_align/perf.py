@@ -20,7 +20,6 @@ Limites :
 - une durée n'est comparable qu'entre expériences lancées sur la même machine
   (décrite dans `machine`).
 """
-import json
 import os
 import platform
 import resource

@@ -325,10 +325,9 @@ def main():
         old.unlink()
     for book, chapters in books.items():
         (OUT / f"{book}.json").write_text(json.dumps({book: chapters}, ensure_ascii=False, indent=1),
-                                         encoding="utf-8")
+                                          encoding="utf-8")
     (OUT / "_rapport.json").write_text(json.dumps(dict(report.most_common()), ensure_ascii=False, indent=1),
                                        encoding="utf-8")
     log.info("%d livres écrits dans %s", len(books), OUT)
     for k, n in report.most_common():
         log.info("%8d  %s", n, k)
-

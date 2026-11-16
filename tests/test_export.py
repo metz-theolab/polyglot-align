@@ -80,7 +80,8 @@ class TestBHSA(FormatChecks, unittest.TestCase):
 
     def test_gen_1_1(self):
         d = self.books["Gen"]["1"]["1"]
-        self.assertEqual(nfc(d["w"]), nfc("בְּ רֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַ שָּׁמַ֖יִם וְ אֵ֥ת הָ אָֽרֶץ"))
+        gn_1_1 = "בְּ רֵאשִׁ֖ית בָּרָ֣א אֱלֹהִ֑ים אֵ֥ת הַ שָּׁמַ֖יִם וְ אֵ֥ת הָ אָֽרֶץ"
+        self.assertEqual(nfc(d["w"]), nfc(gn_1_1))
         self.assertEqual(nfc(d["l"]).split(" ")[:4], [nfc(x) for x in ["ב", "ראשׁית", "ברא", "אלהים"]])
         self.assertEqual(d["g"], "0 0 1 2 3 4 4 5 5 6 6")
 

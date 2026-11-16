@@ -10,11 +10,12 @@ import json
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.aligners import Aligner, VerseAlignment, make_aligner
 from polyglot_align.config import Config
 from polyglot_align.corpus import Corpus
 from polyglot_align.aligners.llm import OllamaAligner
+
+ROOT = Path(__file__).resolve().parent.parent
 
 TABLE_GN_1_1 = {"rows": [
     {"hebrew": "בְּרֵאשִׁ֖ית", "greek": "ἐν ἀρχῇ"},

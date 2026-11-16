@@ -1,0 +1,8 @@
+# flake8 ne lit pas pyproject.toml : configuration ici.
+# Lancer (depuis la racine du projet) : flake8
+[flake8]
+max-line-length = 110
+# E731 : lambda assignée à un nom (pct = lambda v: …) : style du projet pour
+# les petites fonctions locales de formatage
+extend-ignore = E731
+exclude = venv, .git, __pycache__, results, reports, presentation

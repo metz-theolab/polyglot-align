@@ -9,8 +9,9 @@ from pathlib import Path
 
 import yaml
 
-ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.report import ExperimentResult, ResultGroup, Table
+
+ROOT = Path(__file__).resolve().parent.parent
 
 
 def counts(justes, faux, trouves, evaluables, versets):

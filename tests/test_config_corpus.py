@@ -7,10 +7,11 @@ import unicodedata
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.config import Config, Passage
 from polyglot_align.corpus import Corpus, ref_key
 from polyglot_align.store import DataStore
+
+ROOT = Path(__file__).resolve().parent.parent
 
 nfc = lambda s: unicodedata.normalize("NFC", s)
 

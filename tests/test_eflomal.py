@@ -12,11 +12,12 @@ import types
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.config import Config
 from polyglot_align.store import DataStore
 from polyglot_align.aligners import make_aligner
 from polyglot_align.aligners.eflomal import EflomalAligner, grow_diag_final_and
+
+ROOT = Path(__file__).resolve().parent.parent
 
 DATA = ROOT / "data"
 

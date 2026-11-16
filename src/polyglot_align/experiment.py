@@ -163,7 +163,8 @@ class Experiment:
         """Tableau des mesures, dans le journal."""
         log.info(f"\nRésultats dans {self.out}/")
         pct = lambda v: f"{v:.1%}" if v is not None else "—"
-        log.info(f"{'passage':<10} {'méthode':<8} {'préc.':>6} {'rappel':>7} {'F1':>6} {'non-al.':>8} {'AER':>6}")
+        log.info(f"{'passage':<10} {'méthode':<8} {'préc.':>6} {'rappel':>7} {'F1':>6} "
+                 f"{'non-al.':>8} {'AER':>6}")
         for label, m, x in self.rows():
             log.info(f"{label:<10} {m:<8} {pct(x['precision']):>6} {pct(x['rappel_blocs']):>7} "
                      f"{pct(x['f1']):>6} {pct(x['nonalign_exactitude']):>8} {pct(x['aer']):>6}")

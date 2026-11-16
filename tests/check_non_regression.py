@@ -26,11 +26,12 @@ from pathlib import Path
 
 import yaml
 
-ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.alignment import format_links, read_jsonl
 from polyglot_align.evaluation.evaluate import Evaluator
 from polyglot_align.store import DataStore
 from polyglot_align.aligners.llm import table_to_links
+
+ROOT = Path(__file__).resolve().parent.parent
 
 REFERENCE = ROOT / "tests" / "reference"
 RESULTS = ROOT / "results"
