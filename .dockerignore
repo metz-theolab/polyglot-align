@@ -1,0 +1,21 @@
+# Contexte de construction des images (docker compose build) : seulement ce
+# dont l'app a besoin (voir decisions-app.md, « Docker »).
+.git
+venv
+**/__pycache__
+**/*.egg-info
+**/node_modules
+app/frontend/dist
+results
+reports
+presentation
+logs
+scripts
+experiments
+tests
+data/gold
+data/gold_clean
+data/lxx/non_aligned
+data/*.py
+*.md
+!app/**/README.md

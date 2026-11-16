@@ -216,3 +216,51 @@ modèles dans Chrome, Gn 1:1 : eflomal 7,2 s ; SimAlign (Glot500) 1,1 s
 הַ·שָּׁמַיִם ↔ οὐρανὸν γῆν) ; LLM 7,7 s (blocs comme CATSS : אֱלֹהִים ↔ ὁ θεὸς,
 הַ·שָּׁמַיִם ↔ τὸν οὐρανὸν, הָ·אָרֶץ ↔ καὶ τὴν γῆν ; אֵת et וְ·אֵת sans lien).
 Chargement au démarrage : eflomal prêt en 4,6 s, puis Glot500, puis LLM.
+
+## 2026-11-16 — Docker : `docker compose up` lance le back et le front
+
+**Statut : décidé** (branche `feat/app-aligners`)
+
+**Services (`docker-compose.yml`, à la racine du dépôt) :**
+- `backend` : image Python 3.13 (slim), bibliothèque `polyglot-align`
+  (extras `simalign`, `eflomal`) et `polyglot-api` installées ; torch en
+  version CPU (sans CUDA : image bien plus légère) ; eflomal compilé dans
+  l'image (gcc et OpenMP : pas de contournement comme sur Mac). Port 8000
+  non publié : le front est la seule entrée.
+- `frontend` : construit avec Node (Vite), servi par nginx, qui renvoie
+  `/api` au backend (même origine : pas de CORS). Port publié : 8080
+  (`PORT`).
+- `ollama` : facultatif (profil `ollama`), pour un serveur Linux, avec GPU de
+  préférence. Par défaut, le backend utilise l'Ollama de la machine hôte
+  (`http://host.docker.internal:11434`) : sur Mac, Docker n'a pas accès au
+  GPU Apple, et gemma4:12b dans un conteneur tournerait sur CPU (plusieurs
+  minutes par verset).
+
+**Données.** L'image du backend contient seulement ce dont l'app a besoin :
+`data/he`, `data/lxx` (sans `non_aligned`), `data/verse_map.json` (environ
+40 Mo). Ni le gold CATSS (`data/gold`, `data/gold_clean` : redistribution
+limitée), ni les résultats.
+
+**Modèles.** dictabert-seg et Glot500 (environ 2 Go) sont téléchargés au
+premier démarrage dans un volume (`models`, `HF_HOME`), pas dans l'image :
+image plus petite, téléchargement une seule fois. Le contrôle de santé
+(`/api/v1/health`) laisse jusqu'à 10 min au premier démarrage.
+
+**Réglages** (fichier `.env` facultatif à la racine) : `PORT` (8080),
+`OLLAMA_URL`, `LLM_MODEL`, `ALGORITHMS`.
+
+**Écarté pour l'instant :** image du backend en deux étapes (compilation à
+part, sans gcc dans l'image finale) : quelques centaines de Mo gagnés, à
+voir si l'app est déployée.
+
+**Fait (2026-11-16).** `docker-compose.yml`, `app/backend/Dockerfile`,
+`app/frontend/Dockerfile` et `nginx.conf.template`, `.dockerignore`.
+Construction : 1 min 18 (images : backend 1,75 Go, front 50 Mo). Premier
+démarrage : backend « healthy » en 71 s (téléchargement de dictabert-seg dans
+le volume) ; démarrages suivants : 10 s. Vérifié dans Chrome sur
+http://localhost:8080, Gn 1:1 : eflomal 8,2 s, SimAlign 1,1 s, LLM 8,8 s
+(Ollama de la machine joint par `host.docker.internal`), aucune erreur.
+*Corrigé en route* : Glot500 ne se chargeait pas dans l'image (transformers
+5.23 y demande `tiktoken` pour lire son tokeniseur ; le venv de développement
+l'avait par hasard) : `tiktoken` et `protobuf` ajoutés au groupe `[simalign]`
+de `pyproject.toml`.

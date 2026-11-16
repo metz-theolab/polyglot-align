@@ -13,12 +13,6 @@ Le paquet propose une interface commune à plusieurs méthodes d'alignement :
 * **LLM local** : un modèle servi par [Ollama](https://ollama.com) (ex.
   Gemma 4 12B) aligne le verset sous forme de tableau.
 
-Le projet prolonge Robert-Hayek, D'Amico et Rey, *A Deep Learning-Based Word
-Alignment for the comparison of the Greek and Hebrew Bible* (CHR 2024) : il
-reproduit l'approche SimAlign + mBERT, la compare à d'autres modèles et
-méthodes, et l'évalue sur tout le gold CATSS (22 489 paires de versets) au lieu
-de trois chapitres alignés à la main.
-
 ---
 
 ## 🛠️ Installation
@@ -28,9 +22,9 @@ Python 3.10 ou plus récent (testé avec 3.13). Depuis la racine du dépôt :
 ```bash
 python -m venv venv
 source venv/bin/activate
-pip install -e '.[all]'
+pip install -e . # '.[all]'
 ```
-
+<!-- 
 `[all]` installe tout. On peut n'installer que ce qui sert :
 
 | Extra | Contenu |
@@ -42,7 +36,7 @@ pip install -e '.[all]'
 | `dev` | flake8 |
 
 Exemple : `pip install -e '.[eflomal,report]'`. Les versions minimales sont
-dans `pyproject.toml`.
+dans `pyproject.toml`. -->
 
 Les modèles Hugging Face (mBERT, XLM-R, Glot500) sont téléchargés au premier
 lancement. Pour l'aligneur LLM : installer [Ollama](https://ollama.com) puis
@@ -85,22 +79,22 @@ passages:                      # livre hébreu ; livre grec s'il diffère ; chap
 
 # texte donné à l'aligneur (options comprises par tous les aligneurs)
 tokens: w            # w = mots BHSA (בְּ רֵאשִׁית), g = mots graphiques (בְּרֵאשִׁית), l = lemmes
-hebrew: vocalized    # pointed = tel qu'exporté, vocalized = voyelles, unvocalized = consonantique
+hebrew: vocalized    # pointed (voyelles and teamim), vocalized, unvocalized
 greek: unaccented    # accented, unaccented = accents et esprits retirés, minuscules
 
 aligner:             # méthode et ses options propres
-  type: simalign     # simalign | eflomal | llm
-  model: cis-lmu/glot500-base   # bert (mBERT), xlmr, ou nom d'un modèle Hugging Face
-  bert_layer: 8      # couche du modèle
-  methods: mai       # m = mwmf, a = inter (argmax), i = itermax
-  device: cpu        # cpu, mps (GPU Apple), cuda
+  type: eflomal      # aucune option propre ; symétrisations inter et gdfa
 ```
 
 Options des autres aligneurs :
 
 ```yaml
-aligner:
-  type: eflomal      # aucune option propre ; symétrisations inter et gdfa
+aligner:             # méthode et ses options propres
+  type: simalign     # simalign | eflomal | llm
+  model: cis-lmu/glot500-base   # bert (mBERT), xlmr, ou nom d'un modèle Hugging Face
+  bert_layer: 8      # couche du modèle
+  methods: mai       # m = mwmf, a = inter (argmax), i = itermax
+  device: cpu  
 
 aligner:
   type: llm
@@ -111,23 +105,11 @@ aligner:
   num_predict: 4096  # tokens générés au plus par verset (coupe les boucles de répétition)
 ```
 
-Une réponse du LLM coupée par `num_predict` garde ses lignes complètes ; un
-délai dépassé laisse le verset sans réponse ; un serveur Ollama injoignable
-arrête l'expérience, qui reprendra au même endroit une fois le serveur
-démarré.
-
-Une seule commande aligne, évalue et écrit les résultats :
+Une seule commande aligne, évalue selon le Gold Standard (CATSS), teste les performances et écrit les résultats :
 
 ```bash
 polyglot-align run experiments/glot500_vocalized.yaml
 ```
-
-* La configuration est vérifiée au démarrage : une option inconnue ou une
-  valeur invalide arrête le programme avant tout calcul.
-* Une expérience interrompue **reprend** où elle s'était arrêtée quand on la
-  relance (les versets déjà alignés sont sautés).
-* Un dossier `results/<name>/` produit par une **autre** configuration n'est
-  pas écrasé : changer `name`, ou repartir de zéro avec `--force`.
 
 Résultats dans `results/<name>/` :
 
@@ -135,21 +117,18 @@ Résultats dans `results/<name>/` :
 |---|---|
 | `config.yaml` | copie de la configuration utilisée |
 | `<passage>.jsonl` | alignements, une ligne par verset |
-| `<passage>.csv` | relecture : un mot hébreu par ligne, mots grecs alignés, bloc CATSS, verdict (`juste`, `faux`, `non aligné`…) ; s'ouvre dans Excel ou Numbers |
+| `<passage>.csv` | relecture : alignement et comparaison avec CATSS et verdict (`juste`, `faux`, `non aligné`…) ; s'ouvre dans Excel ou Numbers |
 | `scores.csv`, `scores.json` | mesures par passage et au total (comptes bruts dans le JSON) |
 | `perf.json` | durée et temps CPU par phase, coût en s / 1 000 versets, débit, mémoire maximale, machine et versions des bibliothèques |
 
 Autres commandes :
 
 ```bash
-polyglot-align show results/glot500_vocalized/Gen.jsonl Gen.1.1 inter   # relire un verset
+polyglot-align show results/glot500_vocalized/Gen.jsonl Gen.1.1 inter    # relire un verset
 polyglot-align report reports/article.yaml                               # tableaux et figures
-polyglot-align clean-gold                                                # data/gold -> data/gold_clean
+polyglot-align clean-gold                                                # data/gold -> data/gold_clean, compose le Gold en vue du benchmarking
 polyglot-align --help
 ```
-
-`python -m polyglot_align …` fait la même chose sans passer par la commande
-installée.
 
 ### 2️⃣ API Python
 
@@ -183,13 +162,11 @@ scores = Experiment.from_yaml("experiments/eflomal_unvocalized.yaml").run()
 print(scores["TOTAL"]["methodes"]["inter"]["mesures"])
 ```
 
-La bibliothèque n'affiche rien elle-même : elle écrit dans le journal
-`logging` (`polyglot_align`), que la ligne de commande affiche.
+Suivi de l'execution du code dans `logs/`
 
 ### 3️⃣ Reproduire les résultats
 
-Les expériences sur toute la Bible (39 livres hébreux, Abdias exclu faute de
-paires dans la table ; hébreu vocalisé ou non) :
+Les expériences sur toute la Bible (39 livres hébreux ; hébreu vocalisé ou non) :
 
 ```bash
 for e in eflomal glot500 mbert xlmr; do
@@ -200,13 +177,30 @@ done
 polyglot-align report reports/article.yaml   # -> reports/article/
 ```
 
-Durées mesurées sur un Mac (CPU, `perf.json`, apprentissage + alignement) :
+*** Durées mesurées sur un Mac (CPU, `perf.json`, apprentissage + alignement) :
 eflomal, quelques secondes (plus le chargement des données) ; SimAlign, de 26
 min (Glot500 non vocalisé) à 3 h 16 (mBERT vocalisé) par expérience. `reports/article.yaml` choisit les expériences, méthodes et
 colonnes de chaque tableau et les figures ; le rapport lit seulement les
 `results/<nom>/` existants et produit les tableaux en `.tex` (booktabs), `.md`
 et `.csv`, et les figures en `.pdf` et `.png`. Les exécutions répétées
 `<nom>_run1`, `<nom>_run2`… sont regroupées (moyenne ± écart-type).
+
+### 4️⃣ App de test (API REST et interface web)
+
+Une interface web aligne un texte hébreu et un texte grec saisis, avec trois
+algorithmes au choix (eflomal, SimAlign, LLM), et affiche l'alignement en
+interlinéaire coloré. Tout se lance avec Docker :
+
+```bash
+docker compose up --build          # puis http://localhost:8080
+```
+
+Le premier démarrage télécharge les modèles (environ 2 Go, gardés dans un
+volume). Le LLM utilise l'Ollama de la machine (`ollama serve`, modèle
+`gemma4:12b`) ; sans Ollama, il apparaît « unavailable ». Détails :
+[app/backend/README.md](app/backend/README.md),
+[app/frontend/README.md](app/frontend/README.md), décisions :
+[decisions-app.md](decisions-app.md).
 
 ---
 

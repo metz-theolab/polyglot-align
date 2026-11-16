@@ -1,0 +1,54 @@
+# App de test de polyglot-align : `docker compose up` puis http://localhost:8080
+# Voir decisions-app.md, « Docker ». Réglages facultatifs dans un fichier .env :
+#   PORT=8080                                     port du front sur la machine
+#   OLLAMA_URL=http://host.docker.internal:11434  Ollama de la machine (défaut)
+#   LLM_MODEL=gemma4:12b
+#   ALGORITHMS=["eflomal","simalign","llm"]
+# Ollama dans un conteneur (serveur Linux, GPU de préférence) :
+#   OLLAMA_URL=http://ollama:11434 docker compose --profile ollama up
+#   docker compose exec ollama ollama pull gemma4:12b
+name: polyglot-align
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: app/backend/Dockerfile
+    environment:
+      POLYGLOT_OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
+      POLYGLOT_LLM_MODEL: ${LLM_MODEL:-gemma4:12b}
+      POLYGLOT_ALGORITHMS: '${ALGORITHMS:-["eflomal","simalign","llm"]}'
+      POLYGLOT_CORS_ORIGINS: "[]"          # le front passe par nginx : même origine
+    volumes:
+      - models:/models                     # dictabert-seg, Glot500 : téléchargés une fois
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Linux : accès à l'Ollama de la machine
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 600s                   # premier démarrage : ~2 Go de modèles à télécharger
+    restart: unless-stopped
+
+  frontend:
+    build: app/frontend
+    environment:
+      BACKEND_URL: http://backend:8000
+    ports:
+      - "${PORT:-8080}:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:0.40.14
+    profiles: ["ollama"]
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  models:
+  ollama:

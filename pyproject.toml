@@ -15,8 +15,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# Aligneur SimAlign (installe aussi torch et transformers) ; sentencepiece : tokeniseur de Glot500
-simalign = ["simalign>=0.4", "sentencepiece>=0.2"]
+# Aligneur SimAlign (installe aussi torch et transformers) ; sentencepiece, tiktoken,
+# protobuf : lecture du tokeniseur de Glot500 par transformers 5 (sans eux, dans une
+# installation neuve, Glot500 ne se charge pas : constaté dans l'image Docker)
+simalign = ["simalign>=0.4", "sentencepiece>=0.2", "tiktoken>=0.14", "protobuf>=7.36"]
 # Aligneur statistique (aligner: {type: eflomal})
 eflomal = ["eflomal>=2.0"]
 # Figures du rapport (polyglot-align report)
