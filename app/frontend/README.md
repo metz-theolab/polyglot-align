@@ -6,7 +6,7 @@ Saisie d'un texte hébreu (A) et d'un texte grec (B), choix de l'algorithme
 droite à gauche) avec les mots grecs reliés, puis le texte grec dans son
 ordre. Une couleur par mot hébreu, reprise sur ses correspondants ; survoler
 un mot surligne ses correspondants. Liens sûrs en trait plein, liens
-probables en pointillé (le LLM n'a qu'un niveau). Décisions : [decisions-app.md](../../decisions-app.md).
+probables en pointillé (le LLM n'a qu'un niveau).
 
 ## Lancer en développement
 

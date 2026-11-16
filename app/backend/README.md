@@ -3,7 +3,7 @@
 Aligne un texte hébreu et un texte grec saisis, avec trois algorithmes au
 choix : eflomal (appris sur la Bible hébraïque et la Septante plus le texte
 saisi), SimAlign (Glot500) et un LLM servi par Ollama (Gemma 4 12B). Couche
-mince au-dessus de la bibliothèque `polyglot_align` (`textalign.py`). Décisions : [decisions-app.md](../../decisions-app.md).
+mince au-dessus de la bibliothèque `polyglot_align` (`textalign.py`).
 
 ## Installation
 
