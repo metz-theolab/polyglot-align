@@ -1,5 +1,4 @@
-# 📜 polyglot-align:
-# Multilingual word alignments : Ancient Hebrew and its Greek translations
+# 📜 polyglot-align --- Multilingual word alignments : Ancient Hebrew and its Greek translations
 
 **polyglot-align** is a Python package for automatic word-by-word alignment
 of the Hebrew text of the Bible (BHSA) with its Greek translation, the
