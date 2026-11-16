@@ -18,7 +18,7 @@ from fastapi.responses import JSONResponse
 
 from polyglot_api import __version__
 from polyglot_api.routes import align, health
-from polyglot_api.services.aligner import AlignerService, NotReady
+from polyglot_api.services.aligner import AlignerService, NotReady, UnknownAlgorithm
 from polyglot_api.settings import Settings
 
 log = logging.getLogger(__name__)
@@ -26,26 +26,73 @@ log = logging.getLogger(__name__)
 PREFIX = "/api/v1"
 
 
-def default_factory(settings: Settings):
-    """TextAligner réel : données de settings.data_dir, segmentation table +
-    dictabert-seg sur settings.device."""
-    def factory():
+LABELS = {
+    "eflomal": "eflomal — statistical",
+    "simalign": "SimAlign — ({model})",
+    "llm": "LLM — {model} (Ollama)",
+}
+
+
+def label(name: str, settings: Settings) -> str:
+    model = {"simalign": settings.simalign_model, "llm": settings.llm_model}.get(name, "")
+    return LABELS.get(name, name).format(model=model)
+
+
+def ollama_check(settings: Settings):
+    """Raison d'indisponibilité du LLM (serveur Ollama injoignable, modèle
+    absent), ou None s'il est prêt."""
+    def check():
+        import json
+        import urllib.request
+        try:
+            with urllib.request.urlopen(f"{settings.ollama_url.rstrip('/')}/api/tags", timeout=2) as r:
+                models = {m["name"] for m in json.load(r).get("models", [])}
+        except Exception:
+            return f"Ollama not reachable at {settings.ollama_url}"
+        if settings.llm_model not in models:
+            return f"model {settings.llm_model} is not installed in Ollama (ollama pull {settings.llm_model})"
+        return None
+    return check
+
+
+def default_service(settings: Settings) -> AlignerService:
+    """Aligneurs réels : socle (données de settings.data_dir, segmentation table +
+    dictabert-seg) puis les algorithmes de settings.algorithms, dans l'ordre."""
+    def base():
         from polyglot_align.segment import CombinedSegmenter
         from polyglot_align.store import DataStore
-        from polyglot_align.textalign import TextAligner
         store = DataStore(settings.data_dir)
-        return TextAligner(store, segmenter=CombinedSegmenter.from_store(store, device=settings.device))
-    return factory
+        return {"store": store, "segmenter": CombinedSegmenter.from_store(store, device=settings.device)}
+
+    def eflomal(b):
+        from polyglot_align.textalign import TextAligner
+        return TextAligner(b["store"], segmenter=b["segmenter"])
+
+    def simalign(b):
+        from polyglot_align.textalign import SimAlignTextAligner
+        return SimAlignTextAligner(b["segmenter"], model=settings.simalign_model, device=settings.device)
+
+    def llm(b):
+        from polyglot_align.textalign import LLMTextAligner
+        return LLMTextAligner(b["segmenter"], model=settings.llm_model, url=settings.ollama_url)
+
+    known = {"eflomal": eflomal, "simalign": simalign, "llm": llm}
+    unknown = [a for a in settings.algorithms if a not in known]
+    if unknown:
+        raise ValueError(f"POLYGLOT_ALGORITHMS : algorithme(s) inconnu(s) {unknown} "
+                         f"(possibles : {list(known)})")
+    return AlignerService(base, {a: known[a] for a in settings.algorithms},
+                          checks={"llm": ollama_check(settings)})
 
 
 def create_app(settings: Settings | None = None, service: AlignerService | None = None) -> FastAPI:
     """Construit l'application. service : à fournir en test (aligneur simulé)."""
     settings = settings or Settings()
-    service = service or AlignerService(default_factory(settings))
+    service = service or default_service(settings)
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        if settings.load_on_startup and service.status == "loading":
+        if settings.load_on_startup and service.base is None and service.status == "loading":
             # en arrière-plan : l'API répond tout de suite (/health : loading)
             threading.Thread(target=service.load, name="chargement", daemon=True).start()
         yield
@@ -60,6 +107,10 @@ def create_app(settings: Settings | None = None, service: AlignerService | None 
     @app.exception_handler(NotReady)
     async def not_ready(request: Request, exc: NotReady):
         return JSONResponse({"detail": str(exc)}, status_code=503, headers={"Retry-After": "10"})
+
+    @app.exception_handler(UnknownAlgorithm)
+    async def unknown_algorithm(request: Request, exc: UnknownAlgorithm):
+        return JSONResponse({"detail": str(exc)}, status_code=422)
 
     app.include_router(health.router, prefix=PREFIX)
     app.include_router(align.router, prefix=PREFIX)

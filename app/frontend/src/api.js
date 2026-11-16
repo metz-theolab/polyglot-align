@@ -36,5 +36,5 @@ export async function health() {
 
 export const info = () => request("/info");
 
-export const align = (hebrew, greek) =>
-  request("/align", { method: "POST", body: JSON.stringify({ hebrew, greek }) });
+export const align = (hebrew, greek, algorithm) =>
+  request("/align", { method: "POST", body: JSON.stringify({ hebrew, greek, algorithm }) });

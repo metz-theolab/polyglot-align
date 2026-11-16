@@ -8,11 +8,12 @@ function look(hue, active, highlighted) {
   return { style, state };
 }
 
-/** Result: interlinear view and Greek text. Links shown: gdfa, i.e. sure links
- *  (inter, solid) and probable links (added by gdfa, dashed). */
+/** Result: interlinear view and Greek text. Sure links solid, probable links
+ *  dashed (eflomal: inter / gdfa ; SimAlign: argmax / itermax ; LLM: one level). */
 export default function Alignment({ result }) {
   const [hover, setHover] = useState(null);
-  const model = useMemo(() => buildModel(result, "gdfa"), [result]);
+  const model = useMemo(() => buildModel(result), [result]);
+  const oneLevel = result.methods.sure === result.methods.all;
   const hl = related(model, hover);
   const leave = () => setHover(null);
 
@@ -20,11 +21,17 @@ export default function Alignment({ result }) {
     <section className="result">
       <div className="toolbar">
         <span className="meta">
-          <span className="legend-sure">solid</span>: sure link ·{" "}
-          <span className="legend-probable">dashed</span>: probable link
+          {oneLevel
+            ? <>one level of links ({result.methods.sure})</>
+            : <>
+              <span className="legend-sure">solid</span>: sure link ({result.methods.sure}) ·{" "}
+              <span className="legend-probable">dashed</span>: probable link ({result.methods.all})
+            </>}
         </span>
-        <span className="meta">{result.meta.aligner} · {result.meta.duration_s} s</span>
+        <span className="meta">{result.algorithm} · {result.meta.duration_s} s</span>
       </div>
+
+      {result.notes.map((n) => <p key={n} className="notice">{n}</p>)}
 
       {result.unknown_hebrew_words.length > 0 && (
         <p className="notice">

@@ -1,11 +1,12 @@
 # Front de l'app de test (React + Vite)
 
-Saisie d'un texte hébreu (A) et d'un texte grec (B), choix de l'algorithme,
-alignement affiché en interlinéaire : une case par mot graphique hébreu (de
+Saisie d'un texte hébreu (A) et d'un texte grec (B), choix de l'algorithme
+(eflomal, SimAlign, LLM : liste et état fournis par l'API), menu d'exemples
+(`src/examples.js`), alignement affiché en interlinéaire : une case par mot graphique hébreu (de
 droite à gauche) avec les mots grecs reliés, puis le texte grec dans son
 ordre. Une couleur par mot hébreu, reprise sur ses correspondants ; survoler
-un mot surligne ses correspondants. Liens sûrs (`inter`) ou sûrs + probables
-(`gdfa`, en pointillé). Décisions : [decisions-app.md](../../decisions-app.md).
+un mot surligne ses correspondants. Liens sûrs en trait plein, liens
+probables en pointillé (le LLM n'a qu'un niveau). Décisions : [decisions-app.md](../../decisions-app.md).
 
 ## Lancer en développement
 

@@ -80,17 +80,17 @@ def main(argv=None) -> None:
 
 
 def format_alignment(res) -> str:
-    """Un mot graphique hébreu par ligne : mots grecs reliés en inter, puis
-    entre crochets ceux que gdfa ajoute."""
-    inter, gdfa = res.by_graphic_word("inter"), res.by_graphic_word("gdfa")
+    """Un mot graphique hébreu par ligne : mots grecs reliés par un lien sûr,
+    puis entre crochets ceux qu'ajoutent les liens probables."""
+    sure, everything = res.by_graphic_word("sure"), res.by_graphic_word("all")
     lines = []
-    for a, b in zip(inter, gdfa):
+    for a, b in zip(sure, everything):
         extra = [w for w in b["greek"] if w not in a["greek"]]
         right = " ".join(a["greek"]) or "∅"
         if extra:
-            right += "  [gdfa : " + " ".join(extra) + "]"
+            right += f"  [{res.methods['all']} : " + " ".join(extra) + "]"
         lines.append(f"{' '.join(a['tokens']):>16}  ↔  {right}")
-    linked = {j for _, j in res.links["gdfa"]}
+    linked = {j for _, j in res.links["all"]}
     orphans = [w for j, w in enumerate(res.greek.tokens("w")) if j not in linked]
     lines.append(f"{'grec non aligné':>16}  :  {' '.join(orphans) or '—'}")
     return "\n".join(lines)

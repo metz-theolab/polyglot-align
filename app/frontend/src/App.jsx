@@ -6,7 +6,7 @@ import Alignment from "./components/Alignment.jsx";
 /** Single page: API status, input, result. */
 export default function App() {
   const [status, setStatus] = useState({ status: "loading" });
-  const [algorithms, setAlgorithms] = useState(["eflomal"]);
+  const [algorithms, setAlgorithms] = useState([{ name: "eflomal", label: "eflomal", status: "loading" }]);
   const [algorithm, setAlgorithm] = useState("eflomal");
   const [hebrew, setHebrew] = useState("");
   const [greek, setGreek] = useState("");
@@ -24,8 +24,14 @@ export default function App() {
         if (stop) return;
         setStatus(h);
         if (h.status === "ready") {
-          const i = await api.info();          // algorithms offered by the backend
-          if (!stop) { setAlgorithms([i.aligner]); setAlgorithm(i.aligner); }
+          // algorithms offered by the backend; polled while one is still loading
+          const i = await api.info();
+          if (stop) return;
+          setAlgorithms(i.algorithms);
+          setAlgorithm((current) => i.algorithms.some((a) => a.name === current && a.status === "ready")
+            ? current : i.default);
+          if (!i.algorithms.some((a) => a.status === "loading")) return;
+          timer = setTimeout(poll, 5000);
           return;
         }
         if (h.status === "error") return;
@@ -42,7 +48,7 @@ export default function App() {
     setBusy(true);
     setError(null);
     try {
-      setResult(await api.align(hebrew, greek));
+      setResult(await api.align(hebrew, greek, algorithm));
     } catch (e) {
       setError(e.message);
     } finally {
@@ -62,12 +68,18 @@ export default function App() {
         algorithms={algorithms} algorithm={algorithm} setAlgorithm={setAlgorithm}
         ready={status.status === "ready"} busy={busy} onSubmit={submit} />
 
-      {busy && <p className="busy">Training eflomal on the Bible and your text (a few seconds)…</p>}
+      {busy && <p className="busy">{BUSY[algorithm] || "Aligning…"}</p>}
       {error && <p className="error">{error}</p>}
       {result && <Alignment result={result} />}
     </div>
   );
 }
+
+const BUSY = {
+  eflomal: "Training eflomal on the Bible and your text (a few seconds)…",
+  simalign: "Computing contextual embeddings…",
+  llm: "Asking the language model (up to a minute)…",
+};
 
 function Status({ status }) {
   const text = {

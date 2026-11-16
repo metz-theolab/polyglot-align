@@ -34,18 +34,18 @@ def check_words(pairs: list) -> None:
             raise HTTPException(422, f"{where}no Greek word in text B")
 
 
-def run(service: AlignerService, pairs: list) -> tuple[list, Meta]:
+def run(service: AlignerService, pairs: list, algorithm: str | None) -> tuple[list, Meta]:
     """Aligne et décrit l'alignement ; texte vide -> 422."""
     check_words(pairs)
     try:
-        results, duration = service.align_many(pairs)
+        results, duration, aligner = service.align_many(pairs, algorithm)
     except ValueError as e:
         raise HTTPException(422, str(e)) from e
-    aligner = service.aligner
-    meta = Meta(tokens="w", hebrew=aligner.hebrew, greek=aligner.greek,
+    meta = Meta(algorithm=aligner.name, tokens="w", hebrew=aligner.hebrew, greek=aligner.greek,
                 duration_s=duration, version=version())
     alignments = [Alignment(hebrew=side(r.hebrew), greek=side(r.greek),
-                            links={"inter": r.links["inter"], "gdfa": r.links["gdfa"]},
+                            links={"sure": r.links["sure"], "all": r.links["all"]},
+                            algorithm=r.algorithm, methods=r.methods, notes=r.notes,
                             unknown_hebrew_words=service.unknown_words(he))
                   for r, (he, _) in zip(results, pairs)]
     return alignments, meta
@@ -54,21 +54,21 @@ def run(service: AlignerService, pairs: list) -> tuple[list, Meta]:
 @router.post("/align", response_model=AlignResponse)
 def align(req: AlignRequest, service: AlignerService = Depends(get_service),
           settings: Settings = Depends(get_settings)) -> AlignResponse:
-    """Aligne un texte hébreu et un texte grec (eflomal appris sur la table des
-    versets plus cette paire ; environ 7 s)."""
+    """Aligne un texte hébreu et un texte grec avec l'algorithme demandé
+    (eflomal : appris sur la table des versets plus cette paire, environ 7 s)."""
     check_length(settings, req.hebrew, req.greek)
-    (alignment,), meta = run(service, [(req.hebrew, req.greek)])
+    (alignment,), meta = run(service, [(req.hebrew, req.greek)], req.algorithm)
     return AlignResponse(**alignment.model_dump(), meta=meta)
 
 
 @router.post("/align/batch", response_model=BatchResponse)
 def align_batch(req: BatchRequest, service: AlignerService = Depends(get_service),
                 settings: Settings = Depends(get_settings)) -> BatchResponse:
-    """Aligne plusieurs paires avec un seul apprentissage d'eflomal."""
+    """Aligne plusieurs paires ensemble (eflomal : un seul apprentissage)."""
     if len(req.pairs) > settings.max_batch:
         raise HTTPException(413, f"too many pairs: {len(req.pairs)} (max {settings.max_batch})")
     check_length(settings, *(t for p in req.pairs for t in (p.hebrew, p.greek)))
-    alignments, meta = run(service, [(p.hebrew, p.greek) for p in req.pairs])
+    alignments, meta = run(service, [(p.hebrew, p.greek) for p in req.pairs], req.algorithm)
     return BatchResponse(results=alignments, meta=meta)
 
 

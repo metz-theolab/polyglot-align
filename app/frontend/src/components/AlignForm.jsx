@@ -30,9 +30,12 @@ export default function AlignForm({ hebrew, greek, setHebrew, setGreek, algorith
       <div className="actions">
         <label className="inline">
           <span className="label">Algorithm</span>
-          <select value={algorithm} onChange={(e) => setAlgorithm(e.target.value)}
-            disabled={algorithms.length < 2}>
-            {algorithms.map((a) => <option key={a} value={a}>{a}</option>)}
+          <select value={algorithm} onChange={(e) => setAlgorithm(e.target.value)}>
+            {algorithms.map((a) => (
+              <option key={a.name} value={a.name} disabled={a.status !== "ready"} title={a.detail || ""}>
+                {a.label}{a.status === "loading" ? " (loading…)" : a.status === "unavailable" ? " (unavailable)" : ""}
+              </option>
+            ))}
           </select>
         </label>
         <label className="inline">

@@ -2,8 +2,10 @@
 //
 // Réponse de l'API (POST /api/v1/align) :
 //   hebrew / greek : { text, tokens: [...], graphic: [n° du mot graphique de chaque token] }
-//   links : { inter: [[i, j], ...], gdfa: [[i, j], ...] }   i : token hébreu, j : token grec
-// inter (liens sûrs) est toujours inclus dans gdfa (sûrs + probables).
+//   links : { sure: [[i, j], ...], all: [[i, j], ...] }   i : token hébreu, j : token grec
+// sure (liens sûrs) est toujours inclus dans all (sûrs + probables), quel que
+// soit l'algorithme (eflomal : inter / gdfa ; SimAlign : argmax / itermax ;
+// LLM : un seul niveau).
 
 /** Teinte (0-360) du k-ième mot graphique hébreu : angle d'or, voisins bien distincts. */
 export function hue(k) {
@@ -11,16 +13,16 @@ export function hue(k) {
 }
 
 /**
- * Modèle d'affichage d'un alignement pour un mode ("inter" ou "gdfa").
+ * Modèle d'affichage d'un alignement : tous les liens (all), les sûrs marqués.
  * - words : mots graphiques hébreux dans l'ordre du texte,
  *   { k, hue, tokens: [{ i, text }], greek: [{ j, text, sure }] }
  * - greek : tokens grecs dans l'ordre, { j, text, hue (null si sans lien), sure }
  * - heToGr, grToHe : liens dans les deux sens (Map indice -> [indices])
  * - wordOf : n° du mot graphique de chaque token hébreu
  */
-export function buildModel(result, mode = "inter") {
-  const sure = new Set(result.links.inter.map(([i, j]) => `${i}-${j}`));
-  const links = (mode === "gdfa" ? result.links.gdfa : result.links.inter).map(([i, j]) => ({
+export function buildModel(result) {
+  const sure = new Set(result.links.sure.map(([i, j]) => `${i}-${j}`));
+  const links = result.links.all.map(([i, j]) => ({
     i, j, sure: sure.has(`${i}-${j}`),
   }));
 

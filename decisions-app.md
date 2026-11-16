@@ -162,3 +162,57 @@ tant que le backend n'en offre pas d'autre.
   Gn 2:4, Ex 3:14, Dt 6:4 (la Septante y ajoute une introduction : un
   « plus » à voir dans l'app), Rt 1:16, Ps 23:1 (LXX 22:1), Is 7:14.
 Vérifié dans Chrome : exemple Ps 23:1, survol de יְהוָה → κύριος.
+
+## 2026-11-16 — Trois algorithmes dans l'app : eflomal, SimAlign, LLM
+
+**Statut : décidé** (branche `feat/app-aligners`)
+
+**Demande.** Ajouter SimAlign et le LLM à l'app, à côté d'eflomal.
+
+**Choix :**
+- *Réglages repris des meilleures expériences* :
+  - eflomal (`eflomal_unvocalized`, toute la Bible : F1 95,2 %) : appris sur
+    la table des versets plus le texte saisi ; mots BHSA, hébreu
+    consonantique, grec sans accents ;
+  - SimAlign avec Glot500 (`glot500_vocalized`, toute la Bible : F1 76,6 %,
+    meilleur modèle à plongements) : couche 8, hébreu vocalisé, grec sans
+    accents ; aucun apprentissage ;
+  - LLM : Gemma 4 12B servi par Ollama (`gemma4_unvocalized`, Genèse : F1
+    90,7 %, précision 90,2 %, rappel par blocs 91,1 %, mais non-alignements
+    respectés 50,0 % ; eflomal sur la Genèse : 95,8 %) ; hébreu
+    consonantique, grec accentué, génération limitée à 4 096 tokens.
+- *Deux niveaux de liens, communs à tous les algorithmes* : la réponse donne
+  `links.sure` (liens sûrs) et `links.all` (sûrs + probables, `sure` inclus
+  dans `all`), et `meta.methods` dit à quoi chacun correspond : eflomal
+  `inter` / `gdfa`, SimAlign `inter` (argmax) / `itermax`, LLM : un seul
+  niveau (`sure` = `all`, pas de pointillé). Remplace `links.inter` /
+  `links.gdfa`, noms propres à eflomal.
+- *Code dans la bibliothèque* (`polyglot_align/textalign.py`) : une classe
+  par algorithme avec la même interface (`align_many`), le segmenteur de
+  l'hébreu partagé (chargé une fois) ; le backend reste une couche mince.
+- *Disponibilité, par algorithme* (`/info`) : `ready`, `loading` ou
+  `unavailable`, avec la raison. Au démarrage : eflomal d'abord (l'API est
+  « ready » dès qu'il l'est), puis Glot500 en arrière-plan ; le LLM est
+  disponible si Ollama répond et connaît le modèle (vérifié au démarrage et
+  revérifié par `/info`). Un algorithme non prêt : 503 ; inconnu : 422.
+  Le menu du front désactive les algorithmes non prêts et dit pourquoi.
+- *Un alignement à la fois*, tous algorithmes confondus (verrou commun).
+- *Réglages* (variables d'environnement) : `POLYGLOT_SIMALIGN_MODEL`
+  (`cis-lmu/glot500-base`), `POLYGLOT_OLLAMA_URL`
+  (`http://localhost:11434`), `POLYGLOT_LLM_MODEL` (`gemma4:12b`),
+  `POLYGLOT_ALGORITHMS` (ceux à proposer).
+- *Docker, plus tard* : Ollama sera un service facultatif du
+  `docker-compose` (modèle de 16 Go, GPU souhaitable) ; sans lui, le LLM
+  apparaît « unavailable ».
+
+**Fait (2026-11-16).** Bibliothèque : `SimAlignTextAligner`,
+`LLMTextAligner`, niveaux `sure` / `all` (`textalign.py`, 4 tests de plus,
+modèles simulés). API : `AlignerService` à plusieurs algorithmes (état par
+algorithme, vérification d'Ollama, verrou commun), champ `algorithm`,
+`/info` avec la liste ; 20 tests. Front : menu des algorithmes et de leur
+état, légende selon les méthodes, notes du LLM. Vérifié avec les vrais
+modèles dans Chrome, Gn 1:1 : eflomal 7,2 s ; SimAlign (Glot500) 1,1 s
+(0,5 s de calcul ; erreurs visibles en fin de verset : אֵת ↔ καὶ, וְ·אֵת ↔ τὴν,
+הַ·שָּׁמַיִם ↔ οὐρανὸν γῆν) ; LLM 7,7 s (blocs comme CATSS : אֱלֹהִים ↔ ὁ θεὸς,
+הַ·שָּׁמַיִם ↔ τὸν οὐρανὸν, הָ·אָרֶץ ↔ καὶ τὴν γῆν ; אֵת et וְ·אֵת sans lien).
+Chargement au démarrage : eflomal prêt en 4,6 s, puis Glot500, puis LLM.

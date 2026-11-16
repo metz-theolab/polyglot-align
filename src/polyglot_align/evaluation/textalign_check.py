@@ -23,7 +23,7 @@ from pathlib import Path
 from polyglot_align.alignment import AlignmentRecord, read_jsonl
 from polyglot_align.evaluation.evaluate import Evaluator, measures
 from polyglot_align.store import DataStore
-from polyglot_align.textalign import METHODS, TextAligner
+from polyglot_align.textalign import TextAligner
 
 # nom fixe : lancé avec python -m, __name__ vaut __main__ (hors du journal polyglot_align)
 log = logging.getLogger("polyglot_align.evaluation.textalign_check")
@@ -65,8 +65,9 @@ def check(n: int = 300, seed: int = 0, reference: str = "eflomal_unvocalized") -
             continue    # tokens différents de l'export : non évaluable contre le gold
         comparable += 1
         book = (hv.book, gv.book)
+        links = {"inter": res.links["sure"], "gdfa": res.links["all"]}   # noms de l'expérience
         typed[book].append(AlignmentRecord(hv.ref, res.hebrew.tokens("w"), res.greek.tokens("w"),
-                                           res.links, ref_lxx=gv.ref if gv.key != hv.key else None))
+                                           links, ref_lxx=gv.ref if gv.key != hv.key else None))
         if gv.book not in saved:   # résultats de l'expérience de référence, livre par livre
             saved[gv.book] = {(r.key, r.lxx_key): r
                               for r in read_jsonl(Path("results") / reference / f"{gv.book}.jsonl")}
@@ -78,7 +79,7 @@ def check(n: int = 300, seed: int = 0, reference: str = "eflomal_unvocalized") -
     log.info("\n%-22s %-6s %8s %10s %7s %8s %8s", "alignement", "méthode", "versets", "précision",
              "rappel", "F1", "non-al.")
     for name, res in out.items():
-        for m in METHODS:
+        for m in ("inter", "gdfa"):
             x = res["mesures"][m]
             log.info("%-22s %-6s %8d %10s %7s %8s %8s", name, m, res["versets"][m], pct(x["precision"]),
                      pct(x["rappel_blocs"]), pct(x["f1"]), pct(x["nonalign_exactitude"]))
