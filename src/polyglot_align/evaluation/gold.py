@@ -65,11 +65,6 @@ class Gold:
         for lxx, rows in gr_rows.items():
             self._gr[lxx] = [(uid, gr) for _, uid, gr in sorted(rows, key=lambda r: r[0])]
 
-    @classmethod
-    def load(cls, book: str, root="data") -> "Gold":
-        """Gold d'un livre grec : Gold.load("Gen"), Gold.load("JudgA")."""
-        return cls(Path(root) / "gold_clean" / f"{book}.json")
-
     def covers(self, key: str, lxx_key: str = None) -> bool:
         """Le gold a-t-il des unités pour le verset TM `key` et le verset LXX
         `lxx_key` (par défaut, même numéro) ?"""
@@ -87,7 +82,11 @@ class Gold:
         s'il reste dans une même unité `align`, ou si c'est un lien reconstruit."""
         return (uh == ug and self.units[uh]["type"] == "align") or (uh, ug) in self.recon
 
-    def verse_units(self, key: str):
-        """(uid, unité) des unités du verset TM `key`."""
-        prefix = key + "#"
-        return ((uid, u) for uid, u in self.units.items() if uid.startswith(prefix))
+    def verse_units(self, key: str) -> list:
+        """(uid, unité) des unités du verset TM `key`, dans l'ordre de units.
+        Index par verset construit au premier appel."""
+        if getattr(self, "_by_verse", None) is None:
+            self._by_verse = defaultdict(list)   # "ch.vs" (TM) -> [(uid, unité)]
+            for uid, u in self.units.items():
+                self._by_verse[uid.split("#", 1)[0]].append((uid, u))
+        return self._by_verse.get(key, [])

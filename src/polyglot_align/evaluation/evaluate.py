@@ -43,12 +43,14 @@ class Evaluator:
         # tokens rattachés au gold : ceux de la couche alignée ; pour les lemmes (l),
         # les formes w (mêmes indices, mais seules les formes se comparent au gold)
         self.layer = "g" if layer == "g" else "w"
+        self._attached = {}  # (verset TM, verset LXX) -> (hb, gr, hb_unit, gr_unit), calculé une fois
 
     @classmethod
-    def for_books(cls, he_book: str, lxx_book: str, root="data", layer: str = "w") -> "Evaluator":
-        """Evaluator.for_books("Gen", "Gen") ; doubles textes : ("Judg", "JudgA")."""
-        return cls(Gold.load(lxx_book, root), Corpus.load("he", he_book, root),
-                   Corpus.load("lxx", lxx_book, root), layer)
+    def from_store(cls, store, he_book: str, lxx_book: str, layer: str = "w") -> "Evaluator":
+        """Évaluateur d'un livre, données lues par un DataStore (store.py) ;
+        doubles textes : ("Judg", "JudgA")."""
+        return cls(store.gold(lxx_book), store.corpus("he", he_book),
+                   store.corpus("lxx", lxx_book), layer)
 
     # --- un verset ---
 
@@ -59,11 +61,15 @@ class Evaluator:
         key, lxx_key = rec.key, rec.lxx_key   # verset TM, verset LXX apparié
         if not self.gold.covers(key, lxx_key):
             return None, "verset_sans_gold"
-        hb = self.he[key].tokens(self.layer) if key in self.he else []
-        gr = self.lxx[lxx_key].tokens(self.layer) if lxx_key in self.lxx else []
+        if (key, lxx_key) not in self._attached:
+            hb = self.he[key].tokens(self.layer) if key in self.he else []
+            gr = self.lxx[lxx_key].tokens(self.layer) if lxx_key in self.lxx else []
+            # rattachement au gold (projection lettre par lettre, coûteuse) : une
+            # fois par verset, partagé par evaluate et export_csv
+            self._attached[key, lxx_key] = (hb, gr, *self.gold.attach(key, hb, gr, lxx_key))
+        hb, gr, hb_unit, gr_unit = self._attached[key, lxx_key]
         if len(rec.src) != len(hb) or len(rec.tgt) != len(gr):
             return None, "tokens_differents_de_l_export"
-        hb_unit, gr_unit = self.gold.attach(key, hb, gr, lxx_key)
         return (key, lxx_key, hb, gr, hb_unit, gr_unit), None
 
     def count_verse(self, links, hb_unit, gr_unit, key, lxx_key=None) -> Counter:

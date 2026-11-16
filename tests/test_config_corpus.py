@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.config import Config, Passage
 from polyglot_align.corpus import Corpus, ref_key
+from polyglot_align.store import DataStore
 
 nfc = lambda s: unicodedata.normalize("NFC", s)
 
@@ -97,7 +98,7 @@ class TestCorpus(unittest.TestCase):
         self.assertTrue(any(" " in w for w in words))
 
     def test_load_et_contains(self):
-        self.assertIn("1.1", Corpus.load("he", "Gen", root=ROOT / "data"))
+        self.assertIn("1.1", DataStore(ROOT / "data").corpus("he", "Gen"))
         self.assertNotIn("99.99", self.he)
 
     def test_ordre(self):

@@ -7,11 +7,12 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-from polyglot_align.corpus import Corpus
 from polyglot_align.evaluation.evaluate import Evaluator, measures
 from polyglot_align.evaluation.gold import Gold
+from polyglot_align.store import DataStore
 
 DATA = ROOT / "data"
+STORE = DataStore(DATA)
 
 
 def fake_gold(units: dict, recon=()) -> Gold:
@@ -71,8 +72,8 @@ class TestNonAlignement(unittest.TestCase):
 class TestGold(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.gold = Gold.load("Gen", root=DATA)
-        cls.he, cls.lxx = Corpus.load("he", "Gen", DATA), Corpus.load("lxx", "Gen", DATA)
+        cls.gold = STORE.gold("Gen")
+        cls.he, cls.lxx = STORE.corpus("he", "Gen"), STORE.corpus("lxx", "Gen")
 
     def test_projection_gn_1_1(self):
         hb, gr = self.gold.attach("1.1", self.he["1.1"].tokens(), self.lxx["1.1"].tokens())
@@ -104,16 +105,16 @@ class TestGold(unittest.TestCase):
 class TestLiensReconstruits(unittest.TestCase):
     def test_isa_48_17(self):
         # #13 בדרך ↔ ἐν ᾗ {...ἐν αὐτῇ} ; #15 {...} ↔ ἐν αὐτῇ (absorbée)
-        gold = Gold.load("Isa", root=DATA)
+        gold = STORE.gold("Isa")
         self.assertIn(("48.17#13", "48.17#13~15"), gold.recon)
-        lxx = Corpus.load("lxx", "Isa", DATA)["48.17"].tokens()
-        he = Corpus.load("he", "Isa", DATA)["48.17"].tokens()
+        lxx = STORE.corpus("lxx", "Isa")["48.17"].tokens()
+        he = STORE.corpus("he", "Isa")["48.17"].tokens()
         _, gr = gold.attach("48.17", he, lxx)
         self.assertEqual(gr[-2:], ["48.17#13~15", "48.17#13~15"])  # ἐν αὐτῇ, à la fin du verset
 
     def test_zeph_3_15(self):
         # #14 {...לא} עוד ↔ οὐκέτι : לא (#11) relié à οὐκέτι (#14)
-        self.assertIn(("3.15#11", "3.15#14"), Gold.load("Zeph", root=DATA).recon)
+        self.assertIn(("3.15#11", "3.15#14"), STORE.gold("Zeph").recon)
 
 
 if __name__ == "__main__":

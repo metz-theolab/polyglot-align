@@ -8,8 +8,10 @@ d'Aligner (un module de ce sous-paquet) et la déclarer dans make_aligner
 """
 from abc import ABC, abstractmethod
 from collections import Counter
+from typing import Iterable
 
 from polyglot_align.alignment import VerseAlignment
+from polyglot_align.corpus import Verse
 
 
 class Aligner(ABC):
@@ -19,10 +21,12 @@ class Aligner(ABC):
         self.layer = layer       # couche dont les tokens sont reliés (w, g ou l)
         self.stats = Counter()   # compteurs affichés en fin d'expérience (vide si rien à dire)
 
-    def fit(self, verse_map, data_root) -> None:
-        """Apprentissage sur le corpus (versets appariés par verse_map,
-        corpus.VerseMap), appelé une fois avant l'alignement des passages.
-        Ne fait rien par défaut (SimAlign, LLM) ; voir EflomalAligner."""
+    def fit(self, pairs: Iterable[tuple[Verse, Verse]]) -> None:
+        """Apprentissage sur des paires de versets (hébreu, grec), appelé une
+        fois avant l'alignement des passages. L'aligneur ne choisit pas ses
+        données : elles lui sont données (aujourd'hui toute la table des
+        versets, DataStore.table_pairs). Ne fait rien par défaut (SimAlign,
+        LLM : `pairs` n'est alors pas parcouru) ; voir EflomalAligner."""
 
     @abstractmethod
     def align(self, hv, gv) -> VerseAlignment:

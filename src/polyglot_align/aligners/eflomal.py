@@ -3,9 +3,10 @@
 
 eflomal n'aligne pas verset par verset : il apprend sur tout le corpus BHSA / LXX
 (cooccurrences des mots, sans aucun lien du gold). `fit` aligne donc une fois
-toutes les paires de versets de la table d'équivalence (corpus.VerseMap :
-seulement des versets qui se correspondent, Josué et Juges A compris) et garde
-les liens ; `align(hv, gv)` renvoie ensuite ceux du verset demandé.
+toutes les paires de versets reçues (aujourd'hui toute la table d'équivalence,
+DataStore.table_pairs : seulement des versets qui se correspondent, Josué et
+Juges A compris) et garde les liens ; `align(hv, gv)` renvoie ensuite ceux du
+verset demandé.
 
 Deux symétrisations des deux sens (hébreu → grec, grec → hébreu) :
     inter : intersection (précision)
@@ -18,7 +19,6 @@ from pathlib import Path
 
 from polyglot_align.aligners.base import Aligner
 from polyglot_align.alignment import VerseAlignment, parse_links
-from polyglot_align.corpus import Corpus
 from polyglot_align.normalize import norm_grc, norm_heb
 
 
@@ -69,20 +69,18 @@ class EflomalAligner(Aligner):
         tgt = [norm_grc(t, self.greek_accents).replace(" ", "_") for t in gv.tokens(self.layer)]
         return src, tgt
 
-    def fit(self, verse_map, data_root) -> None:
-        """Aligne toutes les paires de versets de la table (corpus.VerseMap)."""
+    def fit(self, pairs) -> None:
+        """Aligne ensemble toutes les paires de versets (hébreu, grec) reçues."""
         from eflomal import Aligner as Eflomal   # import tardif : paquet optionnel
         keys, src_lines, tgt_lines = [], [], []
-        for he_book, lxx_book in verse_map.book_pairs():
-            he, lxx = Corpus.load("he", he_book, data_root), Corpus.load("lxx", lxx_book, data_root)
-            for he_key, lxx_key in verse_map.pairs(he_book, lxx_book):
-                src, tgt = self.tokens(he[he_key], lxx[lxx_key])
-                if src and tgt and all(src) and all(tgt):
-                    keys.append((he_book, lxx_book, he_key))
-                    src_lines.append(" ".join(src) + "\n")
-                    tgt_lines.append(" ".join(tgt) + "\n")
-                else:
-                    self.stats["versets vides ignorés"] += 1
+        for hv, gv in pairs:
+            src, tgt = self.tokens(hv, gv)
+            if src and tgt and all(src) and all(tgt):
+                keys.append((hv.book, gv.book, hv.key))
+                src_lines.append(" ".join(src) + "\n")
+                tgt_lines.append(" ".join(tgt) + "\n")
+            else:
+                self.stats["versets vides ignorés"] += 1
         print(f"eflomal : apprentissage sur {len(keys)} versets", flush=True)
         with tempfile.TemporaryDirectory() as tmp:
             fwd_path, rev_path = Path(tmp) / "fwd", Path(tmp) / "rev"

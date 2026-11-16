@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "data"))
-from polyglot_align.corpus import VerseMap
+from polyglot_align.store import DataStore
 from make_verse_map import verse_groups  # noqa: E402
 
 DATA = ROOT / "data"
@@ -35,7 +35,7 @@ class TestGroupes(unittest.TestCase):
 class TestVerseMap(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.vm = VerseMap.load(DATA)
+        cls.vm = DataStore(DATA).verse_map
 
     def test_psaumes_renumerotes(self):
         self.assertIn(("23.1", "22.1"), self.vm.pairs("Ps", "Ps"))

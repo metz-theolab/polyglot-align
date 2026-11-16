@@ -17,9 +17,9 @@ from pathlib import Path
 from polyglot_align.align import align
 from polyglot_align.aligners import make_aligner
 from polyglot_align.config import Config
-from polyglot_align.corpus import VerseMap
 from polyglot_align.evaluation.evaluate import Evaluator, measures
 from polyglot_align.perf import PerfMeter
+from polyglot_align.store import DataStore
 
 COLUMNS = ["precision", "rappel_blocs", "f1", "nonalign_exactitude", "aer",
            "couverture_hb", "couverture_gr"]
@@ -29,10 +29,9 @@ class Experiment:
     def __init__(self, cfg: Config, config_path=None, results_root="results", data_root="data"):
         self.cfg = cfg
         self.config_path = config_path   # copié dans le dossier des résultats
-        self.data = Path(data_root)
+        self.store = DataStore(data_root)   # textes, gold, table des versets (data/)
         self.out = Path(results_root) / cfg.name
         self.scores = {}                 # passage -> résultats ; puis "TOTAL"
-        self.verse_map = VerseMap.load(self.data)   # appariement des versets hébreu ↔ LXX
         self.perf = PerfMeter()          # durées par phase -> perf.json
         self.n_verses = 0
 
@@ -48,7 +47,7 @@ class Experiment:
         with self.perf.phase("chargement"):
             aligner = aligner or make_aligner(self.cfg)
         with self.perf.phase("apprentissage"):
-            aligner.fit(self.verse_map, self.data)
+            aligner.fit(self.training_pairs())
         for p in self.cfg.passages:
             n = self.run_passage(aligner, p)
             self.n_verses += n
@@ -61,6 +60,11 @@ class Experiment:
         self.print_table()
         return self.scores
 
+    def training_pairs(self):
+        """Paires de versets données à Aligner.fit : toute la table des versets
+        (seul endroit où se décidera le découpage entraînement / test)."""
+        return self.store.table_pairs()
+
     def prepare(self) -> None:
         """Crée le dossier des résultats et y copie la configuration."""
         self.out.mkdir(parents=True, exist_ok=True)
@@ -72,11 +76,9 @@ class Experiment:
         Renvoie le nombre de versets alignés."""
         jsonl = self.out / f"{p.label}.jsonl"
         with self.perf.phase("alignement"):
-            n = align(aligner, self.data / "he" / f"{p.book}.json",
-                      self.data / "lxx" / f"{p.lxx_book}.json",
-                      self.verse_map.pairs(p.book, p.lxx_book), jsonl, p.only)
+            n = align(aligner, self.store.verse_pairs(p.book, p.lxx_book, p.only), jsonl)
         with self.perf.phase("evaluation"):
-            evaluator = Evaluator.for_books(p.book, p.lxx_book, root=self.data, layer=self.cfg.tokens)
+            evaluator = Evaluator.from_store(self.store, p.book, p.lxx_book, layer=self.cfg.tokens)
             self.scores[p.label] = evaluator.evaluate(jsonl)
             evaluator.export_csv(jsonl, self.out / f"{p.label}.csv")
         return n

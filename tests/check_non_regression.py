@@ -29,6 +29,7 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.alignment import format_links, read_jsonl
 from polyglot_align.evaluation.evaluate import Evaluator
+from polyglot_align.store import DataStore
 from polyglot_align.aligners.llm import table_to_links
 
 REFERENCE = ROOT / "tests" / "reference"
@@ -58,7 +59,7 @@ def replay(ref_dir: Path) -> list:
                     problems.append(f"{label} {rec.ref} : la conversion du tableau donne d'autres liens")
 
         # réévaluation
-        evaluator = Evaluator.for_books(he_book, lxx_book, root=ROOT / "data")
+        evaluator = Evaluator.from_store(DataStore(ROOT / "data"), he_book, lxx_book)
         res = evaluator.evaluate(jsonl)
 
         # CSV de relecture régénéré depuis le JSONL de référence

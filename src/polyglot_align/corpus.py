@@ -60,7 +60,7 @@ class Verse:
 
 
 class Corpus:
-    """Un livre exporté : data/<he|lxx>/<livre>.json."""
+    """Un livre exporté : data/<he|lxx>/<livre>.json (lu par store.DataStore)."""
 
     def __init__(self, path):
         data = json.loads(Path(path).read_text(encoding="utf-8"))
@@ -70,11 +70,6 @@ class Corpus:
             for vs, layers in verses.items():
                 v = Verse(self.book, ch, vs, layers)
                 self.verses[v.key] = v
-
-    @classmethod
-    def load(cls, side: str, book: str, root="data") -> "Corpus":
-        """side = "he" ou "lxx" ; ex. Corpus.load("he", "Gen")."""
-        return cls(Path(root) / side / f"{book}.json")
 
     def __getitem__(self, key: str) -> Verse:
         return self.verses[key]
@@ -94,10 +89,6 @@ class VerseMap:
 
     def __init__(self, path):
         self.books = json.loads(Path(path).read_text(encoding="utf-8"))
-
-    @classmethod
-    def load(cls, root="data") -> "VerseMap":
-        return cls(Path(root) / "verse_map.json")
 
     def pairs(self, he_book: str, lxx_book: str) -> list:
         """[(ch.vs TM, ch.vs LXX)] du livre, dans l'ordre du TM."""

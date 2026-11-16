@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 from polyglot_align.config import Config, Passage
-from polyglot_align.corpus import Corpus, VerseMap
+from polyglot_align.store import DataStore
 from polyglot_align.aligners import make_aligner
 from polyglot_align.aligners.eflomal import EflomalAligner, grow_diag_final_and
 
@@ -60,9 +60,11 @@ class TestEflomalAligner(unittest.TestCase):
     def setUpClass(cls):
         sys.modules["eflomal"] = types.SimpleNamespace(Aligner=FakeEflomal)
         cls.aligner = EflomalAligner(layer="w", greek_accents=False)
-        cls.verse_map = VerseMap.load(DATA)
-        cls.aligner.fit(cls.verse_map, DATA)
-        cls.he, cls.lxx = Corpus.load("he", "Gen", DATA), Corpus.load("lxx", "Gen", DATA)
+        store = DataStore(DATA)
+        cls.verse_map = store.verse_map
+        cls.aligner.fit(store.table_pairs())
+        cls.he, cls.lxx = store.corpus("he", "Gen"), store.corpus("lxx", "Gen")
+        cls.store = store
 
     @classmethod
     def tearDownClass(cls):
@@ -75,7 +77,7 @@ class TestEflomalAligner(unittest.TestCase):
 
     def test_psaume_renumerote(self):
         # Ps 23:1 (TM) est appris avec Ps 22:1 (LXX)
-        ps_he, ps_lxx = Corpus.load("he", "Ps", DATA), Corpus.load("lxx", "Ps", DATA)
+        ps_he, ps_lxx = self.store.corpus("he", "Ps"), self.store.corpus("lxx", "Ps")
         res = self.aligner.align(ps_he["23.1"], ps_lxx["22.1"])
         self.assertTrue(res.links["inter"])
 
