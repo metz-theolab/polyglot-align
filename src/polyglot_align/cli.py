@@ -7,6 +7,7 @@
     polyglot-align show results/<nom>/Gen.1.jsonl Gen.1.1 [méthode]
                                                         relire l'alignement d'un verset
     polyglot-align clean-gold                           data/gold -> data/gold_clean
+    polyglot-align align "texte hébreu" "texte grec"    aligner deux textes saisis (eflomal)
 
 Équivalent sans installation de la commande : python -m polyglot_align …
 
@@ -49,6 +50,11 @@ def main(argv=None) -> None:
 
     sub.add_parser("clean-gold", help="nettoyer le gold CATSS : data/gold -> data/gold_clean")
 
+    p = sub.add_parser("align", help="aligner un texte hébreu et un texte grec saisis (eflomal)")
+    p.add_argument("hebrew", help="texte hébreu, vocalisé ou non")
+    p.add_argument("greek", help="texte grec")
+    p.add_argument("--json", action="store_true", help="sortie JSON (forme de l'API)")
+
     args = parser.parse_args(argv)
     setup_logging()
     if args.command == "run":
@@ -63,6 +69,31 @@ def main(argv=None) -> None:
     elif args.command == "clean-gold":
         from polyglot_align.evaluation.gold_clean import main as clean_gold
         clean_gold()
+    elif args.command == "align":
+        from polyglot_align.textalign import TextAligner
+        res = TextAligner().align(args.hebrew, args.greek)
+        if args.json:
+            import json
+            print(json.dumps(res.to_dict(), ensure_ascii=False, indent=1))
+        else:
+            print(format_alignment(res))
+
+
+def format_alignment(res) -> str:
+    """Un mot graphique hébreu par ligne : mots grecs reliés en inter, puis
+    entre crochets ceux que gdfa ajoute."""
+    inter, gdfa = res.by_graphic_word("inter"), res.by_graphic_word("gdfa")
+    lines = []
+    for a, b in zip(inter, gdfa):
+        extra = [w for w in b["greek"] if w not in a["greek"]]
+        right = " ".join(a["greek"]) or "∅"
+        if extra:
+            right += "  [gdfa : " + " ".join(extra) + "]"
+        lines.append(f"{' '.join(a['tokens']):>16}  ↔  {right}")
+    linked = {j for _, j in res.links["gdfa"]}
+    orphans = [w for j, w in enumerate(res.greek.tokens("w")) if j not in linked]
+    lines.append(f"{'grec non aligné':>16}  :  {' '.join(orphans) or '—'}")
+    return "\n".join(lines)
 
 
 if __name__ == "__main__":

@@ -25,7 +25,8 @@ from pathlib import Path
 from polyglot_align.segment import CombinedSegmenter, DictaSegmenter, TableSegmenter, bhsa_words
 from polyglot_align.store import DataStore
 
-log = logging.getLogger(__name__)
+# nom fixe : lancé avec python -m, __name__ vaut __main__ (hors du journal polyglot_align)
+log = logging.getLogger("polyglot_align.evaluation.segmentation")
 
 EXCLUDED_BOOKS = {"1Chr", "2Chr"}
 

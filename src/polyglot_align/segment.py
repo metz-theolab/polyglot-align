@@ -175,8 +175,16 @@ class DictaSegmenter(Segmenter):
         from huggingface_hub import hf_hub_download     # imports tardifs (lourds)
         from safetensors.torch import load_file
         from transformers import AutoModel, AutoTokenizer
+        from transformers.utils import logging as hf_logging
         self.tokenizer = AutoTokenizer.from_pretrained(model)
-        self.model = AutoModel.from_pretrained(model, trust_remote_code=True)
+        # le rapport de chargement de transformers annonce la tête « MISSING » :
+        # trompeur, elle est rechargée juste après (toutes les clés vérifiées)
+        verbosity = hf_logging.get_verbosity()
+        hf_logging.set_verbosity_error()
+        try:
+            self.model = AutoModel.from_pretrained(model, trust_remote_code=True)
+        finally:
+            hf_logging.set_verbosity(verbosity)
         # transformers 5 ne retrouve plus la tête de segmentation, enregistrée
         # à la racine du fichier de poids (classifiers.*, transform.*…) alors
         # que le modèle l'attend sous prefix.* : rechargée explicitement
