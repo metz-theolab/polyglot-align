@@ -43,7 +43,7 @@ class AlignerService:
 
     def _ready(self):
         if self.status != "ready":
-            raise NotReady(self.detail or "modèles en cours de chargement")
+            raise NotReady(self.detail or "models are still loading, retry in a few seconds")
         return self.aligner
 
     def unknown_words(self, hebrew_text: str) -> list:

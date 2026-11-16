@@ -99,3 +99,66 @@ Installation : `pip install -e .` (bibliothèque), puis
 
 **Écarté :** le backend comme module de `polyglot_align` avec un extra
 `[api]` (la bibliothèque porterait le code web).
+
+## 2026-11-16 — Front : React, saisie A / B, vue interlinéaire colorée
+
+**Statut : décidé** (branche `feat/app-frontend`)
+
+**Demande.** React ; texte A (hébreu), texte B (grec) ; choix de
+l'algorithme ; visualisation de l'alignement en texte interlinéaire, les
+relations en couleur, surlignées au survol.
+
+**Choix :**
+- *Outils* : React 19 et Vite, en JavaScript (JSX), CSS simple sans
+  bibliothèque de composants (l'app d'alma charge Material UI : lourd pour
+  une page) ; tests des fonctions de calcul avec Vitest.
+- *Appels à l'API* : chemins relatifs `/api/v1/…`, jamais d'adresse écrite
+  en dur (défaut de l'app d'alma : `http://localhost:8000` dans le code). En
+  développement, le serveur Vite renvoie `/api` vers le backend
+  (`VITE_API_TARGET`, défaut `http://127.0.0.1:8000`) ; en production
+  (Docker), le serveur qui sert le front fera de même.
+- *État de l'API* : `/health` interrogé toutes les 2 s tant que les modèles
+  se chargent ; bouton « Aligner » désactivé, message « Chargement des
+  modèles… » ; limites de la méthode (`/info`) affichées.
+- *Choix de l'algorithme* : liste fournie par l'API (`/info`). Seul eflomal
+  existe côté backend aujourd'hui ; d'autres aligneurs apparaîtront sans
+  changer le front. Choix séparé de l'affichage des liens : `inter` (sûrs)
+  ou `gdfa` (sûrs + probables, ceux-ci en pointillé).
+- *Vue interlinéaire* : dans l'ordre de l'hébreu (de droite à gauche), une
+  case par mot graphique hébreu, ses tokens séparés par un point fin (בְּ·
+  רֵאשִׁית : segmentation visible), et dessous les mots grecs qui lui sont
+  reliés. Dessous, le texte grec dans son ordre. Pas de traits entre deux
+  lignes de texte : ils deviennent illisibles dès que le texte passe à la
+  ligne ; la couleur porte la relation.
+- *Couleurs* : une teinte par mot graphique hébreu (angle d'or : teintes
+  voisines bien distinctes), reprise sur les mots grecs reliés ; mot sans
+  lien en gris. Thème clair et sombre.
+- *Survol* : survoler un mot hébreu ou grec surligne ses correspondants dans
+  les deux vues et estompe le reste.
+
+**Fait (2026-11-16).** `app/frontend` : React 19.3, Vite 7.3, Vitest 3.2 ;
+8 tests des calculs de la vue (`src/alignment.test.js`) ; build de
+production : 72 ko de JavaScript compressé. Vérifié dans Chrome (piloté par
+playwright-core, hors du projet), avec le vrai backend derrière le serveur
+Vite : saisie, « Aligner », vue interlinéaire et texte grec colorés, thème
+clair et sombre, survol d'un mot hébreu (הַ·שָּׁמַיִם : οὐρανοῦ surligné, le
+reste estompé) et d'un mot grec, mode `gdfa` (Gn 2:4 : liens probables en
+pointillé, ex. γενέσεως). Le sélecteur d'algorithme ne propose qu'eflomal
+tant que le backend n'en offre pas d'autre.
+
+**Révision (2026-11-16, à la demande) :**
+- *interface en anglais* ; les messages d'erreur de l'API affichés dans
+  l'interface aussi (texte sans hébreu ou sans grec, texte trop long,
+  modèles en chargement) : l'API valide elle-même les textes au lieu de
+  relayer le message français de la bibliothèque ;
+- *seul `gdfa` est affiché* : liens sûrs (`inter`) en trait plein, liens
+  probables (ajoutés par `gdfa`) en pointillé ; le choix `inter` / `gdfa`
+  est retiré ;
+- *encart « Méthode et limites » retiré* (la route `/info` reste : elle
+  fournit la liste des algorithmes) ;
+- *exemples* : menu de versets, liste dans `app/frontend/src/examples.js`
+  (modifiable) ; textes pris tels quels du corpus (BHSA couche t, Septante
+  de Rahlfs, versets appariés par `data/verse_map.json`) : Gn 1:1, Gn 1:3,
+  Gn 2:4, Ex 3:14, Dt 6:4 (la Septante y ajoute une introduction : un
+  « plus » à voir dans l'app), Rt 1:16, Ps 23:1 (LXX 22:1), Is 7:14.
+Vérifié dans Chrome : exemple Ps 23:1, survol de יְהוָה → κύριος.

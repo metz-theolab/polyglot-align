@@ -100,7 +100,9 @@ class TestAlignement(unittest.TestCase):
 
     def test_texte_vide_422(self):
         r = client().post("/api/v1/align", json={"hebrew": "…", "greek": GREEK})
-        self.assertEqual(r.status_code, 422)
+        self.assertEqual((r.status_code, r.json()["detail"]), (422, "no Hebrew word in text A"))
+        r = client().post("/api/v1/align", json={"hebrew": HEBREW, "greek": "123"})
+        self.assertEqual((r.status_code, r.json()["detail"]), (422, "no Greek word in text B"))
 
     def test_texte_trop_long_413(self):
         r = client(max_chars=10).post("/api/v1/align", json={"hebrew": HEBREW, "greek": GREEK})

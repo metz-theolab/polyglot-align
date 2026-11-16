@@ -10,11 +10,11 @@ from polyglot_api.settings import Settings
 router = APIRouter(tags=["état"])
 
 LIMITS = [
-    "hébreu ↔ grec seulement (eflomal n'a appris que ces deux langues)",
-    "résultat légèrement variable d'un appel à l'autre (eflomal n'est pas déterministe)",
-    "segmentation consonantique : ambiguïtés possibles (ה interrogatif, מאת…), "
-    "environ 0,3 % des mots sur le texte biblique",
-    "un texte saisi est traité comme un seul bloc, même s'il couvre plusieurs versets",
+    "Hebrew ↔ Greek only (eflomal was trained on these two languages)",
+    "results vary slightly from one call to the next (eflomal is not deterministic)",
+    "consonantal segmentation: possible ambiguities (interrogative ה, מאת…), "
+    "about 0.3 % of words on biblical text",
+    "a text is handled as one block, even if it spans several verses",
 ]
 
 

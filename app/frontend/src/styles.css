@@ -1,0 +1,129 @@
+/* Couleurs : thème clair par défaut, sombre selon le système. Les mots reliés
+   portent une teinte --h (une par mot graphique hébreu, voir alignment.js). */
+:root {
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --ink: #1f1f1e;
+  --muted: #6b6a64;
+  --line: #e4e3dd;
+  --accent: #2a63b8;
+  --error: #b42318;
+  --ok: #1a7f37;
+  --tint-l: 88%;      /* luminosité du fond d'un mot relié */
+  --tint-s: 70%;
+  --edge-l: 45%;      /* luminosité de son contour */
+  --font-he: "Noto Serif Hebrew", "SBL Hebrew", "Ezra SIL", serif;
+  --font-gr: "Noto Serif", "Gentium Plus", "SBL Greek", serif;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151514;
+    --surface: #1e1e1c;
+    --ink: #ecebe6;
+    --muted: #a3a29b;
+    --line: #34332f;
+    --accent: #7aa7ec;
+    --error: #ff8b7f;
+    --ok: #6fd18a;
+    --tint-l: 28%;
+    --tint-s: 45%;
+    --edge-l: 62%;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.page { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+header h1 { margin: 0; font-size: 1.6rem; }
+.subtitle { margin: 2px 0 8px; color: var(--muted); }
+h2 { font-size: 1rem; margin: 24px 0 8px; color: var(--muted); font-weight: 600; }
+
+.status { margin: 0 0 16px; font-size: 0.9rem; }
+.status::before { content: "● "; }
+.status.ready { color: var(--ok); }
+.status.loading { color: var(--muted); }
+.status.error, .status.unreachable { color: var(--error); }
+
+/* saisie */
+.form { display: grid; gap: 12px; }
+.field { display: grid; gap: 4px; }
+.label { font-size: 0.85rem; color: var(--muted); }
+textarea, select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+}
+textarea.hebrew { font: 1.35rem/1.6 var(--font-he); }
+textarea.greek { font: 1.15rem/1.6 var(--font-gr); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.inline { display: grid; gap: 4px; min-width: 160px; }
+button {
+  padding: 10px 18px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+button.secondary { background: transparent; color: var(--accent); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.busy, .hint, .meta, .version { color: var(--muted); font-size: 0.9rem; }
+.error { color: var(--error); }
+.notice { padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--surface); }
+
+/* résultat */
+.result { margin-top: 24px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.modes { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.mode { padding: 6px 12px; cursor: pointer; font-size: 0.9rem; }
+.mode input { display: none; }
+.mode.on { background: var(--accent); color: #fff; }
+.legend-sure { border-bottom: 2px solid var(--muted); }
+.legend-probable { border-bottom: 2px dashed var(--muted); }
+
+/* interlinéaire : une case par mot graphique hébreu, de droite à gauche */
+.interlinear { display: flex; flex-wrap: wrap; gap: 10px; }
+.word {
+  display: grid;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-align: center;
+  transition: opacity 0.12s, transform 0.12s, box-shadow 0.12s;
+}
+.word.linked {
+  background: hsl(var(--h) var(--tint-s) var(--tint-l));
+  border-color: hsl(var(--h) 60% var(--edge-l));
+}
+.word .he { font: 1.5rem/1.4 var(--font-he); }
+.word .sep { color: var(--muted); margin: 0 1px; }
+.word .gr { font: 1.05rem/1.4 var(--font-gr); display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+.g.probable { border-bottom: 2px dashed currentColor; }
+.none { color: var(--muted); }
+
+/* texte grec dans son ordre */
+.greek-text { font: 1.25rem/2.2 var(--font-gr); display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+.token { padding: 0 6px; border-radius: 6px; border: 1px solid transparent; transition: opacity 0.12s, box-shadow 0.12s; }
+.token.linked { background: hsl(var(--h) var(--tint-s) var(--tint-l)); border-color: hsl(var(--h) 60% var(--edge-l)); }
+.token.probable { border-style: dashed; }
+.token.unlinked, .word.unlinked { color: var(--muted); font-style: italic; }
+
+/* survol : correspondants surlignés, le reste estompé */
+.hl { box-shadow: 0 0 0 2px var(--ink); transform: translateY(-1px); }
+.dim { opacity: 0.25; }
+
+.limits { margin-top: 32px; color: var(--muted); font-size: 0.9rem; }
+.limits summary { cursor: pointer; }
