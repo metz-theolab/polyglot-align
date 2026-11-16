@@ -6,8 +6,13 @@ CLAUDE.md
 DECISIONS.md
 TODO_gold_clean.md
 TODO.md
-exeperiments/.trash
-results/.trash
+exeperiments/.trash/
+results/.trash/
+presentation/
+decisions-app.md
+
+# journaux des lancements (scripts/run_night.sh)
+logs/
 
 # paquet installé en mode éditable (pip install -e .)
 *.egg-info/

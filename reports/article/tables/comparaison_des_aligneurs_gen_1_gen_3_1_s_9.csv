@@ -1,7 +1,0 @@
-ligne,precision,precision_ecart,rappel_blocs,rappel_blocs_ecart,f1,f1_ecart,nonalign_exactitude,nonalign_exactitude_ecart,versets
-mBERT · mots BHSA,0.7297,,0.5741,,0.6426,,0.75,,82
-XLM-R · mots BHSA,0.6217,,0.442,,0.5167,,0.8088,,82
-Glot500 · mots BHSA,0.8279,,0.6943,,0.7552,,0.875,,82
-Glot500 · mots BHSA · voyelles,0.8495,,0.7561,,0.8001,,0.8015,,82
-eflomal · mots BHSA,0.9886,,0.9695,,0.979,,0.8971,,82
-eflomal · lemmes,0.9838,,0.9653,,0.9745,,0.875,,82

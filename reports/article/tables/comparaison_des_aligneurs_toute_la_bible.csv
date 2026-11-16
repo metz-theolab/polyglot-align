@@ -1,0 +1,11 @@
+ligne,precision,precision_ecart,rappel_blocs,rappel_blocs_ecart,f1,f1_ecart,nonalign_exactitude,nonalign_exactitude_ecart,versets
+mBERT · mots BHSA,0.6631,,0.5206,,0.5833,,0.6831,,22489
+mBERT · mots BHSA · voyelles,0.5127,,0.5031,,0.5079,,0.5834,,22489
+XLM-R · mots BHSA,0.5606,,0.4065,,0.4713,,0.7461,,22489
+XLM-R · mots BHSA · voyelles,0.3454,,0.2399,,0.2831,,0.7188,,22489
+Glot500 · mots BHSA,0.7957,,0.6737,,0.7296,,0.7823,,22489
+Glot500 · mots BHSA · voyelles,0.8142,,0.7235,,0.7662,,0.7596,,22489
+eflomal · mots BHSA,0.974,,0.9304,,0.9517,,0.867,,22489
+eflomal · mots BHSA · voyelles,0.9741,,0.923,,0.9479,,0.866,,22489
+eflomal · mots BHSA (gdfa),0.9396,,0.973,,0.956,,0.6849,,22489
+eflomal · mots BHSA · voyelles (gdfa),0.9358,,0.9704,,0.9528,,0.6712,,22489

@@ -1,0 +1,14 @@
+**Comparaison des aligneurs (toute la Bible)**
+
+| Expérience | Précision | Rappel (blocs) | F1 | Non-alignements | Versets |
+|---|---:|---:|---:|---:|---:|
+| mBERT · mots BHSA | 66.3% | 52.1% | 58.3% | 68.3% | 22489 |
+| mBERT · mots BHSA · voyelles | 51.3% | 50.3% | 50.8% | 58.3% | 22489 |
+| XLM-R · mots BHSA | 56.1% | 40.6% | 47.1% | 74.6% | 22489 |
+| XLM-R · mots BHSA · voyelles | 34.5% | 24.0% | 28.3% | 71.9% | 22489 |
+| Glot500 · mots BHSA | 79.6% | 67.4% | 73.0% | 78.2% | 22489 |
+| Glot500 · mots BHSA · voyelles | 81.4% | 72.4% | 76.6% | 76.0% | 22489 |
+| eflomal · mots BHSA | 97.4% | 93.0% | 95.2% | 86.7% | 22489 |
+| eflomal · mots BHSA · voyelles | 97.4% | 92.3% | 94.8% | 86.6% | 22489 |
+| eflomal · mots BHSA (gdfa) | 94.0% | 97.3% | 95.6% | 68.5% | 22489 |
+| eflomal · mots BHSA · voyelles (gdfa) | 93.6% | 97.0% | 95.3% | 67.1% | 22489 |

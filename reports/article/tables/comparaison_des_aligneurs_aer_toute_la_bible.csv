@@ -1,0 +1,5 @@
+ligne,aer,aer_ecart,aer_precision,aer_precision_ecart,aer_rappel,aer_rappel_ecart,versets
+mBERT · mots BHSA,0.4097,,0.6631,,0.4226,,22489
+XLM-R · mots BHSA,0.5191,,0.5606,,0.3213,,22489
+Glot500 · mots BHSA · voyelles,0.2174,,0.8142,,0.6999,,22489
+eflomal · mots BHSA,0.0351,,0.974,,0.938,,22489

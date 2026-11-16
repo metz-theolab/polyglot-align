@@ -1,0 +1,2734 @@
+{
+ "Gen": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.977,
+     "rappel_blocs": 0.9332,
+     "f1": 0.9546,
+     "nonalign_exactitude": 0.8576,
+     "aer": 0.0331,
+     "aer_precision": 0.977,
+     "aer_rappel": 0.936,
+     "couverture_hb": 0.9948,
+     "couverture_gr": 0.9987
+    },
+    "comptes": {
+     "justes": 22749,
+     "blocs_evaluables": 18417,
+     "blocs_trouves": 17186,
+     "aer_A": 23285,
+     "aer_S": 7562,
+     "aer_AinP": 22749,
+     "aer_AinS": 7078,
+     "tokens_hb": 28209,
+     "tokens_hb_rattaches": 28062,
+     "tokens_gr": 32280,
+     "tokens_gr_rattaches": 32238,
+     "versets": 1518,
+     "nonalign_tokens": 1959,
+     "nonalign_respectes": 1680,
+     "faux": 536,
+     "liens_ignores": 91,
+     "justes_reconstruits": 28
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.946,
+     "rappel_blocs": 0.976,
+     "f1": 0.9608,
+     "nonalign_exactitude": 0.6738,
+     "aer": 0.0494,
+     "aer_precision": 0.946,
+     "aer_rappel": 0.9669,
+     "couverture_hb": 0.9948,
+     "couverture_gr": 0.9987
+    },
+    "comptes": {
+     "justes": 24818,
+     "blocs_evaluables": 18417,
+     "blocs_trouves": 17975,
+     "aer_A": 26236,
+     "aer_S": 7562,
+     "aer_AinP": 24818,
+     "aer_AinS": 7312,
+     "tokens_hb": 28209,
+     "tokens_hb_rattaches": 28062,
+     "tokens_gr": 32280,
+     "tokens_gr_rattaches": 32238,
+     "versets": 1518,
+     "faux": 1418,
+     "nonalign_tokens": 1959,
+     "nonalign_respectes": 1320,
+     "justes_reconstruits": 44,
+     "liens_ignores": 135
+    }
+   }
+  }
+ },
+ "Exod": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9713,
+     "rappel_blocs": 0.9158,
+     "f1": 0.9427,
+     "nonalign_exactitude": 0.8609,
+     "aer": 0.0409,
+     "aer_precision": 0.9713,
+     "aer_rappel": 0.9231,
+     "couverture_hb": 0.9961,
+     "couverture_gr": 0.9975
+    },
+    "comptes": {
+     "justes": 16883,
+     "blocs_evaluables": 13803,
+     "blocs_trouves": 12641,
+     "nonalign_tokens": 2035,
+     "nonalign_respectes": 1752,
+     "aer_A": 17382,
+     "aer_S": 5849,
+     "aer_AinP": 16883,
+     "aer_AinS": 5399,
+     "tokens_hb": 21723,
+     "tokens_hb_rattaches": 21639,
+     "tokens_gr": 23961,
+     "tokens_gr_rattaches": 23902,
+     "versets": 1123,
+     "faux": 499,
+     "liens_ignores": 73,
+     "justes_reconstruits": 46
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9301,
+     "rappel_blocs": 0.9687,
+     "f1": 0.949,
+     "nonalign_exactitude": 0.66,
+     "aer": 0.0624,
+     "aer_precision": 0.9301,
+     "aer_rappel": 0.9634,
+     "couverture_hb": 0.9961,
+     "couverture_gr": 0.9975
+    },
+    "comptes": {
+     "justes": 18661,
+     "blocs_evaluables": 13803,
+     "blocs_trouves": 13371,
+     "nonalign_tokens": 2035,
+     "nonalign_respectes": 1343,
+     "aer_A": 20063,
+     "aer_S": 5849,
+     "aer_AinP": 18661,
+     "aer_AinS": 5635,
+     "tokens_hb": 21723,
+     "tokens_hb_rattaches": 21639,
+     "tokens_gr": 23961,
+     "tokens_gr_rattaches": 23902,
+     "versets": 1123,
+     "faux": 1402,
+     "liens_ignores": 110,
+     "justes_reconstruits": 69
+    }
+   }
+  }
+ },
+ "Lev": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9818,
+     "rappel_blocs": 0.939,
+     "f1": 0.9599,
+     "nonalign_exactitude": 0.8775,
+     "aer": 0.0266,
+     "aer_precision": 0.9818,
+     "aer_rappel": 0.9472,
+     "couverture_hb": 0.9992,
+     "couverture_gr": 0.9984
+    },
+    "comptes": {
+     "justes": 13945,
+     "blocs_evaluables": 10891,
+     "blocs_trouves": 10227,
+     "aer_A": 14204,
+     "aer_S": 4542,
+     "aer_AinP": 13945,
+     "aer_AinS": 4302,
+     "tokens_hb": 16713,
+     "tokens_hb_rattaches": 16699,
+     "tokens_gr": 19032,
+     "tokens_gr_rattaches": 19002,
+     "versets": 857,
+     "faux": 259,
+     "nonalign_tokens": 988,
+     "nonalign_respectes": 867,
+     "justes_reconstruits": 11,
+     "liens_ignores": 26
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9524,
+     "rappel_blocs": 0.9793,
+     "f1": 0.9657,
+     "nonalign_exactitude": 0.6771,
+     "aer": 0.0424,
+     "aer_precision": 0.9524,
+     "aer_rappel": 0.976,
+     "couverture_hb": 0.9992,
+     "couverture_gr": 0.9984
+    },
+    "comptes": {
+     "justes": 15278,
+     "blocs_evaluables": 10891,
+     "blocs_trouves": 10666,
+     "aer_A": 16041,
+     "aer_S": 4542,
+     "aer_AinP": 15278,
+     "aer_AinS": 4433,
+     "tokens_hb": 16713,
+     "tokens_hb_rattaches": 16699,
+     "tokens_gr": 19032,
+     "tokens_gr_rattaches": 19002,
+     "versets": 857,
+     "faux": 763,
+     "nonalign_tokens": 988,
+     "nonalign_respectes": 669,
+     "justes_reconstruits": 17,
+     "liens_ignores": 34
+    }
+   }
+  }
+ },
+ "Num": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9819,
+     "rappel_blocs": 0.9456,
+     "f1": 0.9634,
+     "nonalign_exactitude": 0.8749,
+     "aer": 0.0249,
+     "aer_precision": 0.9819,
+     "aer_rappel": 0.955,
+     "couverture_hb": 0.9985,
+     "couverture_gr": 0.9997
+    },
+    "comptes": {
+     "justes": 19082,
+     "blocs_evaluables": 14828,
+     "blocs_trouves": 14021,
+     "aer_A": 19433,
+     "aer_S": 6559,
+     "aer_AinP": 19082,
+     "aer_AinS": 6264,
+     "tokens_hb": 22642,
+     "tokens_hb_rattaches": 22607,
+     "tokens_gr": 24875,
+     "tokens_gr_rattaches": 24868,
+     "versets": 1279,
+     "faux": 351,
+     "nonalign_tokens": 1327,
+     "nonalign_respectes": 1161,
+     "liens_ignores": 24,
+     "justes_reconstruits": 7
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9561,
+     "rappel_blocs": 0.9838,
+     "f1": 0.9698,
+     "nonalign_exactitude": 0.7008,
+     "aer": 0.0376,
+     "aer_precision": 0.9561,
+     "aer_rappel": 0.9829,
+     "couverture_hb": 0.9985,
+     "couverture_gr": 0.9997
+    },
+    "comptes": {
+     "justes": 20626,
+     "blocs_evaluables": 14828,
+     "blocs_trouves": 14588,
+     "aer_A": 21572,
+     "aer_S": 6559,
+     "aer_AinP": 20626,
+     "aer_AinS": 6447,
+     "tokens_hb": 22642,
+     "tokens_hb_rattaches": 22607,
+     "tokens_gr": 24875,
+     "tokens_gr_rattaches": 24868,
+     "versets": 1279,
+     "faux": 946,
+     "nonalign_tokens": 1327,
+     "nonalign_respectes": 930,
+     "liens_ignores": 29,
+     "justes_reconstruits": 16
+    }
+   }
+  }
+ },
+ "Deut": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9773,
+     "rappel_blocs": 0.931,
+     "f1": 0.9536,
+     "nonalign_exactitude": 0.8553,
+     "aer": 0.0298,
+     "aer_precision": 0.9773,
+     "aer_rappel": 0.9501,
+     "couverture_hb": 0.9993,
+     "couverture_gr": 0.9994
+    },
+    "comptes": {
+     "justes": 16068,
+     "blocs_evaluables": 13175,
+     "blocs_trouves": 12266,
+     "nonalign_tokens": 1320,
+     "nonalign_respectes": 1129,
+     "aer_A": 16441,
+     "aer_S": 5790,
+     "aer_AinP": 16068,
+     "aer_AinS": 5501,
+     "tokens_hb": 19678,
+     "tokens_hb_rattaches": 19665,
+     "tokens_gr": 22829,
+     "tokens_gr_rattaches": 22816,
+     "versets": 953,
+     "faux": 373,
+     "justes_reconstruits": 23,
+     "liens_ignores": 14
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9454,
+     "rappel_blocs": 0.9781,
+     "f1": 0.9615,
+     "nonalign_exactitude": 0.6795,
+     "aer": 0.0471,
+     "aer_precision": 0.9454,
+     "aer_rappel": 0.977,
+     "couverture_hb": 0.9993,
+     "couverture_gr": 0.9994
+    },
+    "comptes": {
+     "justes": 17641,
+     "blocs_evaluables": 13175,
+     "blocs_trouves": 12886,
+     "nonalign_tokens": 1320,
+     "nonalign_respectes": 897,
+     "aer_A": 18660,
+     "aer_S": 5790,
+     "aer_AinP": 17641,
+     "aer_AinS": 5657,
+     "tokens_hb": 19678,
+     "tokens_hb_rattaches": 19665,
+     "tokens_gr": 22829,
+     "tokens_gr_rattaches": 22816,
+     "versets": 953,
+     "faux": 1019,
+     "justes_reconstruits": 30,
+     "liens_ignores": 16
+    }
+   }
+  }
+ },
+ "Josh": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9584,
+     "rappel_blocs": 0.9051,
+     "f1": 0.931,
+     "nonalign_exactitude": 0.8851,
+     "aer": 0.0506,
+     "aer_precision": 0.9584,
+     "aer_rappel": 0.9186,
+     "couverture_hb": 0.9758,
+     "couverture_gr": 0.9577
+    },
+    "comptes": {
+     "justes": 9520,
+     "blocs_evaluables": 7566,
+     "blocs_trouves": 6848,
+     "nonalign_tokens": 2280,
+     "nonalign_respectes": 2018,
+     "aer_A": 9933,
+     "aer_S": 2900,
+     "aer_AinP": 9520,
+     "aer_AinS": 2664,
+     "tokens_hb": 13577,
+     "tokens_hb_rattaches": 13248,
+     "tokens_gr": 14512,
+     "tokens_gr_rattaches": 13898,
+     "versets": 624,
+     "faux": 413,
+     "justes_reconstruits": 13,
+     "liens_ignores": 275
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9071,
+     "rappel_blocs": 0.9585,
+     "f1": 0.9321,
+     "nonalign_exactitude": 0.7004,
+     "aer": 0.0829,
+     "aer_precision": 0.9071,
+     "aer_rappel": 0.9572,
+     "couverture_hb": 0.9758,
+     "couverture_gr": 0.9577
+    },
+    "comptes": {
+     "justes": 10626,
+     "blocs_evaluables": 7566,
+     "blocs_trouves": 7252,
+     "nonalign_tokens": 2280,
+     "nonalign_respectes": 1597,
+     "aer_A": 11714,
+     "aer_S": 2900,
+     "aer_AinP": 10626,
+     "aer_AinS": 2776,
+     "tokens_hb": 13577,
+     "tokens_hb_rattaches": 13248,
+     "tokens_gr": 14512,
+     "tokens_gr_rattaches": 13898,
+     "versets": 624,
+     "faux": 1088,
+     "justes_reconstruits": 15,
+     "liens_ignores": 386
+    }
+   }
+  }
+ },
+ "JoshA": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9543,
+     "rappel_blocs": 0.9209,
+     "f1": 0.9373,
+     "nonalign_exactitude": 0.8395,
+     "aer": 0.0487,
+     "aer_precision": 0.9543,
+     "aer_rappel": 0.9328,
+     "couverture_hb": 0.9947,
+     "couverture_gr": 0.997
+    },
+    "comptes": {
+     "justes": 710,
+     "blocs_evaluables": 493,
+     "blocs_trouves": 454,
+     "aer_A": 744,
+     "aer_S": 119,
+     "aer_AinP": 710,
+     "aer_AinS": 111,
+     "tokens_hb": 949,
+     "tokens_hb_rattaches": 944,
+     "tokens_gr": 1013,
+     "tokens_gr_rattaches": 1010,
+     "versets": 90,
+     "nonalign_tokens": 162,
+     "nonalign_respectes": 136,
+     "faux": 34,
+     "liens_ignores": 5
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9151,
+     "rappel_blocs": 0.9838,
+     "f1": 0.9482,
+     "nonalign_exactitude": 0.6975,
+     "aer": 0.0756,
+     "aer_precision": 0.9151,
+     "aer_rappel": 0.9916,
+     "couverture_hb": 0.9947,
+     "couverture_gr": 0.997
+    },
+    "comptes": {
+     "justes": 787,
+     "blocs_evaluables": 493,
+     "blocs_trouves": 485,
+     "aer_A": 860,
+     "aer_S": 119,
+     "aer_AinP": 787,
+     "aer_AinS": 118,
+     "tokens_hb": 949,
+     "tokens_hb_rattaches": 944,
+     "tokens_gr": 1013,
+     "tokens_gr_rattaches": 1010,
+     "versets": 90,
+     "faux": 73,
+     "nonalign_tokens": 162,
+     "nonalign_respectes": 113,
+     "liens_ignores": 7
+    }
+   }
+  }
+ },
+ "Judg": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9885,
+     "rappel_blocs": 0.9632,
+     "f1": 0.9757,
+     "nonalign_exactitude": 0.8645,
+     "aer": 0.0157,
+     "aer_precision": 0.9885,
+     "aer_rappel": 0.9708,
+     "couverture_hb": 0.9988,
+     "couverture_gr": 0.9997
+    },
+    "comptes": {
+     "justes": 12330,
+     "blocs_evaluables": 9102,
+     "blocs_trouves": 8767,
+     "aer_A": 12474,
+     "aer_S": 3907,
+     "aer_AinP": 12330,
+     "aer_AinS": 3793,
+     "tokens_hb": 13859,
+     "tokens_hb_rattaches": 13843,
+     "tokens_gr": 15543,
+     "tokens_gr_rattaches": 15538,
+     "versets": 615,
+     "nonalign_tokens": 738,
+     "nonalign_respectes": 638,
+     "faux": 144,
+     "justes_reconstruits": 8,
+     "liens_ignores": 12
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9708,
+     "rappel_blocs": 0.9899,
+     "f1": 0.9803,
+     "nonalign_exactitude": 0.706,
+     "aer": 0.0251,
+     "aer_precision": 0.9708,
+     "aer_rappel": 0.989,
+     "couverture_hb": 0.9988,
+     "couverture_gr": 0.9997
+    },
+    "comptes": {
+     "justes": 13049,
+     "blocs_evaluables": 9102,
+     "blocs_trouves": 9010,
+     "aer_A": 13441,
+     "aer_S": 3907,
+     "aer_AinP": 13049,
+     "aer_AinS": 3864,
+     "tokens_hb": 13859,
+     "tokens_hb_rattaches": 13843,
+     "tokens_gr": 15543,
+     "tokens_gr_rattaches": 15538,
+     "versets": 615,
+     "nonalign_tokens": 738,
+     "nonalign_respectes": 521,
+     "faux": 392,
+     "justes_reconstruits": 16,
+     "liens_ignores": 18
+    }
+   }
+  }
+ },
+ "JudgA": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9852,
+     "rappel_blocs": 0.9534,
+     "f1": 0.969,
+     "nonalign_exactitude": 0.8791,
+     "aer": 0.0208,
+     "aer_precision": 0.9852,
+     "aer_rappel": 0.9601,
+     "couverture_hb": 0.9988,
+     "couverture_gr": 0.9999
+    },
+    "comptes": {
+     "justes": 12103,
+     "blocs_evaluables": 9057,
+     "blocs_trouves": 8635,
+     "aer_A": 12285,
+     "aer_S": 3809,
+     "aer_AinP": 12103,
+     "aer_AinS": 3657,
+     "tokens_hb": 13803,
+     "tokens_hb_rattaches": 13787,
+     "tokens_gr": 15827,
+     "tokens_gr_rattaches": 15825,
+     "versets": 612,
+     "nonalign_tokens": 885,
+     "nonalign_respectes": 778,
+     "faux": 182,
+     "justes_reconstruits": 12,
+     "liens_ignores": 9
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9631,
+     "rappel_blocs": 0.9848,
+     "f1": 0.9738,
+     "nonalign_exactitude": 0.7141,
+     "aer": 0.0326,
+     "aer_precision": 0.9631,
+     "aer_rappel": 0.9824,
+     "couverture_hb": 0.9988,
+     "couverture_gr": 0.9999
+    },
+    "comptes": {
+     "justes": 12985,
+     "blocs_evaluables": 9057,
+     "blocs_trouves": 8919,
+     "aer_A": 13482,
+     "aer_S": 3809,
+     "aer_AinP": 12985,
+     "aer_AinS": 3742,
+     "tokens_hb": 13803,
+     "tokens_hb_rattaches": 13787,
+     "tokens_gr": 15827,
+     "tokens_gr_rattaches": 15825,
+     "versets": 612,
+     "nonalign_tokens": 885,
+     "nonalign_respectes": 632,
+     "faux": 497,
+     "justes_reconstruits": 28,
+     "liens_ignores": 12
+    }
+   }
+  }
+ },
+ "Ruth": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9867,
+     "rappel_blocs": 0.9494,
+     "f1": 0.9677,
+     "nonalign_exactitude": 0.819,
+     "aer": 0.0197,
+     "aer_precision": 0.9867,
+     "aer_rappel": 0.9613,
+     "couverture_hb": 0.9983,
+     "couverture_gr": 0.9995
+    },
+    "comptes": {
+     "justes": 1563,
+     "blocs_evaluables": 1225,
+     "blocs_trouves": 1163,
+     "aer_A": 1584,
+     "aer_S": 543,
+     "aer_AinP": 1563,
+     "aer_AinS": 522,
+     "tokens_hb": 1787,
+     "tokens_hb_rattaches": 1784,
+     "tokens_gr": 2072,
+     "tokens_gr_rattaches": 2071,
+     "versets": 85,
+     "nonalign_tokens": 105,
+     "nonalign_respectes": 86,
+     "faux": 21,
+     "justes_reconstruits": 6,
+     "liens_ignores": 3
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9604,
+     "rappel_blocs": 0.9878,
+     "f1": 0.9739,
+     "nonalign_exactitude": 0.6095,
+     "aer": 0.0341,
+     "aer_precision": 0.9604,
+     "aer_rappel": 0.9834,
+     "couverture_hb": 0.9983,
+     "couverture_gr": 0.9995
+    },
+    "comptes": {
+     "justes": 1674,
+     "faux": 69,
+     "blocs_evaluables": 1225,
+     "blocs_trouves": 1210,
+     "aer_A": 1743,
+     "aer_S": 543,
+     "aer_AinP": 1674,
+     "aer_AinS": 534,
+     "tokens_hb": 1787,
+     "tokens_hb_rattaches": 1784,
+     "tokens_gr": 2072,
+     "tokens_gr_rattaches": 2071,
+     "versets": 85,
+     "nonalign_tokens": 105,
+     "nonalign_respectes": 64,
+     "justes_reconstruits": 6,
+     "liens_ignores": 3
+    }
+   }
+  }
+ },
+ "1Sam": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9772,
+     "rappel_blocs": 0.9449,
+     "f1": 0.9608,
+     "nonalign_exactitude": 0.8521,
+     "aer": 0.0304,
+     "aer_precision": 0.9772,
+     "aer_rappel": 0.9458,
+     "couverture_hb": 0.9991,
+     "couverture_gr": 0.9996
+    },
+    "comptes": {
+     "justes": 14673,
+     "blocs_evaluables": 11206,
+     "blocs_trouves": 10588,
+     "nonalign_tokens": 1825,
+     "nonalign_respectes": 1555,
+     "aer_A": 15015,
+     "aer_S": 4817,
+     "aer_AinP": 14673,
+     "aer_AinS": 4556,
+     "tokens_hb": 17413,
+     "tokens_hb_rattaches": 17398,
+     "tokens_gr": 19631,
+     "tokens_gr_rattaches": 19623,
+     "versets": 756,
+     "faux": 342,
+     "justes_reconstruits": 12,
+     "liens_ignores": 14
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9517,
+     "rappel_blocs": 0.9801,
+     "f1": 0.9657,
+     "nonalign_exactitude": 0.7019,
+     "aer": 0.0426,
+     "aer_precision": 0.9517,
+     "aer_rappel": 0.9767,
+     "couverture_hb": 0.9991,
+     "couverture_gr": 0.9996
+    },
+    "comptes": {
+     "justes": 15768,
+     "faux": 800,
+     "blocs_evaluables": 11206,
+     "blocs_trouves": 10983,
+     "nonalign_tokens": 1825,
+     "aer_A": 16568,
+     "aer_S": 4817,
+     "aer_AinP": 15768,
+     "aer_AinS": 4705,
+     "tokens_hb": 17413,
+     "tokens_hb_rattaches": 17398,
+     "tokens_gr": 19631,
+     "tokens_gr_rattaches": 19623,
+     "versets": 756,
+     "nonalign_respectes": 1281,
+     "justes_reconstruits": 22,
+     "liens_ignores": 20
+    }
+   }
+  }
+ },
+ "2Sam": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9864,
+     "rappel_blocs": 0.9628,
+     "f1": 0.9745,
+     "nonalign_exactitude": 0.863,
+     "aer": 0.0172,
+     "aer_precision": 0.9864,
+     "aer_rappel": 0.9713,
+     "couverture_hb": 0.9994,
+     "couverture_gr": 0.9998
+    },
+    "comptes": {
+     "justes": 13531,
+     "blocs_evaluables": 10056,
+     "blocs_trouves": 9682,
+     "aer_A": 13717,
+     "aer_S": 4350,
+     "aer_AinP": 13531,
+     "aer_AinS": 4225,
+     "tokens_hb": 15103,
+     "tokens_hb_rattaches": 15094,
+     "tokens_gr": 17461,
+     "tokens_gr_rattaches": 17458,
+     "versets": 677,
+     "nonalign_tokens": 905,
+     "nonalign_respectes": 781,
+     "faux": 186,
+     "justes_reconstruits": 11,
+     "liens_ignores": 7
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9712,
+     "rappel_blocs": 0.9878,
+     "f1": 0.9794,
+     "nonalign_exactitude": 0.7337,
+     "aer": 0.0255,
+     "aer_precision": 0.9712,
+     "aer_rappel": 0.9857,
+     "couverture_hb": 0.9994,
+     "couverture_gr": 0.9998
+    },
+    "comptes": {
+     "justes": 14276,
+     "blocs_evaluables": 10056,
+     "blocs_trouves": 9933,
+     "aer_A": 14700,
+     "aer_S": 4350,
+     "aer_AinP": 14276,
+     "aer_AinS": 4288,
+     "tokens_hb": 15103,
+     "tokens_hb_rattaches": 15094,
+     "tokens_gr": 17461,
+     "tokens_gr_rattaches": 17458,
+     "versets": 677,
+     "nonalign_tokens": 905,
+     "nonalign_respectes": 664,
+     "faux": 424,
+     "justes_reconstruits": 15,
+     "liens_ignores": 9
+    }
+   }
+  }
+ },
+ "1Kgs": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9752,
+     "rappel_blocs": 0.9459,
+     "f1": 0.9603,
+     "nonalign_exactitude": 0.8996,
+     "aer": 0.0308,
+     "aer_precision": 0.9752,
+     "aer_rappel": 0.9508,
+     "couverture_hb": 0.9989,
+     "couverture_gr": 0.9984
+    },
+    "comptes": {
+     "justes": 13553,
+     "blocs_evaluables": 10366,
+     "blocs_trouves": 9805,
+     "aer_A": 13898,
+     "aer_S": 4555,
+     "aer_AinP": 13553,
+     "aer_AinS": 4331,
+     "tokens_hb": 16655,
+     "tokens_hb_rattaches": 16637,
+     "tokens_gr": 19210,
+     "tokens_gr_rattaches": 19180,
+     "versets": 729,
+     "faux": 345,
+     "nonalign_tokens": 3258,
+     "nonalign_respectes": 2931,
+     "justes_reconstruits": 11,
+     "liens_ignores": 18
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9399,
+     "rappel_blocs": 0.982,
+     "f1": 0.9605,
+     "nonalign_exactitude": 0.76,
+     "aer": 0.0504,
+     "aer_precision": 0.9399,
+     "aer_rappel": 0.9824,
+     "couverture_hb": 0.9989,
+     "couverture_gr": 0.9984
+    },
+    "comptes": {
+     "justes": 14557,
+     "faux": 930,
+     "blocs_evaluables": 10366,
+     "blocs_trouves": 10179,
+     "aer_A": 15487,
+     "aer_S": 4555,
+     "aer_AinP": 14557,
+     "aer_AinS": 4475,
+     "tokens_hb": 16655,
+     "tokens_hb_rattaches": 16637,
+     "tokens_gr": 19210,
+     "tokens_gr_rattaches": 19180,
+     "versets": 729,
+     "nonalign_tokens": 3258,
+     "nonalign_respectes": 2476,
+     "justes_reconstruits": 13,
+     "liens_ignores": 27
+    }
+   }
+  }
+ },
+ "2Kgs": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9903,
+     "rappel_blocs": 0.9705,
+     "f1": 0.9803,
+     "nonalign_exactitude": 0.9226,
+     "aer": 0.013,
+     "aer_precision": 0.9903,
+     "aer_rappel": 0.977,
+     "couverture_hb": 0.999,
+     "couverture_gr": 0.9996
+    },
+    "comptes": {
+     "justes": 15104,
+     "blocs_evaluables": 11130,
+     "blocs_trouves": 10802,
+     "aer_A": 15252,
+     "aer_S": 5044,
+     "aer_AinP": 15104,
+     "aer_AinS": 4928,
+     "tokens_hb": 16990,
+     "tokens_hb_rattaches": 16973,
+     "tokens_gr": 18712,
+     "tokens_gr_rattaches": 18704,
+     "versets": 715,
+     "nonalign_tokens": 1021,
+     "nonalign_respectes": 942,
+     "faux": 148,
+     "liens_ignores": 7,
+     "justes_reconstruits": 3
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9754,
+     "rappel_blocs": 0.9936,
+     "f1": 0.9844,
+     "nonalign_exactitude": 0.7757,
+     "aer": 0.0205,
+     "aer_precision": 0.9754,
+     "aer_rappel": 0.9931,
+     "couverture_hb": 0.999,
+     "couverture_gr": 0.9996
+    },
+    "comptes": {
+     "justes": 15911,
+     "blocs_evaluables": 11130,
+     "blocs_trouves": 11059,
+     "aer_A": 16313,
+     "aer_S": 5044,
+     "aer_AinP": 15911,
+     "aer_AinS": 5009,
+     "tokens_hb": 16990,
+     "tokens_hb_rattaches": 16973,
+     "tokens_gr": 18712,
+     "tokens_gr_rattaches": 18704,
+     "versets": 715,
+     "faux": 402,
+     "nonalign_tokens": 1021,
+     "nonalign_respectes": 792,
+     "liens_ignores": 12,
+     "justes_reconstruits": 5
+    }
+   }
+  }
+ },
+ "1Chr": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9877,
+     "rappel_blocs": 0.9594,
+     "f1": 0.9733,
+     "nonalign_exactitude": 0.8435,
+     "aer": 0.0158,
+     "aer_precision": 0.9877,
+     "aer_rappel": 0.9728,
+     "couverture_hb": 0.9985,
+     "couverture_gr": 0.9996
+    },
+    "comptes": {
+     "justes": 13160,
+     "blocs_evaluables": 9578,
+     "blocs_trouves": 9189,
+     "aer_A": 13324,
+     "aer_S": 4159,
+     "aer_AinP": 13160,
+     "aer_AinS": 4046,
+     "tokens_hb": 15078,
+     "tokens_hb_rattaches": 15055,
+     "tokens_gr": 16136,
+     "tokens_gr_rattaches": 16129,
+     "versets": 923,
+     "nonalign_tokens": 690,
+     "nonalign_respectes": 582,
+     "faux": 164,
+     "liens_ignores": 19,
+     "justes_reconstruits": 15
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9654,
+     "rappel_blocs": 0.9889,
+     "f1": 0.977,
+     "nonalign_exactitude": 0.6507,
+     "aer": 0.0287,
+     "aer_precision": 0.9654,
+     "aer_rappel": 0.9921,
+     "couverture_hb": 0.9985,
+     "couverture_gr": 0.9996
+    },
+    "comptes": {
+     "justes": 13940,
+     "blocs_evaluables": 9578,
+     "blocs_trouves": 9472,
+     "aer_A": 14440,
+     "aer_S": 4159,
+     "aer_AinP": 13940,
+     "aer_AinS": 4126,
+     "tokens_hb": 15078,
+     "tokens_hb_rattaches": 15055,
+     "tokens_gr": 16136,
+     "tokens_gr_rattaches": 16129,
+     "versets": 923,
+     "faux": 500,
+     "nonalign_tokens": 690,
+     "nonalign_respectes": 449,
+     "liens_ignores": 23,
+     "justes_reconstruits": 17
+    }
+   }
+  }
+ },
+ "2Chr": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9791,
+     "rappel_blocs": 0.956,
+     "f1": 0.9674,
+     "nonalign_exactitude": 0.7885,
+     "aer": 0.0239,
+     "aer_precision": 0.9791,
+     "aer_rappel": 0.9658,
+     "couverture_hb": 0.998,
+     "couverture_gr": 0.9871
+    },
+    "comptes": {
+     "justes": 16384,
+     "blocs_evaluables": 11984,
+     "blocs_trouves": 11457,
+     "aer_A": 16733,
+     "aer_S": 4857,
+     "aer_AinP": 16384,
+     "aer_AinS": 4691,
+     "tokens_hb": 19213,
+     "tokens_hb_rattaches": 19175,
+     "tokens_gr": 21117,
+     "tokens_gr_rattaches": 20844,
+     "versets": 811,
+     "faux": 349,
+     "nonalign_tokens": 1149,
+     "nonalign_respectes": 906,
+     "justes_reconstruits": 32,
+     "liens_ignores": 34
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9524,
+     "rappel_blocs": 0.9817,
+     "f1": 0.9668,
+     "nonalign_exactitude": 0.5614,
+     "aer": 0.0412,
+     "aer_precision": 0.9524,
+     "aer_rappel": 0.9829,
+     "couverture_hb": 0.998,
+     "couverture_gr": 0.9871
+    },
+    "comptes": {
+     "justes": 17431,
+     "blocs_evaluables": 11984,
+     "blocs_trouves": 11765,
+     "aer_A": 18302,
+     "aer_S": 4857,
+     "aer_AinP": 17431,
+     "aer_AinS": 4774,
+     "tokens_hb": 19213,
+     "tokens_hb_rattaches": 19175,
+     "tokens_gr": 21117,
+     "tokens_gr_rattaches": 20844,
+     "versets": 811,
+     "faux": 871,
+     "nonalign_tokens": 1149,
+     "nonalign_respectes": 645,
+     "justes_reconstruits": 41,
+     "liens_ignores": 56
+    }
+   }
+  }
+ },
+ "Esth": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.8606,
+     "rappel_blocs": 0.7159,
+     "f1": 0.7816,
+     "nonalign_exactitude": 0.9176,
+     "aer": 0.1752,
+     "aer_precision": 0.8606,
+     "aer_rappel": 0.6972,
+     "couverture_hb": 0.9934,
+     "couverture_gr": 0.9919
+    },
+    "comptes": {
+     "justes": 1840,
+     "faux": 298,
+     "blocs_evaluables": 1883,
+     "blocs_trouves": 1348,
+     "nonalign_tokens": 3363,
+     "nonalign_respectes": 3086,
+     "aer_A": 2138,
+     "aer_S": 601,
+     "aer_AinP": 1840,
+     "aer_AinS": 419,
+     "tokens_hb": 4246,
+     "tokens_hb_rattaches": 4218,
+     "tokens_gr": 5672,
+     "tokens_gr_rattaches": 5626,
+     "versets": 156,
+     "liens_ignores": 22,
+     "justes_reconstruits": 4
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.7073,
+     "rappel_blocs": 0.8332,
+     "f1": 0.7651,
+     "nonalign_exactitude": 0.7696,
+     "aer": 0.2766,
+     "aer_precision": 0.7073,
+     "aer_rappel": 0.8103,
+     "couverture_hb": 0.9934,
+     "couverture_gr": 0.9919
+    },
+    "comptes": {
+     "faux": 953,
+     "justes": 2303,
+     "blocs_evaluables": 1883,
+     "blocs_trouves": 1569,
+     "nonalign_tokens": 3363,
+     "nonalign_respectes": 2588,
+     "aer_A": 3256,
+     "aer_S": 601,
+     "aer_AinP": 2303,
+     "aer_AinS": 487,
+     "tokens_hb": 4246,
+     "tokens_hb_rattaches": 4218,
+     "tokens_gr": 5672,
+     "tokens_gr_rattaches": 5626,
+     "versets": 156,
+     "liens_ignores": 52,
+     "justes_reconstruits": 11
+    }
+   }
+  }
+ },
+ "Job": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.919,
+     "rappel_blocs": 0.7677,
+     "f1": 0.8366,
+     "nonalign_exactitude": 0.8195,
+     "aer": 0.1238,
+     "aer_precision": 0.919,
+     "aer_rappel": 0.7863,
+     "couverture_hb": 0.9993,
+     "couverture_gr": 0.9901
+    },
+    "comptes": {
+     "justes": 6494,
+     "faux": 572,
+     "justes_reconstruits": 25,
+     "blocs_evaluables": 7189,
+     "blocs_trouves": 5519,
+     "nonalign_tokens": 1662,
+     "nonalign_respectes": 1362,
+     "aer_A": 7066,
+     "aer_S": 3364,
+     "aer_AinP": 6494,
+     "aer_AinS": 2645,
+     "tokens_hb": 10327,
+     "tokens_hb_rattaches": 10320,
+     "tokens_gr": 13078,
+     "tokens_gr_rattaches": 12949,
+     "versets": 1029,
+     "liens_ignores": 50
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.8131,
+     "rappel_blocs": 0.8805,
+     "f1": 0.8455,
+     "nonalign_exactitude": 0.5439,
+     "aer": 0.1725,
+     "aer_precision": 0.8131,
+     "aer_rappel": 0.8686,
+     "couverture_hb": 0.9993,
+     "couverture_gr": 0.9901
+    },
+    "comptes": {
+     "justes": 7840,
+     "faux": 1802,
+     "justes_reconstruits": 33,
+     "blocs_evaluables": 7189,
+     "blocs_trouves": 6330,
+     "nonalign_tokens": 1662,
+     "nonalign_respectes": 904,
+     "aer_A": 9642,
+     "aer_S": 3364,
+     "aer_AinP": 7840,
+     "aer_AinS": 2922,
+     "tokens_hb": 10327,
+     "tokens_hb_rattaches": 10320,
+     "tokens_gr": 13078,
+     "tokens_gr_rattaches": 12949,
+     "versets": 1029,
+     "liens_ignores": 84
+    }
+   }
+  }
+ },
+ "Ps": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9915,
+     "rappel_blocs": 0.9555,
+     "f1": 0.9732,
+     "nonalign_exactitude": 0.9334,
+     "aer": 0.0152,
+     "aer_precision": 0.9915,
+     "aer_rappel": 0.9669,
+     "couverture_hb": 0.999,
+     "couverture_gr": 0.9977
+    },
+    "comptes": {
+     "justes": 21586,
+     "blocs_evaluables": 18069,
+     "blocs_trouves": 17265,
+     "aer_A": 21771,
+     "aer_S": 8210,
+     "aer_AinP": 21586,
+     "aer_AinS": 7938,
+     "tokens_hb": 23542,
+     "tokens_hb_rattaches": 23518,
+     "tokens_gr": 32938,
+     "tokens_gr_rattaches": 32861,
+     "versets": 2390,
+     "nonalign_tokens": 901,
+     "nonalign_respectes": 841,
+     "faux": 185,
+     "liens_ignores": 24
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9765,
+     "rappel_blocs": 0.9872,
+     "f1": 0.9818,
+     "nonalign_exactitude": 0.8224,
+     "aer": 0.021,
+     "aer_precision": 0.9765,
+     "aer_rappel": 0.9861,
+     "couverture_hb": 0.999,
+     "couverture_gr": 0.9977
+    },
+    "comptes": {
+     "justes": 23160,
+     "blocs_evaluables": 18069,
+     "blocs_trouves": 17837,
+     "aer_A": 23718,
+     "aer_S": 8210,
+     "aer_AinP": 23160,
+     "aer_AinS": 8096,
+     "tokens_hb": 23542,
+     "tokens_hb_rattaches": 23518,
+     "tokens_gr": 32938,
+     "tokens_gr_rattaches": 32861,
+     "versets": 2390,
+     "faux": 558,
+     "nonalign_tokens": 901,
+     "nonalign_respectes": 741,
+     "liens_ignores": 33
+    }
+   }
+  }
+ },
+ "Prov": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9331,
+     "rappel_blocs": 0.7817,
+     "f1": 0.8507,
+     "nonalign_exactitude": 0.8694,
+     "aer": 0.11,
+     "aer_precision": 0.9331,
+     "aer_rappel": 0.813,
+     "couverture_hb": 0.9984,
+     "couverture_gr": 0.9943
+    },
+    "comptes": {
+     "justes": 4466,
+     "blocs_evaluables": 4970,
+     "blocs_trouves": 3885,
+     "nonalign_tokens": 1302,
+     "nonalign_respectes": 1132,
+     "aer_A": 4786,
+     "aer_S": 2684,
+     "aer_AinP": 4466,
+     "aer_AinS": 2182,
+     "tokens_hb": 6754,
+     "tokens_hb_rattaches": 6743,
+     "tokens_gr": 8950,
+     "tokens_gr_rattaches": 8899,
+     "versets": 717,
+     "liens_ignores": 24,
+     "faux": 320,
+     "justes_reconstruits": 41
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.831,
+     "rappel_blocs": 0.905,
+     "f1": 0.8664,
+     "nonalign_exactitude": 0.6636,
+     "aer": 0.1458,
+     "aer_precision": 0.831,
+     "aer_rappel": 0.9117,
+     "couverture_hb": 0.9984,
+     "couverture_gr": 0.9943
+    },
+    "comptes": {
+     "justes": 5521,
+     "blocs_evaluables": 4970,
+     "blocs_trouves": 4498,
+     "nonalign_tokens": 1302,
+     "nonalign_respectes": 864,
+     "aer_A": 6644,
+     "aer_S": 2684,
+     "aer_AinP": 5521,
+     "aer_AinS": 2447,
+     "tokens_hb": 6754,
+     "tokens_hb_rattaches": 6743,
+     "tokens_gr": 8950,
+     "tokens_gr_rattaches": 8899,
+     "versets": 717,
+     "faux": 1123,
+     "liens_ignores": 33,
+     "justes_reconstruits": 56
+    }
+   }
+  }
+ },
+ "Eccl": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9968,
+     "rappel_blocs": 0.9831,
+     "f1": 0.9899,
+     "nonalign_exactitude": 0.6818,
+     "aer": 0.0058,
+     "aer_precision": 0.9968,
+     "aer_rappel": 0.9874,
+     "couverture_hb": 0.9836,
+     "couverture_gr": 0.9998
+    },
+    "comptes": {
+     "justes": 3736,
+     "blocs_evaluables": 2776,
+     "blocs_trouves": 2729,
+     "nonalign_tokens": 22,
+     "nonalign_respectes": 15,
+     "aer_A": 3748,
+     "aer_S": 1432,
+     "aer_AinP": 3736,
+     "aer_AinS": 1414,
+     "tokens_hb": 3961,
+     "tokens_hb_rattaches": 3896,
+     "tokens_gr": 4347,
+     "tokens_gr_rattaches": 4346,
+     "versets": 210,
+     "liens_ignores": 48,
+     "faux": 12,
+     "justes_reconstruits": 1
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9935,
+     "rappel_blocs": 0.9968,
+     "f1": 0.9951,
+     "nonalign_exactitude": 0.4545,
+     "aer": 0.0059,
+     "aer_precision": 0.9935,
+     "aer_rappel": 0.9958,
+     "couverture_hb": 0.9836,
+     "couverture_gr": 0.9998
+    },
+    "comptes": {
+     "justes": 3842,
+     "blocs_evaluables": 2776,
+     "blocs_trouves": 2767,
+     "nonalign_tokens": 22,
+     "nonalign_respectes": 10,
+     "aer_A": 3867,
+     "aer_S": 1432,
+     "aer_AinP": 3842,
+     "aer_AinS": 1426,
+     "tokens_hb": 3961,
+     "tokens_hb_rattaches": 3896,
+     "tokens_gr": 4347,
+     "tokens_gr_rattaches": 4346,
+     "versets": 210,
+     "liens_ignores": 63,
+     "faux": 25,
+     "justes_reconstruits": 2
+    }
+   }
+  }
+ },
+ "Song": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9862,
+     "rappel_blocs": 0.9611,
+     "f1": 0.9735,
+     "nonalign_exactitude": 0.9241,
+     "aer": 0.0194,
+     "aer_precision": 0.9862,
+     "aer_rappel": 0.966,
+     "couverture_hb": 0.9793,
+     "couverture_gr": 0.9995
+    },
+    "comptes": {
+     "justes": 1430,
+     "blocs_evaluables": 1184,
+     "blocs_trouves": 1138,
+     "aer_A": 1450,
+     "aer_S": 559,
+     "aer_AinP": 1430,
+     "aer_AinS": 540,
+     "tokens_hb": 1594,
+     "tokens_hb_rattaches": 1561,
+     "tokens_gr": 1973,
+     "tokens_gr_rattaches": 1972,
+     "versets": 115,
+     "faux": 20,
+     "nonalign_tokens": 79,
+     "nonalign_respectes": 73,
+     "liens_ignores": 28
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9715,
+     "rappel_blocs": 0.9873,
+     "f1": 0.9793,
+     "nonalign_exactitude": 0.7468,
+     "aer": 0.0248,
+     "aer_precision": 0.9715,
+     "aer_rappel": 0.9857,
+     "couverture_hb": 0.9793,
+     "couverture_gr": 0.9995
+    },
+    "comptes": {
+     "justes": 1498,
+     "blocs_evaluables": 1184,
+     "blocs_trouves": 1169,
+     "aer_A": 1542,
+     "aer_S": 559,
+     "aer_AinP": 1498,
+     "aer_AinS": 551,
+     "tokens_hb": 1594,
+     "tokens_hb_rattaches": 1561,
+     "tokens_gr": 1973,
+     "tokens_gr_rattaches": 1972,
+     "versets": 115,
+     "faux": 44,
+     "nonalign_tokens": 79,
+     "nonalign_respectes": 59,
+     "liens_ignores": 33
+    }
+   }
+  }
+ },
+ "Isa": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9437,
+     "rappel_blocs": 0.8495,
+     "f1": 0.8941,
+     "nonalign_exactitude": 0.8128,
+     "aer": 0.0796,
+     "aer_precision": 0.9437,
+     "aer_rappel": 0.8599,
+     "couverture_hb": 0.9969,
+     "couverture_gr": 0.994
+    },
+    "comptes": {
+     "justes": 15379,
+     "blocs_evaluables": 14329,
+     "blocs_trouves": 12173,
+     "nonalign_tokens": 2554,
+     "nonalign_respectes": 2076,
+     "aer_A": 16296,
+     "aer_S": 6283,
+     "aer_AinP": 15379,
+     "aer_AinS": 5403,
+     "tokens_hb": 21531,
+     "tokens_hb_rattaches": 21464,
+     "tokens_gr": 25914,
+     "tokens_gr_rattaches": 25759,
+     "versets": 1233,
+     "faux": 917,
+     "liens_ignores": 104,
+     "justes_reconstruits": 32
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.8723,
+     "rappel_blocs": 0.928,
+     "f1": 0.8993,
+     "nonalign_exactitude": 0.563,
+     "aer": 0.1148,
+     "aer_precision": 0.8723,
+     "aer_rappel": 0.9268,
+     "couverture_hb": 0.9969,
+     "couverture_gr": 0.994
+    },
+    "comptes": {
+     "justes": 17665,
+     "blocs_evaluables": 14329,
+     "blocs_trouves": 13298,
+     "nonalign_tokens": 2554,
+     "nonalign_respectes": 1438,
+     "aer_A": 20250,
+     "aer_S": 6283,
+     "aer_AinP": 17665,
+     "aer_AinS": 5823,
+     "tokens_hb": 21531,
+     "tokens_hb_rattaches": 21464,
+     "tokens_gr": 25914,
+     "tokens_gr_rattaches": 25759,
+     "versets": 1233,
+     "faux": 2585,
+     "liens_ignores": 168,
+     "justes_reconstruits": 51
+    }
+   }
+  }
+ },
+ "Jer": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.971,
+     "rappel_blocs": 0.9321,
+     "f1": 0.9512,
+     "nonalign_exactitude": 0.8592,
+     "aer": 0.0347,
+     "aer_precision": 0.971,
+     "aer_rappel": 0.951,
+     "couverture_hb": 0.9999,
+     "couverture_gr": 0.9991
+    },
+    "comptes": {
+     "justes": 20566,
+     "blocs_evaluables": 16973,
+     "blocs_trouves": 15820,
+     "nonalign_tokens": 3508,
+     "nonalign_respectes": 3014,
+     "aer_A": 21180,
+     "aer_S": 8343,
+     "aer_AinP": 20566,
+     "aer_AinS": 7934,
+     "tokens_hb": 26694,
+     "tokens_hb_rattaches": 26690,
+     "tokens_gr": 27751,
+     "tokens_gr_rattaches": 27727,
+     "versets": 1244,
+     "liens_ignores": 18,
+     "faux": 614,
+     "justes_reconstruits": 8
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9338,
+     "rappel_blocs": 0.9767,
+     "f1": 0.9548,
+     "nonalign_exactitude": 0.6918,
+     "aer": 0.054,
+     "aer_precision": 0.9338,
+     "aer_rappel": 0.9814,
+     "couverture_hb": 0.9999,
+     "couverture_gr": 0.9991
+    },
+    "comptes": {
+     "justes": 22460,
+     "faux": 1593,
+     "blocs_evaluables": 16973,
+     "blocs_trouves": 16578,
+     "nonalign_tokens": 3508,
+     "nonalign_respectes": 2427,
+     "aer_A": 24053,
+     "aer_S": 8343,
+     "aer_AinP": 22460,
+     "aer_AinS": 8188,
+     "tokens_hb": 26694,
+     "tokens_hb_rattaches": 26690,
+     "tokens_gr": 27751,
+     "tokens_gr_rattaches": 27727,
+     "versets": 1244,
+     "liens_ignores": 21,
+     "justes_reconstruits": 18
+    }
+   }
+  }
+ },
+ "Lam": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9369,
+     "rappel_blocs": 0.9231,
+     "f1": 0.9299,
+     "nonalign_exactitude": 0.7959,
+     "aer": 0.0593,
+     "aer_precision": 0.9369,
+     "aer_rappel": 0.9493,
+     "couverture_hb": 0.8625,
+     "couverture_gr": 0.8684
+    },
+    "comptes": {
+     "liens_ignores": 291,
+     "nonalign_tokens": 49,
+     "nonalign_respectes": 39,
+     "tokens_hb": 1796,
+     "tokens_gr": 2272,
+     "tokens_gr_rattaches": 1973,
+     "versets": 144,
+     "faux": 87,
+     "justes": 1292,
+     "blocs_evaluables": 1158,
+     "blocs_trouves": 1069,
+     "aer_A": 1379,
+     "aer_AinP": 1292,
+     "tokens_hb_rattaches": 1549,
+     "aer_S": 612,
+     "aer_AinS": 581,
+     "justes_reconstruits": 1
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9207,
+     "rappel_blocs": 0.9508,
+     "f1": 0.9355,
+     "nonalign_exactitude": 0.6531,
+     "aer": 0.067,
+     "aer_precision": 0.9207,
+     "aer_rappel": 0.9624,
+     "couverture_hb": 0.8625,
+     "couverture_gr": 0.8684
+    },
+    "comptes": {
+     "liens_ignores": 312,
+     "nonalign_tokens": 49,
+     "nonalign_respectes": 32,
+     "tokens_hb": 1796,
+     "tokens_gr": 2272,
+     "tokens_gr_rattaches": 1973,
+     "versets": 144,
+     "faux": 117,
+     "justes": 1359,
+     "blocs_evaluables": 1158,
+     "blocs_trouves": 1101,
+     "aer_A": 1476,
+     "aer_AinP": 1359,
+     "tokens_hb_rattaches": 1549,
+     "aer_S": 612,
+     "aer_AinS": 589,
+     "justes_reconstruits": 1
+    }
+   }
+  }
+ },
+ "Ezek": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9636,
+     "rappel_blocs": 0.9031,
+     "f1": 0.9324,
+     "nonalign_exactitude": 0.8256,
+     "aer": 0.0493,
+     "aer_precision": 0.9636,
+     "aer_rappel": 0.912,
+     "couverture_hb": 0.9992,
+     "couverture_gr": 0.9993
+    },
+    "comptes": {
+     "justes": 19586,
+     "faux": 739,
+     "blocs_evaluables": 16080,
+     "blocs_trouves": 14522,
+     "nonalign_tokens": 2322,
+     "nonalign_respectes": 1917,
+     "aer_A": 20325,
+     "aer_S": 6785,
+     "aer_AinP": 19586,
+     "aer_AinS": 6188,
+     "tokens_hb": 24768,
+     "tokens_hb_rattaches": 24748,
+     "tokens_gr": 28637,
+     "tokens_gr_rattaches": 28616,
+     "versets": 1222,
+     "liens_ignores": 17,
+     "justes_reconstruits": 30
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.925,
+     "rappel_blocs": 0.9654,
+     "f1": 0.9448,
+     "nonalign_exactitude": 0.5999,
+     "aer": 0.0679,
+     "aer_precision": 0.925,
+     "aer_rappel": 0.9567,
+     "couverture_hb": 0.9992,
+     "couverture_gr": 0.9993
+    },
+    "comptes": {
+     "justes": 21964,
+     "faux": 1780,
+     "blocs_evaluables": 16080,
+     "blocs_trouves": 15523,
+     "nonalign_tokens": 2322,
+     "aer_A": 23744,
+     "aer_S": 6785,
+     "aer_AinP": 21964,
+     "aer_AinS": 6491,
+     "tokens_hb": 24768,
+     "tokens_hb_rattaches": 24748,
+     "tokens_gr": 28637,
+     "tokens_gr_rattaches": 28616,
+     "versets": 1222,
+     "nonalign_respectes": 1393,
+     "liens_ignores": 28,
+     "justes_reconstruits": 45
+    }
+   }
+  }
+ },
+ "Dan": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9029,
+     "rappel_blocs": 0.7562,
+     "f1": 0.8231,
+     "nonalign_exactitude": 0.8694,
+     "aer": 0.1344,
+     "aer_precision": 0.9029,
+     "aer_rappel": 0.7591,
+     "couverture_hb": 0.9975,
+     "couverture_gr": 0.9968
+    },
+    "comptes": {
+     "justes": 3888,
+     "faux": 418,
+     "blocs_evaluables": 3934,
+     "blocs_trouves": 2975,
+     "nonalign_tokens": 2810,
+     "nonalign_respectes": 2443,
+     "aer_A": 4306,
+     "aer_S": 1511,
+     "aer_AinP": 3888,
+     "aer_AinS": 1147,
+     "tokens_hb": 7148,
+     "tokens_hb_rattaches": 7130,
+     "tokens_gr": 8424,
+     "tokens_gr_rattaches": 8397,
+     "versets": 322,
+     "liens_ignores": 17,
+     "justes_reconstruits": 12
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.7461,
+     "rappel_blocs": 0.8765,
+     "f1": 0.8061,
+     "nonalign_exactitude": 0.5206,
+     "aer": 0.2313,
+     "aer_precision": 0.7461,
+     "aer_rappel": 0.8643,
+     "couverture_hb": 0.9975,
+     "couverture_gr": 0.9968
+    },
+    "comptes": {
+     "justes": 4754,
+     "faux": 1618,
+     "blocs_evaluables": 3934,
+     "blocs_trouves": 3448,
+     "nonalign_tokens": 2810,
+     "nonalign_respectes": 1463,
+     "aer_A": 6372,
+     "aer_S": 1511,
+     "aer_AinP": 4754,
+     "aer_AinS": 1306,
+     "tokens_hb": 7148,
+     "tokens_hb_rattaches": 7130,
+     "tokens_gr": 8424,
+     "tokens_gr_rattaches": 8397,
+     "versets": 322,
+     "liens_ignores": 27,
+     "justes_reconstruits": 15
+    }
+   }
+  }
+ },
+ "DanTh": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9748,
+     "rappel_blocs": 0.8473,
+     "f1": 0.9066,
+     "nonalign_exactitude": 0.8703,
+     "aer": 0.0618,
+     "aer_precision": 0.9748,
+     "aer_rappel": 0.8399,
+     "couverture_hb": 0.9987,
+     "couverture_gr": 0.9998
+    },
+    "comptes": {
+     "justes": 5950,
+     "blocs_evaluables": 5246,
+     "blocs_trouves": 4445,
+     "nonalign_tokens": 401,
+     "nonalign_respectes": 349,
+     "aer_A": 6104,
+     "aer_S": 2268,
+     "aer_AinP": 5950,
+     "aer_AinS": 1905,
+     "tokens_hb": 7789,
+     "tokens_hb_rattaches": 7779,
+     "tokens_gr": 9068,
+     "tokens_gr_rattaches": 9066,
+     "versets": 347,
+     "faux": 154,
+     "justes_reconstruits": 3,
+     "liens_ignores": 8
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.916,
+     "rappel_blocs": 0.9501,
+     "f1": 0.9327,
+     "nonalign_exactitude": 0.581,
+     "aer": 0.0787,
+     "aer_precision": 0.916,
+     "aer_rappel": 0.9392,
+     "couverture_hb": 0.9987,
+     "couverture_gr": 0.9998
+    },
+    "comptes": {
+     "justes": 6910,
+     "blocs_evaluables": 5246,
+     "blocs_trouves": 4984,
+     "nonalign_tokens": 401,
+     "nonalign_respectes": 233,
+     "aer_A": 7544,
+     "aer_S": 2268,
+     "aer_AinP": 6910,
+     "aer_AinS": 2130,
+     "tokens_hb": 7789,
+     "tokens_hb_rattaches": 7779,
+     "tokens_gr": 9068,
+     "tokens_gr_rattaches": 9066,
+     "versets": 347,
+     "faux": 634,
+     "justes_reconstruits": 4,
+     "liens_ignores": 12
+    }
+   }
+  }
+ },
+ "Hos": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9894,
+     "rappel_blocs": 0.9355,
+     "f1": 0.9617,
+     "nonalign_exactitude": 0.9397,
+     "aer": 0.0236,
+     "aer_precision": 0.9894,
+     "aer_rappel": 0.9444,
+     "couverture_hb": 0.9997,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 2614,
+     "blocs_evaluables": 2155,
+     "blocs_trouves": 2016,
+     "aer_A": 2642,
+     "aer_S": 1079,
+     "aer_AinP": 2614,
+     "aer_AinS": 1019,
+     "tokens_hb": 2913,
+     "tokens_hb_rattaches": 2912,
+     "tokens_gr": 3718,
+     "tokens_gr_rattaches": 3718,
+     "versets": 185,
+     "faux": 28,
+     "nonalign_tokens": 116,
+     "nonalign_respectes": 109,
+     "liens_ignores": 1
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9679,
+     "rappel_blocs": 0.981,
+     "f1": 0.9744,
+     "nonalign_exactitude": 0.7845,
+     "aer": 0.029,
+     "aer_precision": 0.9679,
+     "aer_rappel": 0.9796,
+     "couverture_hb": 0.9997,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 2830,
+     "blocs_evaluables": 2155,
+     "blocs_trouves": 2114,
+     "aer_A": 2924,
+     "aer_S": 1079,
+     "aer_AinP": 2830,
+     "aer_AinS": 1057,
+     "tokens_hb": 2913,
+     "tokens_hb_rattaches": 2912,
+     "tokens_gr": 3718,
+     "tokens_gr_rattaches": 3718,
+     "versets": 185,
+     "faux": 94,
+     "nonalign_tokens": 116,
+     "nonalign_respectes": 91,
+     "liens_ignores": 1
+    }
+   }
+  }
+ },
+ "Joel": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9942,
+     "rappel_blocs": 0.9621,
+     "f1": 0.9779,
+     "nonalign_exactitude": 0.9091,
+     "aer": 0.0115,
+     "aer_precision": 0.9942,
+     "aer_rappel": 0.9737,
+     "couverture_hb": 0.9931,
+     "couverture_gr": 0.993
+    },
+    "comptes": {
+     "justes": 1190,
+     "blocs_evaluables": 924,
+     "blocs_trouves": 889,
+     "aer_A": 1197,
+     "aer_S": 457,
+     "aer_AinP": 1190,
+     "aer_AinS": 445,
+     "tokens_hb": 1297,
+     "tokens_hb_rattaches": 1288,
+     "tokens_gr": 1580,
+     "tokens_gr_rattaches": 1569,
+     "versets": 73,
+     "nonalign_tokens": 33,
+     "nonalign_respectes": 30,
+     "faux": 7,
+     "liens_ignores": 7
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9869,
+     "rappel_blocs": 0.9968,
+     "f1": 0.9918,
+     "nonalign_exactitude": 0.8485,
+     "aer": 0.0103,
+     "aer_precision": 0.9869,
+     "aer_rappel": 0.9978,
+     "couverture_hb": 0.9931,
+     "couverture_gr": 0.993
+    },
+    "comptes": {
+     "justes": 1278,
+     "blocs_evaluables": 924,
+     "blocs_trouves": 921,
+     "aer_A": 1295,
+     "aer_S": 457,
+     "aer_AinP": 1278,
+     "aer_AinS": 456,
+     "tokens_hb": 1297,
+     "tokens_hb_rattaches": 1288,
+     "tokens_gr": 1580,
+     "tokens_gr_rattaches": 1569,
+     "versets": 73,
+     "faux": 17,
+     "nonalign_tokens": 33,
+     "nonalign_respectes": 28,
+     "liens_ignores": 8
+    }
+   }
+  }
+ },
+ "Amos": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9904,
+     "rappel_blocs": 0.9418,
+     "f1": 0.9655,
+     "nonalign_exactitude": 0.9651,
+     "aer": 0.018,
+     "aer_precision": 0.9904,
+     "aer_rappel": 0.9591,
+     "couverture_hb": 0.9993,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 2365,
+     "blocs_evaluables": 1908,
+     "blocs_trouves": 1797,
+     "aer_A": 2388,
+     "aer_S": 881,
+     "aer_AinP": 2365,
+     "aer_AinS": 845,
+     "tokens_hb": 2695,
+     "tokens_hb_rattaches": 2693,
+     "tokens_gr": 3167,
+     "tokens_gr_rattaches": 3167,
+     "versets": 144,
+     "nonalign_tokens": 86,
+     "nonalign_respectes": 83,
+     "faux": 23,
+     "liens_ignores": 1
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9706,
+     "rappel_blocs": 0.9921,
+     "f1": 0.9812,
+     "nonalign_exactitude": 0.7674,
+     "aer": 0.0241,
+     "aer_precision": 0.9706,
+     "aer_rappel": 0.9921,
+     "couverture_hb": 0.9993,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 2607,
+     "faux": 79,
+     "blocs_evaluables": 1908,
+     "blocs_trouves": 1893,
+     "aer_A": 2686,
+     "aer_S": 881,
+     "aer_AinP": 2607,
+     "aer_AinS": 874,
+     "tokens_hb": 2695,
+     "tokens_hb_rattaches": 2693,
+     "tokens_gr": 3167,
+     "tokens_gr_rattaches": 3167,
+     "versets": 144,
+     "nonalign_tokens": 86,
+     "nonalign_respectes": 66,
+     "liens_ignores": 1,
+     "justes_reconstruits": 1
+    }
+   }
+  }
+ },
+ "Jonah": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9952,
+     "rappel_blocs": 0.9474,
+     "f1": 0.9707,
+     "nonalign_exactitude": 0.92,
+     "aer": 0.0128,
+     "aer_precision": 0.9952,
+     "aer_rappel": 0.9624,
+     "couverture_hb": 0.9926,
+     "couverture_gr": 0.9991
+    },
+    "comptes": {
+     "justes": 827,
+     "blocs_evaluables": 627,
+     "blocs_trouves": 594,
+     "aer_A": 831,
+     "aer_S": 266,
+     "aer_AinP": 827,
+     "aer_AinS": 256,
+     "tokens_hb": 950,
+     "tokens_hb_rattaches": 943,
+     "tokens_gr": 1056,
+     "tokens_gr_rattaches": 1055,
+     "versets": 46,
+     "nonalign_tokens": 25,
+     "nonalign_respectes": 23,
+     "faux": 4,
+     "liens_ignores": 3
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9702,
+     "rappel_blocs": 0.9968,
+     "f1": 0.9833,
+     "nonalign_exactitude": 0.68,
+     "aer": 0.0249,
+     "aer_precision": 0.9702,
+     "aer_rappel": 0.9925,
+     "couverture_hb": 0.9926,
+     "couverture_gr": 0.9991
+    },
+    "comptes": {
+     "justes": 911,
+     "blocs_evaluables": 627,
+     "blocs_trouves": 625,
+     "aer_A": 939,
+     "aer_S": 266,
+     "aer_AinP": 911,
+     "aer_AinS": 264,
+     "tokens_hb": 950,
+     "tokens_hb_rattaches": 943,
+     "tokens_gr": 1056,
+     "tokens_gr_rattaches": 1055,
+     "versets": 46,
+     "faux": 28,
+     "nonalign_tokens": 25,
+     "nonalign_respectes": 17,
+     "liens_ignores": 6
+    }
+   }
+  }
+ },
+ "Mic": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9818,
+     "rappel_blocs": 0.9337,
+     "f1": 0.9571,
+     "nonalign_exactitude": 0.8197,
+     "aer": 0.0331,
+     "aer_precision": 0.9818,
+     "aer_rappel": 0.9253,
+     "couverture_hb": 0.9977,
+     "couverture_gr": 0.9995
+    },
+    "comptes": {
+     "faux": 28,
+     "justes": 1508,
+     "blocs_evaluables": 1236,
+     "blocs_trouves": 1154,
+     "aer_A": 1536,
+     "aer_S": 549,
+     "aer_AinP": 1508,
+     "aer_AinS": 508,
+     "tokens_hb": 1703,
+     "tokens_hb_rattaches": 1699,
+     "tokens_gr": 2166,
+     "tokens_gr_rattaches": 2165,
+     "versets": 95,
+     "liens_ignores": 1,
+     "justes_reconstruits": 1,
+     "nonalign_tokens": 61,
+     "nonalign_respectes": 50
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9604,
+     "rappel_blocs": 0.9741,
+     "f1": 0.9672,
+     "nonalign_exactitude": 0.7213,
+     "aer": 0.0388,
+     "aer_precision": 0.9604,
+     "aer_rappel": 0.9636,
+     "couverture_hb": 0.9977,
+     "couverture_gr": 0.9995
+    },
+    "comptes": {
+     "faux": 67,
+     "justes": 1627,
+     "blocs_evaluables": 1236,
+     "blocs_trouves": 1204,
+     "aer_A": 1694,
+     "aer_S": 549,
+     "aer_AinP": 1627,
+     "aer_AinS": 529,
+     "tokens_hb": 1703,
+     "tokens_hb_rattaches": 1699,
+     "tokens_gr": 2166,
+     "tokens_gr_rattaches": 2165,
+     "versets": 95,
+     "liens_ignores": 3,
+     "justes_reconstruits": 1,
+     "nonalign_tokens": 61,
+     "nonalign_respectes": 44
+    }
+   }
+  }
+ },
+ "Nah": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9938,
+     "rappel_blocs": 0.9637,
+     "f1": 0.9785,
+     "nonalign_exactitude": 0.8571,
+     "aer": 0.0133,
+     "aer_precision": 0.9938,
+     "aer_rappel": 0.9689,
+     "couverture_hb": 1.0,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 642,
+     "blocs_evaluables": 523,
+     "blocs_trouves": 504,
+     "aer_A": 646,
+     "aer_S": 257,
+     "aer_AinP": 642,
+     "aer_AinS": 249,
+     "tokens_hb": 691,
+     "tokens_hb_rattaches": 691,
+     "tokens_gr": 897,
+     "tokens_gr_rattaches": 897,
+     "versets": 45,
+     "nonalign_tokens": 21,
+     "nonalign_respectes": 18,
+     "faux": 4,
+     "justes_reconstruits": 1
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9797,
+     "rappel_blocs": 0.9866,
+     "f1": 0.9831,
+     "nonalign_exactitude": 0.6667,
+     "aer": 0.018,
+     "aer_precision": 0.9797,
+     "aer_rappel": 0.9883,
+     "couverture_hb": 1.0,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 675,
+     "blocs_evaluables": 523,
+     "blocs_trouves": 516,
+     "aer_A": 689,
+     "aer_S": 257,
+     "aer_AinP": 675,
+     "aer_AinS": 254,
+     "tokens_hb": 691,
+     "tokens_hb_rattaches": 691,
+     "tokens_gr": 897,
+     "tokens_gr_rattaches": 897,
+     "versets": 45,
+     "faux": 14,
+     "nonalign_tokens": 21,
+     "nonalign_respectes": 14,
+     "justes_reconstruits": 1
+    }
+   }
+  }
+ },
+ "Hab": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9802,
+     "rappel_blocs": 0.9189,
+     "f1": 0.9486,
+     "nonalign_exactitude": 0.8462,
+     "aer": 0.0342,
+     "aer_precision": 0.9802,
+     "aer_rappel": 0.9293,
+     "couverture_hb": 1.0,
+     "couverture_gr": 0.9991
+    },
+    "comptes": {
+     "justes": 742,
+     "blocs_evaluables": 629,
+     "blocs_trouves": 578,
+     "aer_A": 757,
+     "aer_S": 297,
+     "aer_AinP": 742,
+     "aer_AinS": 276,
+     "tokens_hb": 852,
+     "tokens_hb_rattaches": 852,
+     "tokens_gr": 1075,
+     "tokens_gr_rattaches": 1074,
+     "versets": 54,
+     "faux": 15,
+     "nonalign_tokens": 26,
+     "nonalign_respectes": 22
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9477,
+     "rappel_blocs": 0.9698,
+     "f1": 0.9586,
+     "nonalign_exactitude": 0.5769,
+     "aer": 0.0484,
+     "aer_precision": 0.9477,
+     "aer_rappel": 0.963,
+     "couverture_hb": 1.0,
+     "couverture_gr": 0.9991
+    },
+    "comptes": {
+     "justes": 815,
+     "blocs_evaluables": 629,
+     "blocs_trouves": 610,
+     "aer_A": 860,
+     "aer_S": 297,
+     "aer_AinP": 815,
+     "aer_AinS": 286,
+     "tokens_hb": 852,
+     "tokens_hb_rattaches": 852,
+     "tokens_gr": 1075,
+     "tokens_gr_rattaches": 1074,
+     "versets": 54,
+     "faux": 45,
+     "nonalign_tokens": 26,
+     "nonalign_respectes": 15
+    }
+   }
+  }
+ },
+ "Zeph": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9792,
+     "rappel_blocs": 0.9414,
+     "f1": 0.9599,
+     "nonalign_exactitude": 0.8846,
+     "aer": 0.0298,
+     "aer_precision": 0.9792,
+     "aer_rappel": 0.9479,
+     "couverture_hb": 0.9989,
+     "couverture_gr": 0.9991
+    },
+    "comptes": {
+     "justes": 799,
+     "blocs_evaluables": 666,
+     "blocs_trouves": 627,
+     "aer_A": 816,
+     "aer_S": 326,
+     "aer_AinP": 799,
+     "aer_AinS": 309,
+     "tokens_hb": 926,
+     "tokens_hb_rattaches": 925,
+     "tokens_gr": 1110,
+     "tokens_gr_rattaches": 1109,
+     "versets": 49,
+     "nonalign_tokens": 52,
+     "nonalign_respectes": 46,
+     "faux": 17
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9503,
+     "rappel_blocs": 0.979,
+     "f1": 0.9644,
+     "nonalign_exactitude": 0.6731,
+     "aer": 0.0422,
+     "aer_precision": 0.9503,
+     "aer_rappel": 0.9785,
+     "couverture_hb": 0.9989,
+     "couverture_gr": 0.9991
+    },
+    "comptes": {
+     "justes": 861,
+     "blocs_evaluables": 666,
+     "blocs_trouves": 652,
+     "aer_A": 906,
+     "aer_S": 326,
+     "aer_AinP": 861,
+     "aer_AinS": 319,
+     "tokens_hb": 926,
+     "tokens_hb_rattaches": 925,
+     "tokens_gr": 1110,
+     "tokens_gr_rattaches": 1109,
+     "versets": 49,
+     "faux": 45,
+     "nonalign_tokens": 52,
+     "nonalign_respectes": 35,
+     "justes_reconstruits": 3,
+     "liens_ignores": 1
+    }
+   }
+  }
+ },
+ "Hag": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.982,
+     "rappel_blocs": 0.938,
+     "f1": 0.9595,
+     "nonalign_exactitude": 0.9383,
+     "aer": 0.028,
+     "aer_precision": 0.982,
+     "aer_rappel": 0.9429,
+     "couverture_hb": 0.9988,
+     "couverture_gr": 0.9979
+    },
+    "comptes": {
+     "liens_ignores": 1,
+     "faux": 13,
+     "justes": 708,
+     "blocs_evaluables": 548,
+     "blocs_trouves": 514,
+     "nonalign_tokens": 81,
+     "nonalign_respectes": 76,
+     "aer_A": 721,
+     "aer_S": 245,
+     "aer_AinP": 708,
+     "aer_AinS": 231,
+     "tokens_hb": 860,
+     "tokens_hb_rattaches": 859,
+     "tokens_gr": 947,
+     "tokens_gr_rattaches": 945,
+     "versets": 38
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.957,
+     "rappel_blocs": 0.9854,
+     "f1": 0.971,
+     "nonalign_exactitude": 0.8519,
+     "aer": 0.0359,
+     "aer_precision": 0.957,
+     "aer_rappel": 0.9878,
+     "couverture_hb": 0.9988,
+     "couverture_gr": 0.9979
+    },
+    "comptes": {
+     "liens_ignores": 3,
+     "faux": 35,
+     "justes": 779,
+     "blocs_evaluables": 548,
+     "blocs_trouves": 540,
+     "nonalign_tokens": 81,
+     "nonalign_respectes": 69,
+     "aer_A": 814,
+     "aer_S": 245,
+     "aer_AinP": 779,
+     "aer_AinS": 242,
+     "tokens_hb": 860,
+     "tokens_hb_rattaches": 859,
+     "tokens_gr": 947,
+     "tokens_gr_rattaches": 945,
+     "versets": 38
+    }
+   }
+  }
+ },
+ "Zech": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9888,
+     "rappel_blocs": 0.9568,
+     "f1": 0.9725,
+     "nonalign_exactitude": 0.848,
+     "aer": 0.0164,
+     "aer_precision": 0.9888,
+     "aer_rappel": 0.9681,
+     "couverture_hb": 0.9993,
+     "couverture_gr": 0.999
+    },
+    "comptes": {
+     "liens_ignores": 6,
+     "justes": 3807,
+     "blocs_evaluables": 2915,
+     "blocs_trouves": 2789,
+     "aer_A": 3850,
+     "aer_S": 1285,
+     "aer_AinP": 3807,
+     "aer_AinS": 1244,
+     "tokens_hb": 4348,
+     "tokens_hb_rattaches": 4345,
+     "tokens_gr": 4905,
+     "tokens_gr_rattaches": 4900,
+     "versets": 209,
+     "nonalign_tokens": 171,
+     "nonalign_respectes": 145,
+     "faux": 43,
+     "justes_reconstruits": 2
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9701,
+     "rappel_blocs": 0.9918,
+     "f1": 0.9808,
+     "nonalign_exactitude": 0.6725,
+     "aer": 0.0251,
+     "aer_precision": 0.9701,
+     "aer_rappel": 0.9907,
+     "couverture_hb": 0.9993,
+     "couverture_gr": 0.999
+    },
+    "comptes": {
+     "liens_ignores": 6,
+     "justes": 4116,
+     "blocs_evaluables": 2915,
+     "blocs_trouves": 2891,
+     "aer_A": 4243,
+     "aer_S": 1285,
+     "aer_AinP": 4116,
+     "aer_AinS": 1273,
+     "tokens_hb": 4348,
+     "tokens_hb_rattaches": 4345,
+     "tokens_gr": 4905,
+     "tokens_gr_rattaches": 4900,
+     "versets": 209,
+     "faux": 127,
+     "nonalign_tokens": 171,
+     "nonalign_respectes": 115,
+     "justes_reconstruits": 3
+    }
+   }
+  }
+ },
+ "Mal": {
+  "versets_ignores": {},
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9821,
+     "rappel_blocs": 0.9499,
+     "f1": 0.9657,
+     "nonalign_exactitude": 0.871,
+     "aer": 0.0255,
+     "aer_precision": 0.9821,
+     "aer_rappel": 0.9556,
+     "couverture_hb": 1.0,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 1044,
+     "blocs_evaluables": 839,
+     "blocs_trouves": 797,
+     "nonalign_tokens": 62,
+     "nonalign_respectes": 54,
+     "aer_A": 1063,
+     "aer_S": 428,
+     "aer_AinP": 1044,
+     "aer_AinS": 409,
+     "tokens_hb": 1168,
+     "tokens_hb_rattaches": 1168,
+     "tokens_gr": 1416,
+     "tokens_gr_rattaches": 1416,
+     "versets": 55,
+     "faux": 19
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9622,
+     "rappel_blocs": 0.9809,
+     "f1": 0.9715,
+     "nonalign_exactitude": 0.7258,
+     "aer": 0.0333,
+     "aer_precision": 0.9622,
+     "aer_rappel": 0.979,
+     "couverture_hb": 1.0,
+     "couverture_gr": 1.0
+    },
+    "comptes": {
+     "justes": 1120,
+     "blocs_evaluables": 839,
+     "blocs_trouves": 823,
+     "nonalign_tokens": 62,
+     "nonalign_respectes": 45,
+     "aer_A": 1164,
+     "aer_S": 428,
+     "aer_AinP": 1120,
+     "aer_AinS": 419,
+     "tokens_hb": 1168,
+     "tokens_hb_rattaches": 1168,
+     "tokens_gr": 1416,
+     "tokens_gr_rattaches": 1416,
+     "versets": 55,
+     "faux": 44
+    }
+   }
+  }
+ },
+ "TOTAL": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": 0.9741,
+     "rappel_blocs": 0.923,
+     "f1": 0.9479,
+     "nonalign_exactitude": 0.866,
+     "aer": 0.0365,
+     "aer_precision": 0.9741,
+     "aer_rappel": 0.9329,
+     "couverture_hb": 0.9967,
+     "couverture_gr": 0.9959
+    },
+    "comptes": {
+     "justes": 333817,
+     "blocs_evaluables": 269638,
+     "blocs_trouves": 248878,
+     "aer_A": 342700,
+     "aer_S": 118084,
+     "aer_AinP": 333817,
+     "aer_AinS": 110155,
+     "tokens_hb": 411945,
+     "tokens_hb_rattaches": 410601,
+     "tokens_gr": 475272,
+     "tokens_gr_rattaches": 473312,
+     "versets": 22489,
+     "nonalign_tokens": 40354,
+     "nonalign_respectes": 34945,
+     "faux": 8883,
+     "liens_ignores": 1302,
+     "justes_reconstruits": 399
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": 0.9358,
+     "rappel_blocs": 0.9704,
+     "f1": 0.9528,
+     "nonalign_exactitude": 0.6712,
+     "aer": 0.0567,
+     "aer_precision": 0.9358,
+     "aer_rappel": 0.9682,
+     "couverture_hb": 0.9967,
+     "couverture_gr": 0.9959
+    },
+    "comptes": {
+     "justes": 364923,
+     "blocs_evaluables": 269638,
+     "blocs_trouves": 261644,
+     "aer_A": 389944,
+     "aer_S": 118084,
+     "aer_AinP": 364923,
+     "aer_AinS": 114324,
+     "tokens_hb": 411945,
+     "tokens_hb_rattaches": 410601,
+     "tokens_gr": 475272,
+     "tokens_gr_rattaches": 473312,
+     "versets": 22489,
+     "faux": 25021,
+     "nonalign_tokens": 40354,
+     "nonalign_respectes": 27084,
+     "justes_reconstruits": 599,
+     "liens_ignores": 1792
+    }
+   }
+  }
+ }
+}

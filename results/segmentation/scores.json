@@ -1,0 +1,527 @@
+{
+ "table": {
+  "tous": {
+   "mots": 140900,
+   "justesse": 0.9605,
+   "frontieres_precision": 0.9556,
+   "frontieres_rappel": 0.9218,
+   "frontieres_f1": 0.9384
+  },
+  "vus": {
+   "mots": 123848,
+   "justesse": 0.9951,
+   "frontieres_precision": 0.9927,
+   "frontieres_rappel": 0.9929,
+   "frontieres_f1": 0.9928
+  },
+  "non_vus": {
+   "mots": 17052,
+   "justesse": 0.709,
+   "frontieres_precision": 0.7735,
+   "frontieres_rappel": 0.6356,
+   "frontieres_f1": 0.6978
+  },
+  "erreurs_frequentes": [
+   {
+    "attendu": "ב עור",
+    "predit": "בעור",
+    "n": 24
+   },
+   {
+    "attendu": "הולידו",
+    "predit": "ה ו ל ידו",
+    "n": 18
+   },
+   {
+    "attendu": "מ הר",
+    "predit": "מהר",
+    "n": 17
+   },
+   {
+    "attendu": "ו מאת",
+    "predit": "ו מ את",
+    "n": 12
+   },
+   {
+    "attendu": "ה נתק",
+    "predit": "הנתק",
+    "n": 12
+   },
+   {
+    "attendu": "משקלה",
+    "predit": "מ ש קלה",
+    "n": 12
+   },
+   {
+    "attendu": "מזרק",
+    "predit": "מ זרק",
+    "n": 12
+   },
+   {
+    "attendu": "מעל",
+    "predit": "מ על",
+    "n": 11
+   },
+   {
+    "attendu": "שדרך",
+    "predit": "ש דרך",
+    "n": 10
+   },
+   {
+    "attendu": "מ ים",
+    "predit": "מים",
+    "n": 10
+   },
+   {
+    "attendu": "ו נפצתי",
+    "predit": "ונפצתי",
+    "n": 9
+   },
+   {
+    "attendu": "מושל",
+    "predit": "מ ו של",
+    "n": 8
+   },
+   {
+    "attendu": "העלה",
+    "predit": "ה עלה",
+    "n": 8
+   },
+   {
+    "attendu": "ה יזרעאלי",
+    "predit": "היזרעאלי",
+    "n": 8
+   },
+   {
+    "attendu": "בזה",
+    "predit": "ב זה",
+    "n": 8
+   },
+   {
+    "attendu": "כ ל",
+    "predit": "כל",
+    "n": 8
+   },
+   {
+    "attendu": "מאת",
+    "predit": "מ את",
+    "n": 8
+   },
+   {
+    "attendu": "מ עמיה",
+    "predit": "מעמיה",
+    "n": 8
+   },
+   {
+    "attendu": "ה חרם",
+    "predit": "החרם",
+    "n": 7
+   },
+   {
+    "attendu": "מ דבר",
+    "predit": "מדבר",
+    "n": 7
+   },
+   {
+    "attendu": "מדי",
+    "predit": "מ די",
+    "n": 7
+   },
+   {
+    "attendu": "לשוני",
+    "predit": "ל שוני",
+    "n": 7
+   },
+   {
+    "attendu": "שממות",
+    "predit": "ש מ מות",
+    "n": 7
+   },
+   {
+    "attendu": "ושתי",
+    "predit": "ו שתי",
+    "n": 7
+   },
+   {
+    "attendu": "ל האיר",
+    "predit": "להאיר",
+    "n": 7
+   },
+   {
+    "attendu": "מ בין",
+    "predit": "מבין",
+    "n": 7
+   },
+   {
+    "attendu": "כ פי",
+    "predit": "כפי",
+    "n": 7
+   },
+   {
+    "attendu": "ה מקריב",
+    "predit": "המקריב",
+    "n": 7
+   },
+   {
+    "attendu": "בהרת",
+    "predit": "ב הרת",
+    "n": 7
+   },
+   {
+    "attendu": "ו מנחתה",
+    "predit": "ומנחתה",
+    "n": 7
+   }
+  ]
+ },
+ "dictabert-seg": {
+  "tous": {
+   "mots": 140900,
+   "justesse": 0.9568,
+   "frontieres_precision": 0.9776,
+   "frontieres_rappel": 0.9035,
+   "frontieres_f1": 0.9391
+  },
+  "vus": {
+   "mots": 123848,
+   "justesse": 0.961,
+   "frontieres_precision": 0.9839,
+   "frontieres_rappel": 0.8986,
+   "frontieres_f1": 0.9393
+  },
+  "non_vus": {
+   "mots": 17052,
+   "justesse": 0.9265,
+   "frontieres_precision": 0.9533,
+   "frontieres_rappel": 0.9233,
+   "frontieres_f1": 0.9381
+  },
+  "erreurs_frequentes": [
+   {
+    "attendu": "ל אמר",
+    "predit": "לאמר",
+    "n": 453
+   },
+   {
+    "attendu": "ל פני",
+    "predit": "לפני",
+    "n": 261
+   },
+   {
+    "attendu": "כ אשר",
+    "predit": "כאשר",
+    "n": 228
+   },
+   {
+    "attendu": "מ פני",
+    "predit": "מפני",
+    "n": 98
+   },
+   {
+    "attendu": "מ על",
+    "predit": "מעל",
+    "n": 98
+   },
+   {
+    "attendu": "ב תוך",
+    "predit": "בתוך",
+    "n": 94
+   },
+   {
+    "attendu": "ל עשות",
+    "predit": "לעשות",
+    "n": 90
+   },
+   {
+    "attendu": "ל עולם",
+    "predit": "לעולם",
+    "n": 72
+   },
+   {
+    "attendu": "ה לוא",
+    "predit": "הלוא",
+    "n": 68
+   },
+   {
+    "attendu": "ל פניך",
+    "predit": "לפניך",
+    "n": 55
+   },
+   {
+    "attendu": "מ את",
+    "predit": "מאת",
+    "n": 53
+   },
+   {
+    "attendu": "מ שם",
+    "predit": "משם",
+    "n": 51
+   },
+   {
+    "attendu": "ל תת",
+    "predit": "לתת",
+    "n": 51
+   },
+   {
+    "attendu": "ל פניו",
+    "predit": "לפניו",
+    "n": 45
+   },
+   {
+    "attendu": "ל לכת",
+    "predit": "ללכת",
+    "n": 39
+   },
+   {
+    "attendu": "ל בוא",
+    "predit": "לבוא",
+    "n": 35
+   },
+   {
+    "attendu": "ל בלתי",
+    "predit": "לבלתי",
+    "n": 32
+   },
+   {
+    "attendu": "מ חוץ",
+    "predit": "מחוץ",
+    "n": 29
+   },
+   {
+    "attendu": "ב קרב",
+    "predit": "בקרב",
+    "n": 29
+   },
+   {
+    "attendu": "ל פי",
+    "predit": "לפי",
+    "n": 28
+   },
+   {
+    "attendu": "ל מטה",
+    "predit": "למטה",
+    "n": 28
+   },
+   {
+    "attendu": "ל היות",
+    "predit": "להיות",
+    "n": 27
+   },
+   {
+    "attendu": "ל קראת",
+    "predit": "לקראת",
+    "n": 27
+   },
+   {
+    "attendu": "מ תוך",
+    "predit": "מתוך",
+    "n": 25
+   },
+   {
+    "attendu": "ב תוכם",
+    "predit": "בתוכם",
+    "n": 25
+   },
+   {
+    "attendu": "מ תחת",
+    "predit": "מתחת",
+    "n": 24
+   },
+   {
+    "attendu": "ב שם",
+    "predit": "בשם",
+    "n": 23
+   },
+   {
+    "attendu": "ל שבת",
+    "predit": "לשבת",
+    "n": 23
+   },
+   {
+    "attendu": "ל ראות",
+    "predit": "לראות",
+    "n": 22
+   },
+   {
+    "attendu": "ל הלחם",
+    "predit": "להלחם",
+    "n": 20
+   }
+  ]
+ },
+ "table+dictabert-seg": {
+  "tous": {
+   "mots": 140900,
+   "justesse": 0.9868,
+   "frontieres_precision": 0.9851,
+   "frontieres_rappel": 0.9791,
+   "frontieres_f1": 0.9821
+  },
+  "vus": {
+   "mots": 123848,
+   "justesse": 0.9951,
+   "frontieres_precision": 0.9927,
+   "frontieres_rappel": 0.9929,
+   "frontieres_f1": 0.9928
+  },
+  "non_vus": {
+   "mots": 17052,
+   "justesse": 0.9265,
+   "frontieres_precision": 0.9533,
+   "frontieres_rappel": 0.9233,
+   "frontieres_f1": 0.9381
+  },
+  "erreurs_frequentes": [
+   {
+    "attendu": "ב עור",
+    "predit": "בעור",
+    "n": 24
+   },
+   {
+    "attendu": "מ הר",
+    "predit": "מהר",
+    "n": 17
+   },
+   {
+    "attendu": "ו מאת",
+    "predit": "ו מ את",
+    "n": 12
+   },
+   {
+    "attendu": "מעל",
+    "predit": "מ על",
+    "n": 11
+   },
+   {
+    "attendu": "מ ים",
+    "predit": "מים",
+    "n": 10
+   },
+   {
+    "attendu": "ו בנתיה",
+    "predit": "ו ב נתיה",
+    "n": 9
+   },
+   {
+    "attendu": "העלה",
+    "predit": "ה עלה",
+    "n": 8
+   },
+   {
+    "attendu": "בזה",
+    "predit": "ב זה",
+    "n": 8
+   },
+   {
+    "attendu": "כ ל",
+    "predit": "כל",
+    "n": 8
+   },
+   {
+    "attendu": "שדרך",
+    "predit": "ש דרך",
+    "n": 8
+   },
+   {
+    "attendu": "מאת",
+    "predit": "מ את",
+    "n": 8
+   },
+   {
+    "attendu": "ו מ מטה",
+    "predit": "ו ממטה",
+    "n": 8
+   },
+   {
+    "attendu": "ה חרם",
+    "predit": "החרם",
+    "n": 7
+   },
+   {
+    "attendu": "מ דבר",
+    "predit": "מדבר",
+    "n": 7
+   },
+   {
+    "attendu": "ו כ זאת",
+    "predit": "ו כזאת",
+    "n": 7
+   },
+   {
+    "attendu": "מדי",
+    "predit": "מ די",
+    "n": 7
+   },
+   {
+    "attendu": "לשוני",
+    "predit": "ל שוני",
+    "n": 7
+   },
+   {
+    "attendu": "ושתי",
+    "predit": "ו שתי",
+    "n": 7
+   },
+   {
+    "attendu": "ל האיר",
+    "predit": "להאיר",
+    "n": 7
+   },
+   {
+    "attendu": "מ בין",
+    "predit": "מבין",
+    "n": 7
+   },
+   {
+    "attendu": "כ פי",
+    "predit": "כפי",
+    "n": 7
+   },
+   {
+    "attendu": "ה ראה",
+    "predit": "הראה",
+    "n": 6
+   },
+   {
+    "attendu": "מ זבח",
+    "predit": "מזבח",
+    "n": 6
+   },
+   {
+    "attendu": "מקדש",
+    "predit": "מ קדש",
+    "n": 6
+   },
+   {
+    "attendu": "ה שבע",
+    "predit": "השבע",
+    "n": 6
+   },
+   {
+    "attendu": "ל בן",
+    "predit": "לבן",
+    "n": 5
+   },
+   {
+    "attendu": "הרע",
+    "predit": "ה רע",
+    "n": 5
+   },
+   {
+    "attendu": "בלשאצר",
+    "predit": "ב לשאצר",
+    "n": 5
+   },
+   {
+    "attendu": "משקדים",
+    "predit": "מ שקדים",
+    "n": 5
+   },
+   {
+    "attendu": "הפר",
+    "predit": "ה פר",
+    "n": 5
+   }
+  ]
+ }
+}

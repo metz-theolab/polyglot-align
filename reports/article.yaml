@@ -1,41 +1,48 @@
 # Rapport pour l'article : tableaux et figures tirés de results/ (aucun alignement relancé).
-# Lancer (depuis la racine du projet) : python src/report.py reports/article.yaml
+# Lancer (depuis la racine du projet) : polyglot-align report reports/article.yaml
 # Sorties : reports/article/tables/*.tex|md|csv, reports/article/figures/*.pdf|png
+#
+# Expériences sur toute la Bible (39 livres hébreux, 22 489 paires de versets),
+# hébreu vocalisé / non vocalisé (DECISIONS.md « Plan d'expériences pour la publication »).
+# Les anciens résultats sur Gen 1, Gen 3, 1 S 9 et le LLM sur Gen 3 sont dans
+# results/.trash/ : ils ne sont plus repris ici.
 
 name: article
 
 tables:
-  - title: Comparaison des aligneurs (Gen 1, Gen 3, 1 S 9)
-    experiments: [mbert_formes_sans_accents, xlmr_formes_sans_accents,
-                  glot500_formes_sans_accents, glot500_formes_vocalise_sans_accents,
-                  eflomal_formes_sans_accents, eflomal_lemmes_sans_accents]
+  - title: Comparaison des aligneurs (toute la Bible)
+    experiments: [mbert_unvocalized, mbert_vocalized,
+                  xlmr_unvocalized, xlmr_vocalized,
+                  glot500_unvocalized, glot500_vocalized,
+                  eflomal_unvocalized, eflomal_vocalized,
+                  {name: eflomal_unvocalized, method: gdfa},
+                  {name: eflomal_vocalized, method: gdfa}]
     method: inter
     columns: [precision, rappel_blocs, f1, nonalign_exactitude]
 
-  - title: Comparaison avec le LLM (Gen 3)
-    passages: [Gen.3]               # le LLM n'a été lancé que sur Gen 3
-    experiments: [glot500_formes_vocalise_sans_accents, eflomal_formes_sans_accents,
-                  gemma4_texte_gen3]
+  - title: Comparaison des aligneurs, AER (toute la Bible)
+    experiments: [mbert_unvocalized, xlmr_unvocalized, glot500_vocalized,
+                  eflomal_unvocalized]
+    method: inter
+    columns: [aer, aer_precision, aer_rappel]
+
+  - title: eflomal par livre (mots BHSA, non vocalisé, inter)
+    experiment: eflomal_unvocalized
+    rows: passages
     method: inter
 
-  - title: Segmentation et vocalisation (Glot500)
-    experiments: [glot500_formes_sans_accents, glot500_formes_vocalise_sans_accents,
-                  glot500_mots_graphiques_sans_accents,
-                  glot500_mots_graphiques_vocalise_sans_accents]
-    rows_from: [tokens, hebrew_vocalization]
-    method: inter
-
-  - title: eflomal par livre (formes, inter)
-    experiment: eflomal_formes_bible
+  - title: Glot500 par livre (mots BHSA, vocalisé, inter)
+    experiment: glot500_vocalized
     rows: passages
     method: inter
 
 figures:
   - figure: precision_rappel
-    title: Précision et rappel par blocs (Gen 1, Gen 3, 1 S 9)
-    experiments: [mbert_formes_sans_accents, xlmr_formes_sans_accents,
-                  glot500_formes_sans_accents, glot500_formes_vocalise_sans_accents,
-                  eflomal_formes_sans_accents, eflomal_lemmes_sans_accents]
+    title: Précision et rappel par blocs (toute la Bible)
+    experiments: [mbert_unvocalized, mbert_vocalized,
+                  xlmr_unvocalized, xlmr_vocalized,
+                  glot500_unvocalized, glot500_vocalized,
+                  eflomal_unvocalized, eflomal_vocalized]
   - figure: par_livre
-    experiment: eflomal_formes_bible
+    experiment: eflomal_unvocalized
     method: inter

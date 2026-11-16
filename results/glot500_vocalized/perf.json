@@ -1,0 +1,54 @@
+{
+ "debut": "2026-11-15T23:24:10",
+ "phases": {
+  "chargement": {
+   "duree_s": 5.412,
+   "cpu_s": 3.009
+  },
+  "apprentissage": {
+   "duree_s": 0.0,
+   "cpu_s": 0.0
+  },
+  "alignement": {
+   "duree_s": 2576.8,
+   "cpu_s": 3190.215
+  },
+  "evaluation": {
+   "duree_s": 47.265,
+   "cpu_s": 47.206
+  }
+ },
+ "total": {
+  "duree_s": 2629.478,
+  "cpu_s": 3240.431
+ },
+ "cout_methode": {
+  "duree_s": 2576.8,
+  "cpu_s": 3190.216,
+  "s_par_1000_versets": 114.58
+ },
+ "debit_alignement": {
+  "versets_par_s": 8.73,
+  "tokens_par_s": 344.31
+ },
+ "volume": {
+  "versets": 22489,
+  "tokens_hb": 411945,
+  "tokens_gr": 475272
+ },
+ "memoire_max_mo": 1448.2,
+ "machine": {
+  "systeme": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "processeur": "Apple M3 Max",
+  "coeurs": 14,
+  "python": "3.13.4",
+  "device": "cpu",
+  "versions": {
+   "torch": "2.15.0",
+   "transformers": "5.22.1",
+   "simalign": "0.4",
+   "eflomal": "2.0.0"
+  }
+ },
+ "aligneur": {}
+}

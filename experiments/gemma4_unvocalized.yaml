@@ -1,0 +1,30 @@
+# LLM local (Ollama, Gemma 4 12B) sur cinq livres, hébreu non vocalisé (consonantique).
+# Cas d'usage choisis d'après les expériences sur toute la Bible
+# (DECISIONS.md « Plan d'expériences pour la publication ») :
+#   Gen  récit, traduction littérale (eflomal F1 95,7 %)
+#   Prov sagesse, traduction libre (eflomal 86,2 %)
+#   Eccl Qohélet, traduction très littérale (eflomal 98,9 %)
+#   Song Cantique (eflomal 98,0 %)
+#   Isa  prophétie, traduction libre (eflomal 90,5 %)
+# 3 793 paires de versets. Lancer (depuis la racine du projet), Ollama démarré :
+#   polyglot-align run experiments/gemma4_unvocalized.yaml
+#   ou, sans mise en veille : scripts/run_night.sh gemma4_unvocalized
+
+name: gemma4_unvocalized
+
+passages:
+  - {book: Gen}
+  # - {book: Prov}
+  # - {book: Eccl}
+  # - {book: Song}
+  # - {book: Isa}
+
+tokens: w                   # w = mots BHSA, g = mots graphiques, l = lemmes
+hebrew: unvocalized         # pointed = tel qu'exporté, vocalized = voyelles, unvocalized = consonantique
+greek: accented             # accented | unaccented (accents et esprits retirés, minuscules)
+
+aligner:
+  type: llm
+  model: gemma4:12b
+  url: http://localhost:11434
+  think: false              # true = le modèle « réfléchit » avant de répondre (beaucoup plus lent)
