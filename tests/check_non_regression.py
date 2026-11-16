@@ -17,7 +17,7 @@ Deux contrôles, contre les références produites avant la restructuration
 Usage (depuis la racine du projet) :
     python tests/check_non_regression.py
     (après restructuration, relancer d'abord les expériences SimAlign :
-     python src/run.py experiments/<nom>.yaml)
+     polyglot-align run experiments/<nom>.yaml)
 """
 import json
 import sys
@@ -27,9 +27,8 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
-from evaluate import Evaluator             # noqa: E402
-from llm_align import table_to_links        # noqa: E402
+from polyglot_align.evaluation.evaluate import Evaluator
+from polyglot_align.aligners.llm import table_to_links
 
 REFERENCE = ROOT / "tests" / "reference"
 RESULTS = ROOT / "results"

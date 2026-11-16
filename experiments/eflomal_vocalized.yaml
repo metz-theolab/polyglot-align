@@ -1,6 +1,6 @@
 # Toute la Bible, hébreu vocalisé : eflomal, mots BHSA, grec sans accents.
 # Série vocalisé / non vocalisé sur toute la Bible (mbert, xlmr, glot500, eflomal).
-# Lancer (depuis la racine du projet) : python src/run.py experiments/eflomal_vocalized.yaml
+# Lancer (depuis la racine du projet) : polyglot-align run experiments/eflomal_vocalized.yaml
 
 name: eflomal_vocalized
 

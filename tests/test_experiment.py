@@ -1,4 +1,4 @@
-"""Test de bout en bout de src/experiment.py, sans modèle.
+"""Test de bout en bout de polyglot_align.experiment, sans modèle.
 
 Un aligneur de rejeu renvoie les liens enregistrés dans une référence
 (tests/reference/<nom>/) ; l'expérience complète (alignement, évaluation,
@@ -7,16 +7,14 @@ total, écriture) doit réécrire exactement les mêmes scores et CSV.
 Usage (depuis la racine du projet) : python -m unittest tests/test_experiment.py -v
 """
 import json
-import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
-from aligners import Aligner, VerseAlignment  # noqa: E402
-from evaluate import parse_links              # noqa: E402
-from experiment import Experiment             # noqa: E402
+from polyglot_align.aligners import Aligner, VerseAlignment
+from polyglot_align.evaluation.evaluate import parse_links
+from polyglot_align.experiment import Experiment
 
 REFERENCE = ROOT / "tests" / "reference" / "mbert_formes_sans_accents"
 

@@ -1,4 +1,4 @@
-"""Tests du nettoyage du gold CATSS (src/gold_clean.py).
+"""Tests du nettoyage du gold CATSS (polyglot_align.evaluation.gold_clean).
 
 Chaque test reprend un exemple de DECISIONS.md, appliqué au verset réel du gold
 brut (data/gold).
@@ -6,14 +6,12 @@ brut (data/gold).
 Usage (depuis la racine du projet) : python -m unittest tests/test_gold_clean.py -v
 """
 import json
-import sys
 import unicodedata
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
-from gold_clean import BOOKS, clean_verse  # noqa: E402
+from polyglot_align.evaluation.gold_clean import BOOKS, clean_verse
 
 RAW = {}
 for path in sorted((ROOT / "data" / "gold").glob("*.json")):

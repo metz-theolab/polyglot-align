@@ -1,14 +1,11 @@
-"""Tests de src/normalize.py.
+"""Tests de polyglot_align.normalize.
 
 Usage (depuis la racine du projet) : python -m unittest tests/test_normalize.py -v
 """
-import sys
 import unicodedata
 import unittest
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
-from normalize import norm_grc, norm_heb  # noqa: E402
+from polyglot_align.normalize import norm_grc, norm_heb
 
 nfc = lambda s: unicodedata.normalize("NFC", s)
 

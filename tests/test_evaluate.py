@@ -1,17 +1,15 @@
-"""Tests de l'évaluation par blocs (src/gold.py, src/evaluate.py), voir
+"""Tests de l'évaluation par blocs (polyglot_align.evaluation), voir
 DECISIONS.md « Évaluation par blocs CATSS ».
 
 Usage (depuis la racine du projet) : python -m unittest tests/test_evaluate.py -v
 """
-import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
-from corpus import Corpus             # noqa: E402
-from evaluate import Evaluator, measures  # noqa: E402
-from gold import Gold                 # noqa: E402
+from polyglot_align.corpus import Corpus
+from polyglot_align.evaluation.evaluate import Evaluator, measures
+from polyglot_align.evaluation.gold import Gold
 
 DATA = ROOT / "data"
 

@@ -16,9 +16,9 @@ Installation : pip install eflomal (à lancer à la main dans le venv).
 import tempfile
 from pathlib import Path
 
-from aligners import Aligner, VerseAlignment
-from corpus import Corpus
-from normalize import norm_grc, norm_heb
+from polyglot_align.aligners.base import Aligner, VerseAlignment
+from polyglot_align.corpus import Corpus
+from polyglot_align.normalize import norm_grc, norm_heb
 
 
 def parse_pharaoh(line: str) -> set:

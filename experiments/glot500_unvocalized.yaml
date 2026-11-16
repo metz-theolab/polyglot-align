@@ -1,6 +1,6 @@
 # Toute la Bible, hébreu non vocalisé (consonantique) : Glot500, mots BHSA, grec sans accents.
 # Série vocalisé / non vocalisé sur toute la Bible (mbert, xlmr, glot500, eflomal).
-# Lancer (depuis la racine du projet) : python src/run.py experiments/glot500_unvocalized.yaml
+# Lancer (depuis la racine du projet) : polyglot-align run experiments/glot500_unvocalized.yaml
 
 name: glot500_unvocalized
 

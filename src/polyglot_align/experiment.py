@@ -2,7 +2,7 @@
 
 Écrit dans results/<name>/ :
     config.yaml        copie de la configuration utilisée
-    <passage>.jsonl    alignements (relire avec src/show.py)
+    <passage>.jsonl    alignements (relire avec polyglot-align show)
     <passage>.csv      relecture : un mot hébreu par ligne, avec le verdict du gold
     scores.json        comptes bruts et mesures, par passage et au total
     scores.csv         le tableau des mesures
@@ -14,12 +14,12 @@ import shutil
 from collections import Counter
 from pathlib import Path
 
-from align import align
-from aligners import make_aligner
-from config import Config
-from corpus import VerseMap
-from evaluate import Evaluator, measures
-from perf import PerfMeter
+from polyglot_align.align import align
+from polyglot_align.aligners import make_aligner
+from polyglot_align.config import Config
+from polyglot_align.corpus import VerseMap
+from polyglot_align.evaluation.evaluate import Evaluator, measures
+from polyglot_align.perf import PerfMeter
 
 COLUMNS = ["precision", "rappel_blocs", "f1", "nonalign_exactitude", "aer",
            "couverture_hb", "couverture_gr"]

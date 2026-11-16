@@ -1,6 +1,6 @@
 # Toute la Bible, hébreu vocalisé : XLM-R, mots BHSA, grec sans accents.
 # Série vocalisé / non vocalisé sur toute la Bible (mbert, xlmr, glot500, eflomal).
-# Lancer (depuis la racine du projet) : python src/run.py experiments/xlmr_vocalized.yaml
+# Lancer (depuis la racine du projet) : polyglot-align run experiments/xlmr_vocalized.yaml
 
 name: xlmr_vocalized
 

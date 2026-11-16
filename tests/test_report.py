@@ -1,9 +1,8 @@
-"""Tests du module de rapport (src/report.py), sur des résultats fabriqués.
+"""Tests du module de rapport (polyglot_align.report), sur des résultats fabriqués.
 
 Usage (depuis la racine du projet) : python -m unittest tests/test_report.py -v
 """
 import json
-import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -11,8 +10,7 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
-from report import ExperimentResult, ResultGroup, Table  # noqa: E402
+from polyglot_align.report import ExperimentResult, ResultGroup, Table
 
 
 def counts(justes, faux, trouves, evaluables, versets):

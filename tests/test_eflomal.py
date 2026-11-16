@@ -1,4 +1,4 @@
-"""Tests de l'aligneur eflomal (src/eflomal_align.py).
+"""Tests de l'aligneur eflomal (polyglot_align.aligners.eflomal).
 
 eflomal n'est pas lancé ici : un faux module `eflomal` écrit des liens fixés
 d'avance, pour tester la préparation du corpus, la symétrisation et le
@@ -13,11 +13,10 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
-from config import Config, Passage                                    # noqa: E402
-from corpus import Corpus, VerseMap                                   # noqa: E402
-from aligners import make_aligner                                     # noqa: E402
-from eflomal_align import EflomalAligner, grow_diag_final_and, parse_pharaoh  # noqa: E402
+from polyglot_align.config import Config, Passage
+from polyglot_align.corpus import Corpus, VerseMap
+from polyglot_align.aligners import make_aligner
+from polyglot_align.aligners.eflomal import EflomalAligner, grow_diag_final_and, parse_pharaoh
 
 DATA = ROOT / "data"
 

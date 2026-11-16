@@ -1,6 +1,6 @@
-"""Alignement d'un passage : parcourt les versets et écrit le JSONL (lancé par run.py).
+"""Alignement d'un passage : parcourt les versets et écrit le JSONL (appelé par experiment.py).
 
-Le travail sur chaque verset est fait par un Aligner (aligners.py) ; ce module
+Le travail sur chaque verset est fait par un Aligner (aligners/) ; ce module
 ne fait que choisir les versets et écrire les résultats. Les versets sont
 appariés par la table du gold (corpus.VerseMap) : un verset hébreu n'est aligné
 qu'avec son équivalent LXX.
@@ -13,7 +13,7 @@ dans ref_lxx (ex. "ref": "Ps.23.1", "ref_lxx": "Ps.22.1").
 """
 import json
 
-from corpus import Corpus
+from polyglot_align.corpus import Corpus
 
 
 def align(aligner, he_path, lxx_path, pairs, out_path, only=None) -> int:

@@ -1,11 +1,10 @@
 """Affiche l'alignement d'un verset, pour le relire à la main.
 
 Usage (depuis la racine du projet) :
-    python src/show.py results/<expérience>/Gen.1.jsonl Gen.1.1
-    python src/show.py results/<expérience>/Gen.1.jsonl Gen.1.1 itermax
+    polyglot-align show results/<expérience>/Gen.1.jsonl Gen.1.1
+    polyglot-align show results/<expérience>/Gen.1.jsonl Gen.1.1 itermax
 """
 import json
-import sys
 
 
 def show(jsonl_path, ref, method="inter"):
@@ -24,6 +23,3 @@ def show(jsonl_path, ref, method="inter"):
         return
     print(f"{ref} absent de {jsonl_path}")
 
-
-if __name__ == "__main__":
-    show(*sys.argv[1:4])

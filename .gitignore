@@ -8,3 +8,6 @@ TODO_gold_clean.md
 TODO.md
 exeperiments/.trash
 results/.trash
+
+# paquet installé en mode éditable (pip install -e .)
+*.egg-info/

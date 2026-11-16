@@ -1,17 +1,15 @@
-"""Tests de src/config.py (Config, Passage) et src/corpus.py (Corpus, Verse).
+"""Tests de polyglot_align.config (Config, Passage) et polyglot_align.corpus (Corpus, Verse).
 
 Usage (depuis la racine du projet) : python -m unittest tests/test_config_corpus.py -v
 """
-import sys
 import tempfile
 import unicodedata
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
-from config import Config, Passage  # noqa: E402
-from corpus import Corpus, ref_key  # noqa: E402
+from polyglot_align.config import Config, Passage
+from polyglot_align.corpus import Corpus, ref_key
 
 nfc = lambda s: unicodedata.normalize("NFC", s)
 

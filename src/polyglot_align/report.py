@@ -4,7 +4,7 @@ Voir DECISIONS.md « Module de rapport ». Ne lance aucun alignement : lit
 results/<nom>/scores.json et la copie results/<nom>/config.yaml.
 
 Usage (depuis la racine du projet) :
-    python src/report.py reports/article.yaml   ->  reports/article/
+    polyglot-align report reports/article.yaml   ->  reports/article/
 
 Garde-fous :
 - libellés tirés de la copie de la config (results/<nom>/config.yaml), avec un
@@ -19,15 +19,14 @@ import csv
 import json
 import re
 import statistics
-import sys
 import unicodedata
 from collections import Counter
 from pathlib import Path
 
 import yaml
 
-from config import Config
-from evaluate import measures
+from polyglot_align.config import Config
+from polyglot_align.evaluation.evaluate import measures
 
 # libellés des colonnes (mesures de evaluate.measures)
 COLUMN_LABELS = {
@@ -458,6 +457,3 @@ class Report:
             print(f"figure : {self.out}/figures/{spec.get('file', kind)}.(pdf|png)")
         self.warnings += figs.warnings
 
-
-if __name__ == "__main__":
-    Report.from_yaml(sys.argv[1] if len(sys.argv) > 1 else "reports/article.yaml").run()

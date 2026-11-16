@@ -16,7 +16,7 @@ Format de sortie : {"Gen": {"1": {"1": [unité, …]}}}, une unité =
      "flags": [...], "todo": [...],
      "raw_hb": "...", "raw_gr": "..."}
 
-Usage (depuis la racine du projet) : python src/gold_clean.py
+Usage (depuis la racine du projet) : polyglot-align clean-gold
 """
 import json
 import re
@@ -329,6 +329,3 @@ def main():
     for k, n in report.most_common():
         print(f"{n:>8}  {k}")
 
-
-if __name__ == "__main__":
-    main()

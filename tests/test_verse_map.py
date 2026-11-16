@@ -8,9 +8,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "data"))
-from corpus import VerseMap        # noqa: E402
+from polyglot_align.corpus import VerseMap
 from make_verse_map import verse_groups  # noqa: E402
 
 DATA = ROOT / "data"

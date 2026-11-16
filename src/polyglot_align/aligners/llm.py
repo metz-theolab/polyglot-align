@@ -14,9 +14,9 @@ conservé dans le JSONL (champ "llm_table") pour la relecture.
 import json
 import urllib.request
 
-from aligners import Aligner, VerseAlignment
-from gold import grc_letters, heb_letters, project
-from normalize import norm_heb
+from polyglot_align.aligners.base import Aligner, VerseAlignment
+from polyglot_align.evaluation.gold import grc_letters, heb_letters, project
+from polyglot_align.normalize import norm_heb
 
 PROMPT = """Align this Hebrew verse with its Greek translation (Septuagint).
 

@@ -11,7 +11,7 @@ sentencepiece        # tokeniseur de Glot500 (cis-lmu/glot500-base)
 # Aligneur statistique (aligner: eflomal)
 eflomal
 
-# Rapport : figures de l'article (src/report.py)
+# Rapport : figures de l'article (polyglot-align report)
 matplotlib
 
 # Aligneur LLM : aucun paquet Python (appel HTTP à Ollama par la bibliothèque standard),

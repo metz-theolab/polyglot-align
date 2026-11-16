@@ -6,14 +6,14 @@ correspond à un lien reconstruit `{...}`).
 
 Evaluator juge les liens d'un passage (sortie JSONL d'align.py) contre un Gold,
 et écrit le CSV de relecture. measures() calcule les mesures à partir des
-comptes bruts (aussi utilisée par run.py pour le total).
+comptes bruts (aussi utilisée par experiment.py pour le total).
 """
 import csv
 import json
 from collections import Counter, defaultdict
 
-from corpus import Corpus
-from gold import Gold
+from polyglot_align.corpus import Corpus
+from polyglot_align.evaluation.gold import Gold
 
 
 def measures(c: Counter) -> dict:

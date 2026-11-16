@@ -1,4 +1,4 @@
-"""Tests de l'interface Aligner (src/aligners.py, src/llm_align.py).
+"""Tests de l'interface Aligner (polyglot_align.aligners).
 
 Le LLM n'est pas appelé : sa réponse est simulée par un tableau fixe, pour que
 le test soit rapide et reproductible. SimAlign n'est pas chargé ici (lourd) :
@@ -7,16 +7,14 @@ il est couvert par le test de non-régression (tests/check_non_regression.py).
 Usage (depuis la racine du projet) : python -m unittest tests/test_aligners.py -v
 """
 import json
-import sys
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT / "src"))
-from aligners import Aligner, VerseAlignment, make_aligner  # noqa: E402
-from config import Config, Passage                          # noqa: E402
-from corpus import Corpus                                   # noqa: E402
-from llm_align import OllamaAligner                         # noqa: E402
+from polyglot_align.aligners import Aligner, VerseAlignment, make_aligner
+from polyglot_align.config import Config, Passage
+from polyglot_align.corpus import Corpus
+from polyglot_align.aligners.llm import OllamaAligner
 
 TABLE_GN_1_1 = {"rows": [
     {"hebrew": "בְּרֵאשִׁ֖ית", "greek": "ἐν ἀρχῇ"},
