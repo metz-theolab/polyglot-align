@@ -1,0 +1,57 @@
+{
+ "debut": "2026-11-18T21:16:41",
+ "phases": {
+  "chargement": {
+   "duree_s": 0.0,
+   "cpu_s": 0.0
+  },
+  "apprentissage": {
+   "duree_s": 5.964,
+   "cpu_s": 24.167
+  },
+  "alignement": {
+   "duree_s": 1.092,
+   "cpu_s": 1.077
+  },
+  "evaluation": {
+   "duree_s": 1.681,
+   "cpu_s": 1.656
+  }
+ },
+ "total": {
+  "duree_s": 8.737,
+  "cpu_s": 26.899
+ },
+ "cout_methode": {
+  "duree_s": 7.056,
+  "cpu_s": 25.243,
+  "s_par_1000_versets": 0.307
+ },
+ "debit_alignement": {
+  "versets_par_s": 21064.75,
+  "tokens_par_s": 525004.53
+ },
+ "volume": {
+  "versets": 23006,
+  "versets_repris": 0,
+  "tokens_hb": 264279,
+  "tokens_gr": 309108
+ },
+ "memoire_max_mo": 178.6,
+ "machine": {
+  "systeme": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "processeur": "Apple M3 Max",
+  "coeurs": 14,
+  "python": "3.13.4",
+  "device": null,
+  "versions": {
+   "torch": "2.15.0",
+   "transformers": "5.22.1",
+   "simalign": "0.4",
+   "eflomal": "2.0.0"
+  }
+ },
+ "aligneur": {
+  "versets appris": 23006
+ }
+}

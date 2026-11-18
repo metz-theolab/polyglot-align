@@ -1,0 +1,1682 @@
+{
+ "Gen": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1533,
+     "tokens_hb": 17753,
+     "tokens_gr": 20350,
+     "liens": 13618,
+     "tokens_hb_sans_lien": 4135,
+     "tokens_gr_sans_lien": 6732
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1533,
+     "tokens_hb": 17753,
+     "tokens_gr": 20350,
+     "liens": 18530,
+     "tokens_hb_sans_lien": 600,
+     "tokens_gr_sans_lien": 2855
+    }
+   }
+  }
+ },
+ "Exod": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1213,
+     "tokens_hb": 14433,
+     "tokens_gr": 16558,
+     "liens": 10392,
+     "tokens_hb_sans_lien": 4041,
+     "tokens_gr_sans_lien": 6166
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1213,
+     "tokens_hb": 14433,
+     "tokens_gr": 16558,
+     "liens": 15265,
+     "tokens_hb_sans_lien": 627,
+     "tokens_gr_sans_lien": 2351
+    }
+   }
+  }
+ },
+ "Lev": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 859,
+     "tokens_hb": 10177,
+     "tokens_gr": 11945,
+     "liens": 7242,
+     "tokens_hb_sans_lien": 2935,
+     "tokens_gr_sans_lien": 4703
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 859,
+     "tokens_hb": 10177,
+     "tokens_gr": 11945,
+     "liens": 10800,
+     "tokens_hb_sans_lien": 460,
+     "tokens_gr_sans_lien": 1879
+    }
+   }
+  }
+ },
+ "Num": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1289,
+     "tokens_hb": 14290,
+     "tokens_gr": 16778,
+     "liens": 10569,
+     "tokens_hb_sans_lien": 3721,
+     "tokens_gr_sans_lien": 6209
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1289,
+     "tokens_hb": 14290,
+     "tokens_gr": 16778,
+     "liens": 14965,
+     "tokens_hb_sans_lien": 603,
+     "tokens_gr_sans_lien": 2633
+    }
+   }
+  }
+ },
+ "Deut": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 959,
+     "tokens_hb": 12544,
+     "tokens_gr": 14296,
+     "liens": 8873,
+     "tokens_hb_sans_lien": 3671,
+     "tokens_gr_sans_lien": 5423
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 959,
+     "tokens_hb": 12544,
+     "tokens_gr": 14296,
+     "liens": 12874,
+     "tokens_hb_sans_lien": 658,
+     "tokens_gr_sans_lien": 2289
+    }
+   }
+  }
+ },
+ "Josh": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 656,
+     "tokens_hb": 8522,
+     "tokens_gr": 10035,
+     "liens": 6135,
+     "tokens_hb_sans_lien": 2387,
+     "tokens_gr_sans_lien": 3900
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 656,
+     "tokens_hb": 8522,
+     "tokens_gr": 10035,
+     "liens": 8964,
+     "tokens_hb_sans_lien": 379,
+     "tokens_gr_sans_lien": 1637
+    }
+   }
+  }
+ },
+ "Judg": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 617,
+     "tokens_hb": 8515,
+     "tokens_gr": 9794,
+     "liens": 6294,
+     "tokens_hb_sans_lien": 2221,
+     "tokens_gr_sans_lien": 3500
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 617,
+     "tokens_hb": 8515,
+     "tokens_gr": 9794,
+     "liens": 8863,
+     "tokens_hb_sans_lien": 365,
+     "tokens_gr_sans_lien": 1476
+    }
+   }
+  }
+ },
+ "Ruth": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 85,
+     "tokens_hb": 1119,
+     "tokens_gr": 1400,
+     "liens": 566,
+     "tokens_hb_sans_lien": 553,
+     "tokens_gr_sans_lien": 834
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 85,
+     "tokens_hb": 1119,
+     "tokens_gr": 1400,
+     "liens": 1231,
+     "tokens_hb_sans_lien": 66,
+     "tokens_gr_sans_lien": 303
+    }
+   }
+  }
+ },
+ "1Sam": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 809,
+     "tokens_hb": 11481,
+     "tokens_gr": 12953,
+     "liens": 8638,
+     "tokens_hb_sans_lien": 2843,
+     "tokens_gr_sans_lien": 4315
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 809,
+     "tokens_hb": 11481,
+     "tokens_gr": 12953,
+     "liens": 11695,
+     "tokens_hb_sans_lien": 542,
+     "tokens_gr_sans_lien": 1892
+    }
+   }
+  }
+ },
+ "2Sam": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 693,
+     "tokens_hb": 9427,
+     "tokens_gr": 11106,
+     "liens": 6405,
+     "tokens_hb_sans_lien": 3022,
+     "tokens_gr_sans_lien": 4701
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 693,
+     "tokens_hb": 9427,
+     "tokens_gr": 11106,
+     "liens": 9648,
+     "tokens_hb_sans_lien": 537,
+     "tokens_gr_sans_lien": 2093
+    }
+   }
+  }
+ },
+ "1Kgs": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 816,
+     "tokens_hb": 11300,
+     "tokens_gr": 12891,
+     "liens": 8393,
+     "tokens_hb_sans_lien": 2907,
+     "tokens_gr_sans_lien": 4498
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 816,
+     "tokens_hb": 11300,
+     "tokens_gr": 12891,
+     "liens": 11657,
+     "tokens_hb_sans_lien": 541,
+     "tokens_gr_sans_lien": 1924
+    }
+   }
+  }
+ },
+ "2Kgs": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 719,
+     "tokens_hb": 10387,
+     "tokens_gr": 12029,
+     "liens": 7505,
+     "tokens_hb_sans_lien": 2882,
+     "tokens_gr_sans_lien": 4524
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 719,
+     "tokens_hb": 10387,
+     "tokens_gr": 12029,
+     "liens": 10839,
+     "tokens_hb_sans_lien": 446,
+     "tokens_gr_sans_lien": 1897
+    }
+   }
+  }
+ },
+ "1Chr": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 891,
+     "tokens_hb": 9048,
+     "tokens_gr": 11265,
+     "liens": 5918,
+     "tokens_hb_sans_lien": 3130,
+     "tokens_gr_sans_lien": 5347
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 891,
+     "tokens_hb": 9048,
+     "tokens_gr": 11265,
+     "liens": 9533,
+     "tokens_hb_sans_lien": 582,
+     "tokens_gr_sans_lien": 2465
+    }
+   }
+  }
+ },
+ "2Chr": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 757,
+     "tokens_hb": 10711,
+     "tokens_gr": 13399,
+     "liens": 6858,
+     "tokens_hb_sans_lien": 3853,
+     "tokens_gr_sans_lien": 6541
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 757,
+     "tokens_hb": 10711,
+     "tokens_gr": 13399,
+     "liens": 11184,
+     "tokens_hb_sans_lien": 736,
+     "tokens_gr_sans_lien": 2942
+    }
+   }
+  }
+ },
+ "Ezra": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 280,
+     "tokens_hb": 3451,
+     "tokens_gr": 3908,
+     "liens": 1958,
+     "tokens_hb_sans_lien": 1493,
+     "tokens_gr_sans_lien": 1950
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 280,
+     "tokens_hb": 3451,
+     "tokens_gr": 3908,
+     "liens": 3541,
+     "tokens_hb_sans_lien": 294,
+     "tokens_gr_sans_lien": 708
+    }
+   }
+  }
+ },
+ "Neh": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 405,
+     "tokens_hb": 4740,
+     "tokens_gr": 5496,
+     "liens": 3016,
+     "tokens_hb_sans_lien": 1724,
+     "tokens_gr_sans_lien": 2480
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 405,
+     "tokens_hb": 4740,
+     "tokens_gr": 5496,
+     "liens": 4974,
+     "tokens_hb_sans_lien": 292,
+     "tokens_gr_sans_lien": 937
+    }
+   }
+  }
+ },
+ "Esth": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 167,
+     "tokens_hb": 2619,
+     "tokens_gr": 2912,
+     "liens": 1604,
+     "tokens_hb_sans_lien": 1015,
+     "tokens_gr_sans_lien": 1308
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 167,
+     "tokens_hb": 2619,
+     "tokens_gr": 2912,
+     "liens": 2733,
+     "tokens_hb_sans_lien": 187,
+     "tokens_gr_sans_lien": 444
+    }
+   }
+  }
+ },
+ "Job": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1065,
+     "tokens_hb": 7113,
+     "tokens_gr": 9221,
+     "liens": 4665,
+     "tokens_hb_sans_lien": 2448,
+     "tokens_gr_sans_lien": 4556
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1065,
+     "tokens_hb": 7113,
+     "tokens_gr": 9221,
+     "liens": 7760,
+     "tokens_hb_sans_lien": 204,
+     "tokens_gr_sans_lien": 2078
+    }
+   }
+  }
+ },
+ "Ps": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 2454,
+     "tokens_hb": 16844,
+     "tokens_gr": 20092,
+     "liens": 11391,
+     "tokens_hb_sans_lien": 5453,
+     "tokens_gr_sans_lien": 8701
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 2454,
+     "tokens_hb": 16844,
+     "tokens_gr": 20092,
+     "liens": 18115,
+     "tokens_hb_sans_lien": 627,
+     "tokens_gr_sans_lien": 3524
+    }
+   }
+  }
+ },
+ "Prov": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 914,
+     "tokens_hb": 6055,
+     "tokens_gr": 8058,
+     "liens": 4073,
+     "tokens_hb_sans_lien": 1982,
+     "tokens_gr_sans_lien": 3985
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 914,
+     "tokens_hb": 6055,
+     "tokens_gr": 8058,
+     "liens": 6874,
+     "tokens_hb_sans_lien": 156,
+     "tokens_gr_sans_lien": 1760
+    }
+   }
+  }
+ },
+ "Eccl": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 222,
+     "tokens_hb": 2577,
+     "tokens_gr": 3020,
+     "liens": 1756,
+     "tokens_hb_sans_lien": 821,
+     "tokens_gr_sans_lien": 1264
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 222,
+     "tokens_hb": 2577,
+     "tokens_gr": 3020,
+     "liens": 2690,
+     "tokens_hb_sans_lien": 96,
+     "tokens_gr_sans_lien": 493
+    }
+   }
+  }
+ },
+ "Song": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 117,
+     "tokens_hb": 1158,
+     "tokens_gr": 1312,
+     "liens": 820,
+     "tokens_hb_sans_lien": 338,
+     "tokens_gr_sans_lien": 492
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 117,
+     "tokens_hb": 1158,
+     "tokens_gr": 1312,
+     "liens": 1240,
+     "tokens_hb_sans_lien": 36,
+     "tokens_gr_sans_lien": 172
+    }
+   }
+  }
+ },
+ "Isa": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1290,
+     "tokens_hb": 15299,
+     "tokens_gr": 17567,
+     "liens": 10442,
+     "tokens_hb_sans_lien": 4857,
+     "tokens_gr_sans_lien": 7125
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1290,
+     "tokens_hb": 15299,
+     "tokens_gr": 17567,
+     "liens": 16320,
+     "tokens_hb_sans_lien": 675,
+     "tokens_gr_sans_lien": 2562
+    }
+   }
+  }
+ },
+ "Jer": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1364,
+     "tokens_hb": 18669,
+     "tokens_gr": 21771,
+     "liens": 13241,
+     "tokens_hb_sans_lien": 5428,
+     "tokens_gr_sans_lien": 8530
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1364,
+     "tokens_hb": 18669,
+     "tokens_gr": 21771,
+     "liens": 19446,
+     "tokens_hb_sans_lien": 943,
+     "tokens_gr_sans_lien": 3580
+    }
+   }
+  }
+ },
+ "Lam": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 154,
+     "tokens_hb": 1462,
+     "tokens_gr": 1760,
+     "liens": 1025,
+     "tokens_hb_sans_lien": 437,
+     "tokens_gr_sans_lien": 735
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 154,
+     "tokens_hb": 1462,
+     "tokens_gr": 1760,
+     "liens": 1684,
+     "tokens_hb_sans_lien": 33,
+     "tokens_gr_sans_lien": 216
+    }
+   }
+  }
+ },
+ "Ezek": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1271,
+     "tokens_hb": 16550,
+     "tokens_gr": 18341,
+     "liens": 10301,
+     "tokens_hb_sans_lien": 6249,
+     "tokens_gr_sans_lien": 8040
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 1271,
+     "tokens_hb": 16550,
+     "tokens_gr": 18341,
+     "liens": 17417,
+     "tokens_hb_sans_lien": 999,
+     "tokens_gr_sans_lien": 2573
+    }
+   }
+  }
+ },
+ "Dan": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 357,
+     "tokens_hb": 5303,
+     "tokens_gr": 5848,
+     "liens": 2595,
+     "tokens_hb_sans_lien": 2708,
+     "tokens_gr_sans_lien": 3253
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 357,
+     "tokens_hb": 5303,
+     "tokens_gr": 5848,
+     "liens": 5591,
+     "tokens_hb_sans_lien": 398,
+     "tokens_gr_sans_lien": 955
+    }
+   }
+  }
+ },
+ "Hos": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 197,
+     "tokens_hb": 2126,
+     "tokens_gr": 2580,
+     "liens": 1476,
+     "tokens_hb_sans_lien": 650,
+     "tokens_gr_sans_lien": 1104
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 197,
+     "tokens_hb": 2126,
+     "tokens_gr": 2580,
+     "liens": 2290,
+     "tokens_hb_sans_lien": 76,
+     "tokens_gr_sans_lien": 470
+    }
+   }
+  }
+ },
+ "Joel": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 73,
+     "tokens_hb": 859,
+     "tokens_gr": 984,
+     "liens": 628,
+     "tokens_hb_sans_lien": 231,
+     "tokens_gr_sans_lien": 356
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 73,
+     "tokens_hb": 859,
+     "tokens_gr": 984,
+     "liens": 909,
+     "tokens_hb_sans_lien": 28,
+     "tokens_gr_sans_lien": 136
+    }
+   }
+  }
+ },
+ "Amos": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 146,
+     "tokens_hb": 1798,
+     "tokens_gr": 2112,
+     "liens": 1383,
+     "tokens_hb_sans_lien": 415,
+     "tokens_gr_sans_lien": 729
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 146,
+     "tokens_hb": 1798,
+     "tokens_gr": 2112,
+     "liens": 1891,
+     "tokens_hb_sans_lien": 60,
+     "tokens_gr_sans_lien": 320
+    }
+   }
+  }
+ },
+ "Obad": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 21,
+     "tokens_hb": 248,
+     "tokens_gr": 299,
+     "liens": 182,
+     "tokens_hb_sans_lien": 66,
+     "tokens_gr_sans_lien": 117
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 21,
+     "tokens_hb": 248,
+     "tokens_gr": 299,
+     "liens": 268,
+     "tokens_hb_sans_lien": 5,
+     "tokens_gr_sans_lien": 49
+    }
+   }
+  }
+ },
+ "Jonah": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 48,
+     "tokens_hb": 587,
+     "tokens_gr": 718,
+     "liens": 447,
+     "tokens_hb_sans_lien": 140,
+     "tokens_gr_sans_lien": 271
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 48,
+     "tokens_hb": 587,
+     "tokens_gr": 718,
+     "liens": 629,
+     "tokens_hb_sans_lien": 14,
+     "tokens_gr_sans_lien": 119
+    }
+   }
+  }
+ },
+ "Mic": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 105,
+     "tokens_hb": 1261,
+     "tokens_gr": 1498,
+     "liens": 846,
+     "tokens_hb_sans_lien": 415,
+     "tokens_gr_sans_lien": 652
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 105,
+     "tokens_hb": 1261,
+     "tokens_gr": 1498,
+     "liens": 1366,
+     "tokens_hb_sans_lien": 46,
+     "tokens_gr_sans_lien": 244
+    }
+   }
+  }
+ },
+ "Nah": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 47,
+     "tokens_hb": 519,
+     "tokens_gr": 590,
+     "liens": 327,
+     "tokens_hb_sans_lien": 192,
+     "tokens_gr_sans_lien": 263
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 47,
+     "tokens_hb": 519,
+     "tokens_gr": 590,
+     "liens": 598,
+     "tokens_hb_sans_lien": 9,
+     "tokens_gr_sans_lien": 68
+    }
+   }
+  }
+ },
+ "Hab": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 56,
+     "tokens_hb": 617,
+     "tokens_gr": 701,
+     "liens": 371,
+     "tokens_hb_sans_lien": 246,
+     "tokens_gr_sans_lien": 330
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 56,
+     "tokens_hb": 617,
+     "tokens_gr": 701,
+     "liens": 659,
+     "tokens_hb_sans_lien": 33,
+     "tokens_gr_sans_lien": 122
+    }
+   }
+  }
+ },
+ "Zeph": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 53,
+     "tokens_hb": 668,
+     "tokens_gr": 810,
+     "liens": 499,
+     "tokens_hb_sans_lien": 169,
+     "tokens_gr_sans_lien": 311
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 53,
+     "tokens_hb": 668,
+     "tokens_gr": 810,
+     "liens": 715,
+     "tokens_hb_sans_lien": 19,
+     "tokens_gr_sans_lien": 132
+    }
+   }
+  }
+ },
+ "Hag": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 38,
+     "tokens_hb": 498,
+     "tokens_gr": 609,
+     "liens": 367,
+     "tokens_hb_sans_lien": 131,
+     "tokens_gr_sans_lien": 242
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 38,
+     "tokens_hb": 498,
+     "tokens_gr": 609,
+     "liens": 527,
+     "tokens_hb_sans_lien": 22,
+     "tokens_gr_sans_lien": 115
+    }
+   }
+  }
+ },
+ "Zech": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 211,
+     "tokens_hb": 2765,
+     "tokens_gr": 3169,
+     "liens": 1946,
+     "tokens_hb_sans_lien": 819,
+     "tokens_gr_sans_lien": 1223
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 211,
+     "tokens_hb": 2765,
+     "tokens_gr": 3169,
+     "liens": 2899,
+     "tokens_hb_sans_lien": 137,
+     "tokens_gr_sans_lien": 469
+    }
+   }
+  }
+ },
+ "Mal": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 55,
+     "tokens_hb": 786,
+     "tokens_gr": 933,
+     "liens": 556,
+     "tokens_hb_sans_lien": 230,
+     "tokens_gr_sans_lien": 377
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 55,
+     "tokens_hb": 786,
+     "tokens_gr": 933,
+     "liens": 800,
+     "tokens_hb_sans_lien": 46,
+     "tokens_gr_sans_lien": 179
+    }
+   }
+  }
+ },
+ "TOTAL": {
+  "methodes": {
+   "inter": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 23006,
+     "tokens_hb": 264279,
+     "tokens_gr": 309108,
+     "liens": 183321,
+     "tokens_hb_sans_lien": 80958,
+     "tokens_gr_sans_lien": 125787
+    }
+   },
+   "gdfa": {
+    "mesures": {
+     "precision": null,
+     "rappel_blocs": null,
+     "f1": null,
+     "nonalign_exactitude": null,
+     "aer": null,
+     "couverture_hb": null,
+     "couverture_gr": null
+    },
+    "comptes": {
+     "versets": 23006,
+     "tokens_hb": 264279,
+     "tokens_gr": 309108,
+     "liens": 277984,
+     "tokens_hb_sans_lien": 12577,
+     "tokens_gr_sans_lien": 51061
+    }
+   }
+  }
+ }
+}

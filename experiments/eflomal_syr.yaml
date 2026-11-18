@@ -1,0 +1,56 @@
+# Toute la Bible : hébreu ↔ Peshitta avec eflomal, sans gold
+# (DECISIONS.md, FEAT / Syriaque, « Démo : alignement hébreu ↔ Peshitta »).
+# eflomal apprend sur toutes les paires hébreu–syriaque de même référence (23 006),
+# puis écrit les alignements des 39 livres (JSONL + CSV de relecture, sans scores).
+# Lancer (depuis la racine du projet) : polyglot-align run experiments/eflomal_syr.yaml
+# Relire : polyglot-align show results/eflomal_syr/Gen.jsonl Gen.1.1
+
+name: eflomal_syr
+
+passages:
+  - {book: Gen}
+  - {book: Exod}
+  - {book: Lev}
+  - {book: Num}
+  - {book: Deut}
+  - {book: Josh}
+  - {book: Judg}
+  - {book: Ruth}
+  - {book: 1Sam}
+  - {book: 2Sam}
+  - {book: 1Kgs}
+  - {book: 2Kgs}
+  - {book: 1Chr}
+  - {book: 2Chr}
+  - {book: Ezra}
+  - {book: Neh}
+  - {book: Esth}
+  - {book: Job}
+  - {book: Ps}
+  - {book: Prov}
+  - {book: Eccl}
+  - {book: Song}
+  - {book: Isa}
+  - {book: Jer}
+  - {book: Lam}
+  - {book: Ezek}
+  - {book: Dan}
+  - {book: Hos}
+  - {book: Joel}
+  - {book: Amos}
+  - {book: Obad}
+  - {book: Jonah}
+  - {book: Mic}
+  - {book: Nah}
+  - {book: Hab}
+  - {book: Zeph}
+  - {book: Hag}
+  - {book: Zech}
+  - {book: Mal}
+
+target: syr                 # lxx = Septante (gold CATSS), syr = Peshitta (sans gold)
+tokens: t                   # t = texte découpé aux espaces (mots liés par maqqef ensemble)
+hebrew: pointed             # pointed = tel qu'exporté, vocalized, unvocalized
+
+aligner:
+  type: eflomal
