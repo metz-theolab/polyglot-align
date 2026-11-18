@@ -7,16 +7,26 @@
 // soit l'algorithme (eflomal : inter / gdfa ; SimAlign : argmax / itermax ;
 // LLM : un seul niveau).
 
-/** Teinte (0-360) du k-ième mot graphique hébreu : angle d'or, voisins bien distincts. */
-export function hue(k) {
-  return Math.round((k * 137.508) % 360);
+/** Couleurs des mots reliés : Veiled Vista, Baltic Sea, Golden Mist, Quiet
+ *  Violet (palette du site, styles.css : --tone-0 … --tone-3). */
+export const TONES = 4;
+
+/** Couleur (0 à TONES - 1) du k-ième mot hébreu : à tour de rôle, deux
+ *  voisins n'ont jamais la même. */
+export function tone(k) {
+  return k % TONES;
+}
+
+/** Style d'un mot coloré : sa couleur de palette en variable CSS --c. */
+export function toneStyle(t) {
+  return t === null ? undefined : { "--c": `var(--tone-${t})` };
 }
 
 /**
  * Modèle d'affichage d'un alignement : tous les liens (all), les sûrs marqués.
  * - words : mots graphiques hébreux dans l'ordre du texte,
- *   { k, hue, tokens: [{ i, text }], greek: [{ j, text, sure }] }
- * - greek : tokens grecs dans l'ordre, { j, text, hue (null si sans lien), sure }
+ *   { k, tone, tokens: [{ i, text }], greek: [{ j, text, sure }] }
+ * - greek : tokens grecs dans l'ordre, { j, text, tone (null si sans lien), sure }
  * - heToGr, grToHe : liens dans les deux sens (Map indice -> [indices])
  * - wordOf : n° du mot graphique de chaque token hébreu
  */
@@ -41,7 +51,7 @@ export function buildModel(result) {
   result.hebrew.tokens.forEach((text, i) => {
     const k = wordOf[i];
     if (!byWord.has(k)) {
-      byWord.set(k, { k, hue: hue(order.length), tokens: [], greek: new Map() });
+      byWord.set(k, { k, tone: tone(order.length), tokens: [], greek: new Map() });
       order.push(k);
     }
     const word = byWord.get(k);
@@ -58,13 +68,13 @@ export function buildModel(result) {
   });
 
   // couleur d'un mot grec : celle du premier mot hébreu (dans l'ordre du texte) qui lui est relié
-  const hueOfWord = new Map(words.map((w) => [w.k, w.hue]));
+  const toneOfWord = new Map(words.map((w) => [w.k, w.tone]));
   const greek = result.greek.tokens.map((text, j) => {
     const hes = grToHe.get(j) || [];
-    if (!hes.length) return { j, text, hue: null, sure: false };
+    if (!hes.length) return { j, text, tone: null, sure: false };
     const first = Math.min(...hes.map((i) => order.indexOf(wordOf[i])));
     const s = links.some((l) => l.j === j && l.sure);
-    return { j, text, hue: hueOfWord.get(order[first]), sure: s };
+    return { j, text, tone: toneOfWord.get(order[first]), sure: s };
   });
 
   return { words, greek, heToGr, grToHe, wordOf };

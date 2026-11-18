@@ -38,3 +38,15 @@ export const info = () => request("/info");
 
 export const align = (hebrew, greek, algorithm) =>
   request("/align", { method: "POST", body: JSON.stringify({ hebrew, greek, algorithm }) });
+
+// --- lecteur des textes alignés -------------------------------------------------
+
+/** Résultats publiés : [{ id, label, target, language, direction, gold, method }]. */
+export const readerCorpora = () => request("/reader/corpora");
+
+/** Livres hébreux alignés : [{ book, chapters, texts: [{ corpus, text }] }]. */
+export const readerBooks = () => request("/reader/books");
+
+/** Un chapitre : { book, chapter, verses: [{ ref, words, targets }] }. */
+export const readerChapter = (book, chapter) =>
+  request(`/reader/${encodeURIComponent(book)}/${encodeURIComponent(chapter)}`);

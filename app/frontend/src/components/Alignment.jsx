@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
-import { buildModel, related } from "../alignment.js";
+import { buildModel, related, toneStyle } from "../alignment.js";
 
-/** Class and hue of a word depending on hover: highlighted, dimmed or normal. */
-function look(hue, active, highlighted) {
-  const style = hue === null ? undefined : { "--h": hue };
+/** Class and colour of a word depending on hover: highlighted, dimmed or normal. */
+function look(tone, active, highlighted) {
+  const style = toneStyle(tone);
   const state = !active ? "" : highlighted ? " hl" : " dim";
   return { style, state };
 }
@@ -43,7 +43,7 @@ export default function Alignment({ result }) {
       <h2>Interlinear</h2>
       <div className="interlinear" dir="rtl" onMouseLeave={leave}>
         {model.words.map((w) => {
-          const { style, state } = look(w.hue, hl, hl?.words.has(w.k));
+          const { style, state } = look(w.tone, hl, hl?.words.has(w.k));
           return (
             <div key={w.k} className={`word${w.greek.length ? " linked" : " unlinked"}${state}`}
               style={style} onMouseEnter={() => setHover({ side: "he", k: w.k })}>
@@ -67,8 +67,8 @@ export default function Alignment({ result }) {
       <h2>Greek text</h2>
       <p className="greek-text" lang="grc" onMouseLeave={leave}>
         {model.greek.map((g) => {
-          const { style, state } = look(g.hue, hl, hl?.gr.has(g.j));
-          const kind = g.hue === null ? "unlinked" : g.sure ? "linked sure" : "linked probable";
+          const { style, state } = look(g.tone, hl, hl?.gr.has(g.j));
+          const kind = g.tone === null ? "unlinked" : g.sure ? "linked sure" : "linked probable";
           return (
             <span key={g.j} className={`token ${kind}${state}`} style={style}
               onMouseEnter={() => setHover({ side: "gr", j: g.j })}>{g.text}</span>

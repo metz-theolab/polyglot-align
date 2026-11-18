@@ -1,92 +1,59 @@
 import { useEffect, useState } from "react";
-import * as api from "./api.js";
-import AlignForm from "./components/AlignForm.jsx";
-import Alignment from "./components/Alignment.jsx";
+import AlignPage from "./components/AlignPage.jsx";
+import ReaderPage from "./components/ReaderPage.jsx";
+import logo from "./assets/logo-dark.png";     // version claire du logo, pour la barre foncée
+import { parseHash, readHash } from "./reader.js";
 
-/** Single page: API status, input, result. */
-export default function App() {
-  const [status, setStatus] = useState({ status: "loading" });
-  const [algorithms, setAlgorithms] = useState([{ name: "eflomal", label: "eflomal", status: "loading" }]);
-  const [algorithm, setAlgorithm] = useState("eflomal");
-  const [hebrew, setHebrew] = useState("");
-  const [greek, setGreek] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState(null);
-  const [result, setResult] = useState(null);
+const REPOSITORY = "https://github.com/metz-theolab/polyglot-align";
 
-  // model status: polled every 2 s while the models are loading
-  useEffect(() => {
-    let stop = false;
-    let timer;
-    const poll = async () => {
-      try {
-        const h = await api.health();
-        if (stop) return;
-        setStatus(h);
-        if (h.status === "ready") {
-          // algorithms offered by the backend; polled while one is still loading
-          const i = await api.info();
-          if (stop) return;
-          setAlgorithms(i.algorithms);
-          setAlgorithm((current) => i.algorithms.some((a) => a.name === current && a.status === "ready")
-            ? current : i.default);
-          if (!i.algorithms.some((a) => a.status === "loading")) return;
-          timer = setTimeout(poll, 5000);
-          return;
-        }
-        if (h.status === "error") return;
-      } catch (e) {
-        if (!stop) setStatus({ status: "unreachable", detail: e.message });
-      }
-      timer = setTimeout(poll, 2000);
-    };
-    poll();
-    return () => { stop = true; clearTimeout(timer); };
-  }, []);
-
-  const submit = async () => {
-    setBusy(true);
-    setError(null);
-    try {
-      setResult(await api.align(hebrew, greek, algorithm));
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setBusy(false);
-    }
-  };
-
+/** GitHub mark (Octicons, MIT). */
+function GitHubIcon() {
   return (
-    <div className="page">
-      <header>
-        <h1>polyglot-align</h1>
-        <p className="subtitle">Word alignment of a Hebrew text and a Greek text</p>
-        <Status status={status} />
-      </header>
-
-      <AlignForm hebrew={hebrew} greek={greek} setHebrew={setHebrew} setGreek={setGreek}
-        algorithms={algorithms} algorithm={algorithm} setAlgorithm={setAlgorithm}
-        ready={status.status === "ready"} busy={busy} onSubmit={submit} />
-
-      {busy && <p className="busy">{BUSY[algorithm] || "Aligning…"}</p>}
-      {error && <p className="error">{error}</p>}
-      {result && <Alignment result={result} />}
-    </div>
+    <svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true" fill="currentColor">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+    </svg>
   );
 }
 
-const BUSY = {
-  eflomal: "Training eflomal on the Bible and your text (a few seconds)…",
-  simalign: "Computing contextual embeddings…",
-  llm: "Asking the language model (up to a minute)…",
-};
+/** App bar with the two modes (Align, Read) ; route in the URL fragment
+ *  (#/align, #/read/Gen/1/3). Both pages stay mounted: switching mode keeps
+ *  the typed texts and the reading position. */
+export default function App() {
+  const [route, setRoute] = useState(() => parseHash(window.location.hash));
+  const [lastRead, setLastRead] = useState(null);
 
-function Status({ status }) {
-  const text = {
-    loading: "Loading models…",
-    ready: "Ready",
-    error: `Models could not be loaded: ${status.detail}`,
-    unreachable: status.detail,
-  }[status.status];
-  return <p className={`status ${status.status}`}>{text}</p>;
+  useEffect(() => {
+    const onHash = () => setRoute(parseHash(window.location.hash));
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  useEffect(() => {
+    if (route.page === "read" && route.book) setLastRead(route);
+  }, [route]);
+
+  return (
+    <>
+      <nav className="appbar">
+        <a className="brand" href="#/align">
+          <img src={logo} alt="polyglot-align" height="24" />
+        </a>
+        <div className="bar-right">
+          <div className="tabs" role="tablist">
+            <a role="tab" href="#/align" aria-selected={route.page === "align"}
+              className={route.page === "align" ? "tab on" : "tab"}>Align</a>
+            <a role="tab" href={lastRead ? readHash(lastRead) : "#/read"} aria-selected={route.page === "read"}
+              className={route.page === "read" ? "tab on" : "tab"}>Read</a>
+          </div>
+          <a className="github" href={REPOSITORY} target="_blank" rel="noreferrer"
+            title="Source code on GitHub" aria-label="Source code on GitHub"><GitHubIcon /></a>
+        </div>
+      </nav>
+      <div hidden={route.page !== "align"}><AlignPage /></div>
+      <div hidden={route.page !== "read"}>
+        <ReaderPage route={route.page === "read" ? route : lastRead} active={route.page === "read"} />
+      </div>
+      <footer className="footer">© 2026 Frédérique Michèle Rey</footer>
+    </>
+  );
 }

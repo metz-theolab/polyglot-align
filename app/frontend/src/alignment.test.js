@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildModel, hue, related } from "./alignment.js";
+import { buildModel, tone, related } from "./alignment.js";
 
 // Gn 1:1 (début) tel que le renvoie l'API : בְּ·רֵאשִׁית = un mot graphique (n° 0)
 const RESULT = {
@@ -22,7 +22,7 @@ describe("buildModel", () => {
   it("un seul niveau (sure = all, ex. LLM) : ὁ sans lien", () => {
     const m = buildModel(SURE_ONLY);
     expect(m.words[2].greek.map((g) => g.text)).toEqual(["θεὸς"]);
-    expect(m.greek[3]).toMatchObject({ text: "ὁ", hue: null });
+    expect(m.greek[3]).toMatchObject({ text: "ὁ", tone: null });
   });
 
   it("liens probables (all sans sure) marqués non sûrs", () => {
@@ -36,16 +36,16 @@ describe("buildModel", () => {
 
   it("un mot grec prend la teinte du mot hébreu relié", () => {
     const m = buildModel(RESULT);
-    expect(m.greek[0].hue).toBe(m.words[0].hue);
-    expect(m.greek[4].hue).toBe(m.words[2].hue);
+    expect(m.greek[0].tone).toBe(m.words[0].tone);
+    expect(m.greek[4].tone).toBe(m.words[2].tone);
   });
 });
 
-describe("hue", () => {
-  it("donne des teintes voisines distinctes", () => {
-    const hues = [0, 1, 2, 3, 4, 5].map(hue);
-    expect(new Set(hues).size).toBe(6);
-    expect(Math.abs(hues[1] - hues[0])).toBeGreaterThan(60);
+describe("tone", () => {
+  it("quatre couleurs de la palette à tour de rôle, voisins distincts", () => {
+    const tones = [0, 1, 2, 3, 4, 5].map(tone);
+    expect(tones).toEqual([0, 1, 2, 3, 0, 1]);
+    tones.slice(1).forEach((t, k) => expect(t).not.toBe(tones[k]));
   });
 });
 
