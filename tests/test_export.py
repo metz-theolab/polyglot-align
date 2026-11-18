@@ -1,4 +1,5 @@
-"""Tests des exports Text-Fabric (data/export_bhsa_tf.py, data/export_lxx_tf.py).
+"""Tests des exports Text-Fabric (data/export_bhsa_tf.py, data/export_lxx_tf.py,
+data/export_peshitta_tf.py).
 
 Les scripts d'export lancent Text-Fabric dès l'import : on teste donc les fichiers
 qu'ils produisent dans data/he et data/lxx (à régénérer avant de lancer les tests).
@@ -164,3 +165,28 @@ class TestLXX(FormatChecks, unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+@unittest.skipUnless((DATA / "syr").exists(), "data/syr absent : lancer data/export_peshitta_tf.py")
+class TestPeshitta(FormatChecks, unittest.TestCase):
+    """Export de la Peshitta (DECISIONS.md « Export de la Peshitta ») : pas de
+    couche l (aucun lemme dans le corpus), un mot = un mot graphique."""
+    layers = {"t", "w", "g"}
+
+    @classmethod
+    def setUpClass(cls):
+        cls.aligned = load_dir(DATA / "syr")
+        cls.books = {**cls.aligned, **load_dir(DATA / "syr" / "non_aligned")}
+
+    def test_livres_hebreux(self):
+        # mêmes noms de fichiers que la BHSA (data/he)
+        he = {p.stem for p in (DATA / "he").glob("*.json")}
+        self.assertLessEqual(set(self.aligned), he)
+
+    def test_g_un_mot_par_token(self):
+        for ref, d in verses(self.books):
+            self.assertEqual(d["g"], " ".join(str(i) for i in range(len(d["w"].split(" ")))), ref)
+
+    def test_ecriture_syriaque(self):
+        for ref, d in verses(self.aligned):
+            self.assertRegex(d["w"], r"[ܐ-ܯ]", ref)
