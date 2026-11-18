@@ -25,6 +25,8 @@ def load_dir(directory: Path) -> dict:
     """{"Gen": {"1": {"1": {...}}}, ...} pour tous les fichiers d'un dossier."""
     books = {}
     for path in sorted(directory.glob("*.json")):
+        if path.name.startswith("_"):   # _rapport.json : pas un livre
+            continue
         books.update(json.loads(path.read_text(encoding="utf-8")))
     return books
 

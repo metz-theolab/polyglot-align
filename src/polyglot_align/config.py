@@ -36,7 +36,8 @@ import yaml
 from polyglot_align.aligners import ALIGNERS
 from polyglot_align.normalize import GREEK, HEBREW
 
-TOKENS = ("w", "g", "l")
+TOKENS = ("w", "g", "l", "t")
+TARGETS = ("lxx", "syr")      # texte aligné avec l'hébreu : LXX ou Peshitta
 
 
 @dataclass
@@ -115,9 +116,12 @@ class Config:
     # tokens : w = mots BHSA (בְּ רֵאשִׁית), g = mots graphiques (בְּרֵאשִׁית), l = lemmes
     # hebrew : pointed = tel qu'exporté, vocalized = voyelles sans accents, unvocalized = consonantique
     # greek : accented, unaccented = accents et esprits retirés, minuscules
+    # t = texte découpé aux espaces (mots liés par maqqef gardés ensemble)
+    # target : lxx = Septante (évaluée contre le gold CATSS), syr = Peshitta (sans gold)
     tokens: str = "w"
     hebrew: str = "unvocalized"
     greek: str = "accented"
+    target: str = "lxx"
 
     # aligneur : {"type": ..., options propres complétées par leurs valeurs par défaut}
     aligner: dict = field(default_factory=lambda: {"type": "simalign"})
@@ -165,7 +169,19 @@ class Config:
         if not self.passages:
             problems.append("aucun passage")
         if self.tokens not in TOKENS:
-            problems.append(f"tokens = {self.tokens!r} (attendu : w, g ou l)")
+            problems.append(f"tokens = {self.tokens!r} (attendu : w, g, l ou t)")
+        if self.target not in TARGETS:
+            problems.append(f"target = {self.target!r} (attendu : {', '.join(TARGETS)})")
+        elif self.target == "syr":
+            # démo hébreu ↔ Peshitta : eflomal sur la couche t (DECISIONS.md, FEAT / Syriaque)
+            if self.tokens != "t":
+                problems.append(f"target = syr : tokens = t attendu (pas {self.tokens!r})")
+            if self.aligner_type != "eflomal":
+                problems.append(f"target = syr : seul l'aligneur eflomal est possible "
+                                f"(pas {self.aligner_type!r})")
+        elif self.tokens == "t":
+            problems.append("tokens = t : seulement avec target = syr (l'évaluation contre "
+                            "le gold rattache les couches w, g ou l)")
         if self.hebrew not in HEBREW:
             problems.append(f"hebrew = {self.hebrew!r} (attendu : {', '.join(HEBREW)})")
         if self.greek not in GREEK:
@@ -203,4 +219,6 @@ class Config:
         return {"name": self.name,
                 "passages": [{k: v for k, v in vars(p).items()} for p in self.passages],
                 "tokens": self.tokens, "hebrew": self.hebrew, "greek": self.greek,
+                # target seulement si ce n'est pas le défaut : configs existantes inchangées
+                **({"target": self.target} if self.target != "lxx" else {}),
                 "aligner": dict(self.aligner)}

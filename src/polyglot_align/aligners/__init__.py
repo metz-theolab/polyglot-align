@@ -22,4 +22,6 @@ def make_aligner(cfg) -> Aligner:
     """Construit l'aligneur décrit par la configuration (config.Config) :
     options propres (section `aligner:`) et options communes (tokens, hebrew, greek)."""
     cls = ALIGNERS[cfg.aligner_type]
-    return cls(**cfg.aligner_params, layer=cfg.tokens, hebrew=cfg.hebrew, greek=cfg.greek)
+    # target seulement pour la Peshitta (Config n'y autorise qu'eflomal)
+    target = {"target": cfg.target} if cfg.target != "lxx" else {}
+    return cls(**cfg.aligner_params, layer=cfg.tokens, hebrew=cfg.hebrew, greek=cfg.greek, **target)

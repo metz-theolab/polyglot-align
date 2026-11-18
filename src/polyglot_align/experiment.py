@@ -4,7 +4,9 @@
     config.yaml        copie de la configuration utilisée
     <passage>.jsonl    alignements (relire avec polyglot-align show)
     <passage>.csv      relecture : un mot hébreu par ligne, avec le verdict du gold
+                       (Peshitta, sans gold : sans verdict)
     scores.json        comptes bruts et mesures, par passage et au total
+                       (Peshitta : volumes seulement, mesures vides)
     scores.csv         le tableau des mesures
     perf.json          durée, temps CPU, mémoire et débit, par phase (voir perf.py)
 
@@ -22,6 +24,7 @@ from pathlib import Path
 import yaml
 
 from polyglot_align.align import align
+from polyglot_align.alignment import export_review_csv, volumes
 from polyglot_align.aligners import make_aligner
 from polyglot_align.config import Config
 from polyglot_align.evaluation.evaluate import Evaluator, measures
@@ -81,8 +84,14 @@ class Experiment:
 
     def training_pairs(self):
         """Paires de versets données à Aligner.fit : toute la table des versets
-        (seul endroit où se décidera le découpage entraînement / test)."""
-        return self.store.table_pairs()
+        (seul endroit où se décidera le découpage entraînement / test) ;
+        Peshitta : toutes les paires de même référence."""
+        return self.store.training_pairs(self.cfg.target)
+
+    @property
+    def has_gold(self) -> bool:
+        """Évaluation contre le gold CATSS : seulement pour la LXX."""
+        return self.cfg.target == "lxx"
 
     def prepare(self) -> None:
         """Crée le dossier des résultats et y copie la configuration. Refuse un
@@ -116,12 +125,23 @@ class Experiment:
         Renvoie (versets alignés pendant cette exécution, versets repris)."""
         jsonl = self.out / f"{p.label}.jsonl"
         with self.perf.phase("alignement"):
-            n, resumed = align(aligner, self.store.verse_pairs(p.book, p.lxx_book, p.only), jsonl)
+            pairs = self.store.target_pairs(self.cfg.target, p.book, p.lxx_book, p.only)
+            n, resumed = align(aligner, pairs, jsonl)
         with self.perf.phase("evaluation"):
-            evaluator = Evaluator.from_store(self.store, p.book, p.lxx_book, layer=self.cfg.tokens)
-            self.scores[p.label] = evaluator.evaluate(jsonl)
-            evaluator.export_csv(jsonl, self.out / f"{p.label}.csv")
+            if self.has_gold:
+                evaluator = Evaluator.from_store(self.store, p.book, p.lxx_book, layer=self.cfg.tokens)
+                self.scores[p.label] = evaluator.evaluate(jsonl)
+                evaluator.export_csv(jsonl, self.out / f"{p.label}.csv")
+            else:   # sans gold : volumes et relecture sans verdict
+                self.scores[p.label] = {"methodes": {m: {"mesures": self.no_measures(), "comptes": dict(c)}
+                                                     for m, c in volumes(jsonl).items()}}
+                export_review_csv(jsonl, self.out / f"{p.label}.csv")
         return n, resumed
+
+    @staticmethod
+    def no_measures() -> dict:
+        """Mesures vides (sans gold), pour garder la forme de scores.json."""
+        return {c: None for c in COLUMNS}
 
     def total(self) -> dict:
         """Somme des comptes de tous les passages, par méthode (moyenne micro)."""
@@ -129,7 +149,8 @@ class Experiment:
         for res in self.scores.values():
             for m, r in res["methodes"].items():
                 sums.setdefault(m, Counter()).update(r["comptes"])
-        return {"methodes": {m: {"mesures": measures(c), "comptes": dict(c)} for m, c in sums.items()}}
+        score = measures if self.has_gold else (lambda c: self.no_measures())
+        return {"methodes": {m: {"mesures": score(c), "comptes": dict(c)} for m, c in sums.items()}}
 
     def rows(self):
         """(passage, méthode, mesures), total compris, dans l'ordre d'affichage."""

@@ -17,7 +17,7 @@ from typing import Iterable
 
 from polyglot_align.alignment import VerseAlignment
 from polyglot_align.corpus import Verse
-from polyglot_align.normalize import norm_grc, norm_heb
+from polyglot_align.normalize import HEB_PUNCT, norm_grc, norm_heb, norm_syr, strip_punct
 
 
 class Aligner(ABC):
@@ -26,10 +26,12 @@ class Aligner(ABC):
     name = None                  # valeur de `type` dans la config (registre : aligners/__init__.py)
     PARAMS = {}                  # options propres à l'aligneur -> valeur par défaut
 
-    def __init__(self, layer: str = "w", hebrew: str = "unvocalized", greek: str = "accented"):
-        self.layer = layer       # couche dont les tokens sont reliés (w, g ou l)
+    def __init__(self, layer: str = "w", hebrew: str = "unvocalized", greek: str = "accented",
+                 target: str = "lxx"):
+        self.layer = layer       # couche dont les tokens sont reliés (w, g, l ou t)
         self.hebrew = hebrew     # pointed, vocalized, unvocalized (normalize.norm_heb)
         self.greek = greek       # accented, unaccented (normalize.norm_grc)
+        self.target = target     # lxx (grec) ou syr (Peshitta : normalize.norm_syr)
         self.stats = Counter()   # compteurs affichés en fin d'expérience (vide si rien à dire)
 
     @classmethod
@@ -39,9 +41,14 @@ class Aligner(ABC):
         return []
 
     def normalized_tokens(self, hv, gv) -> tuple[list, list]:
-        """Tokens de la couche `layer`, normalisés selon `hebrew` et `greek`."""
-        return ([norm_heb(t, self.hebrew) for t in hv.tokens(self.layer)],
-                [norm_grc(t, self.greek) for t in gv.tokens(self.layer)])
+        """Tokens de la couche `layer`, normalisés selon `hebrew` et `greek`
+        (Peshitta : norm_syr ; couche t : ponctuation collée retirée)."""
+        src = [norm_heb(t, self.hebrew) for t in hv.tokens(self.layer)]
+        if self.layer == "t":
+            src = [strip_punct(t, HEB_PUNCT) for t in src]
+        if self.target == "syr":
+            return src, [norm_syr(t) for t in gv.tokens(self.layer)]
+        return src, [norm_grc(t, self.greek) for t in gv.tokens(self.layer)]
 
     def fit(self, pairs: Iterable[tuple[Verse, Verse]]) -> None:
         """Apprentissage sur des paires de versets (hébreu, grec), appelé une

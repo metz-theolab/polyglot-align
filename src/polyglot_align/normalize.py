@@ -26,6 +26,12 @@ HEB_NON_VOWELS = re.compile(r"[֑-ֽ֯־׀׃ׅׄ׆]")
 HEBREW = ("pointed", "vocalized", "unvocalized")
 GREEK = ("accented", "unaccented")
 
+# Ponctuation retirée des tokens de la couche t (texte découpé aux espaces), où elle
+# reste collée aux mots : sof pasuq, paseq, nun inversé (hébreu) ; ponctuation
+# syriaque (U+0700–U+070D) et signes de l'export Peshitta (. , : · • —)
+HEB_PUNCT = re.compile(r"[׀׃׆]")
+SYR_PUNCT = re.compile(r"[\u0700-\u070D.,:;·•—]")
+
 
 def norm_heb(token: str, hebrew: str = "unvocalized") -> str:
     """Hébreu, selon l'option `hebrew` :
@@ -53,6 +59,18 @@ def norm_grc(token: str, greek: str = "accented") -> str:
         return unicodedata.normalize("NFC", token)
     token = unicodedata.normalize("NFD", token.lower())
     return "".join(c for c in token if not unicodedata.combining(c))
+
+
+def strip_punct(token: str, pattern) -> str:
+    """Token sans ponctuation ; s'il n'est fait que de ponctuation, inchangé
+    (eflomal ne prend pas de token vide)."""
+    return pattern.sub("", token) or token
+
+
+def norm_syr(token: str) -> str:
+    """Syriaque, tel qu'exporté (syāmē et points gardés), en NFC, sans ponctuation
+    (DECISIONS.md « Démo : alignement hébreu ↔ Peshitta »)."""
+    return strip_punct(unicodedata.normalize("NFC", token), SYR_PUNCT)
 
 
 # --- Squelettes de comparaison -----------------------------------------------

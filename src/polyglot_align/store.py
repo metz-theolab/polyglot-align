@@ -4,6 +4,7 @@ DataStore est le seul endroit du code qui connaît l'arborescence de data/ :
 
     data/he/<livre>.json          texte hébreu exporté (corpus.Corpus)
     data/lxx/<livre>.json         texte grec exporté
+    data/syr/<livre>.json         texte syriaque exporté (Peshitta)
     data/gold_clean/<livre>.json  gold CATSS nettoyé, par livre grec (evaluation.Gold)
     data/verse_map.json           appariement des versets hébreu ↔ LXX (corpus.VerseMap)
 
@@ -14,7 +15,7 @@ garde un seul DataStore.
 from pathlib import Path
 from typing import Iterator
 
-from polyglot_align.corpus import Corpus, Verse, VerseMap
+from polyglot_align.corpus import Corpus, Verse, VerseMap, ref_key
 from polyglot_align.evaluation.gold import Gold
 
 
@@ -26,14 +27,15 @@ class DataStore:
         self._verse_map = None
 
     def corpus(self, side: str, book: str) -> Corpus:
-        """side = "he" ou "lxx" ; ex. store.corpus("lxx", "JudgA")."""
+        """side = "he", "lxx" ou "syr" ; ex. store.corpus("lxx", "JudgA")."""
         if (side, book) not in self._corpora:
             self._corpora[side, book] = Corpus(self.root / side / f"{book}.json")
         return self._corpora[side, book]
 
     def books(self, side: str) -> list:
-        """Livres exportés d'un côté ("he" ou "lxx"), triés par nom."""
-        return sorted(p.stem for p in (self.root / side).glob("*.json"))
+        """Livres exportés d'un côté ("he", "lxx" ou "syr"), triés par nom."""
+        return sorted(p.stem for p in (self.root / side).glob("*.json")
+                      if not p.name.startswith("_"))   # _rapport.json : pas un livre
 
     def gold(self, lxx_book: str) -> Gold:
         """Gold d'un livre grec : store.gold("Gen"), store.gold("JudgA")."""
@@ -62,3 +64,31 @@ class DataStore:
         l'ordre de la table (données d'apprentissage d'eflomal)."""
         for he_book, lxx_book in self.verse_map.book_pairs():
             yield from self.verse_pairs(he_book, lxx_book)
+
+    # --- texte cible : LXX (table du gold) ou Peshitta (même référence) ---
+
+    def reference_pairs(self, side: str, he_book: str, book: str, only: str = None) -> list:
+        """[(Verse hébreu, Verse de `side`)] appariés par même référence ch.vs
+        (Peshitta : pas de table, voir DECISIONS.md « Démo : alignement hébreu ↔
+        Peshitta »), dans l'ordre du TM ; only : comme verse_pairs."""
+        he, other = self.corpus("he", he_book), self.corpus(side, book)
+        keys = sorted(he.keys() & other.keys(), key=ref_key)
+        pairs = [(he[k], other[k]) for k in keys]
+        if only:
+            pairs = [(hv, v) for hv, v in pairs if hv.ref == only or hv.ref.startswith(only + ".")]
+        return pairs
+
+    def target_pairs(self, target: str, he_book: str, book: str, only: str = None) -> list:
+        """Paires de versets d'un passage : LXX par la table, Peshitta par même référence."""
+        if target == "lxx":
+            return self.verse_pairs(he_book, book, only)
+        return self.reference_pairs(target, he_book, book, only)
+
+    def training_pairs(self, target: str) -> Iterator[tuple[Verse, Verse]]:
+        """Toutes les paires de versets hébreu–cible (apprentissage d'eflomal) :
+        LXX : la table ; Peshitta : tous les livres présents des deux côtés."""
+        if target == "lxx":
+            yield from self.table_pairs()
+            return
+        for book in sorted(set(self.books("he")) & set(self.books(target))):
+            yield from self.reference_pairs(target, book, book)

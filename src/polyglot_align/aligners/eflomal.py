@@ -61,8 +61,8 @@ class EflomalAligner(Aligner):
     name = "eflomal"
     PARAMS = {}                  # aucune option propre
 
-    def __init__(self, layer="w", hebrew="unvocalized", greek="accented"):
-        super().__init__(layer, hebrew, greek)
+    def __init__(self, layer="w", hebrew="unvocalized", greek="accented", target="lxx"):
+        super().__init__(layer, hebrew, greek, target)
         self.links = {}          # (livre hébreu, livre grec, "ch.vs") -> {"inter": set, "gdfa": set}
 
     def tokens(self, hv, gv):

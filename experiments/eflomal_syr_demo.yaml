@@ -1,0 +1,18 @@
+# Démo pour l'article : hébreu ↔ Peshitta avec eflomal, sans gold
+# (DECISIONS.md, FEAT / Syriaque, « Démo : alignement hébreu ↔ Peshitta »).
+# eflomal apprend sur toutes les paires hébreu–syriaque de même référence (23 006),
+# puis écrit les alignements de Gen, Ps, Isa (JSONL + CSV de relecture, sans scores).
+# Lancer (depuis la racine du projet) : polyglot-align run experiments/eflomal_syr_demo.yaml
+# Relire : polyglot-align show results/eflomal_syr_demo/Gen.jsonl Gen.1.1
+
+name: eflomal_syr_demo
+
+passages:
+  - {book: Gen}
+
+target: syr                 # lxx = Septante (gold CATSS), syr = Peshitta (sans gold)
+tokens: t                   # t = texte découpé aux espaces (mots liés par maqqef ensemble)
+hebrew: pointed             # pointed = tel qu'exporté, vocalized, unvocalized
+
+aligner:
+  type: eflomal
