@@ -14,10 +14,10 @@ name: gemma4_unvocalized
 
 passages:
   - {book: Gen}
-  # - {book: Prov}
-  # - {book: Eccl}
-  # - {book: Song}
-  # - {book: Isa}
+  - {book: Prov}
+  - {book: Eccl}
+  - {book: Song}
+  - {book: Isa}
 
 tokens: w                   # w = mots BHSA, g = mots graphiques, l = lemmes
 hebrew: unvocalized         # pointed = tel qu'exporté, vocalized = voyelles, unvocalized = consonantique

@@ -1,0 +1,5 @@
+passage,methode,precision,rappel_blocs,f1,nonalign_exactitude,aer,couverture_hb,couverture_gr
+Prov,llm,0.8108,0.8223,0.8165,0.6889,0.1869,0.9984,0.9943
+Eccl,llm,0.9449,0.9323,0.9386,0.5455,0.0635,0.9836,0.9998
+Song,llm,0.9387,0.9502,0.9444,0.5443,0.0618,0.9793,0.9995
+TOTAL,llm,0.8746,0.8735,0.874,0.6785,0.1286,0.9911,0.9965

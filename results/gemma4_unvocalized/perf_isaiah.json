@@ -1,0 +1,64 @@
+{
+ "debut": "2026-11-18T12:18:53",
+ "phases": {
+  "chargement": {
+   "duree_s": 0.0,
+   "cpu_s": 0.0
+  },
+  "apprentissage": {
+   "duree_s": 0.0,
+   "cpu_s": 0.0
+  },
+  "alignement": {
+   "duree_s": 7752.316,
+   "cpu_s": 3.906
+  },
+  "evaluation": {
+   "duree_s": 2.258,
+   "cpu_s": 2.172
+  }
+ },
+ "total": {
+  "duree_s": 7754.573,
+  "cpu_s": 6.079
+ },
+ "cout_methode": {
+  "duree_s": 7752.316,
+  "cpu_s": 3.906,
+  "s_par_1000_versets": 6287.361
+ },
+ "debit_alignement": {
+  "versets_par_s": 0.16,
+  "tokens_par_s": null
+ },
+ "volume": {
+  "versets": 1233,
+  "versets_repris": 2560,
+  "tokens_hb": 62049,
+  "tokens_gr": 73464
+ },
+ "memoire_max_mo": 132.8,
+ "machine": {
+  "systeme": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "processeur": "Apple M3 Max",
+  "coeurs": 14,
+  "python": "3.13.4",
+  "device": null,
+  "versions": {
+   "torch": "2.15.0",
+   "transformers": "5.22.1",
+   "simalign": "0.4",
+   "eflomal": "2.0.0"
+  }
+ },
+ "aligneur": {
+  "ollama_prompt_eval_count": 311394,
+  "ollama_eval_count": 316087,
+  "ollama_prompt_eval_duration": 1095940604569,
+  "ollama_eval_duration": 6550761312403,
+  "versets": 1233,
+  "tokens_hb_sans_lien": 3064,
+  "tokens_gr_sans_lien": 1548,
+  "ollama_tokens_generes_par_s": 48.25
+ }
+}

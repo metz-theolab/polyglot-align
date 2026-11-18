@@ -1,43 +1,54 @@
 {
+ "fusion": {
+  "sources": [
+   "perf_gen.json",
+   "perf_prov_ecc_song.json",
+   "perf_isaiah.json"
+  ],
+  "note": "Fusion de trois exécutions (Gen ; Prov, Eccl, Song ; Isa). Durées et compteurs additionnés, mémoire = maximum, évaluation = dernière exécution (les cinq livres). Gen : seuls 60 versets sur 1518 ont été alignés pendant une exécution mesurée ; les 1458 autres l'avaient été lors d'exécutions antérieures, sans mesure conservée. Les coûts par verset portent donc sur les versets mesurés.",
+  "versets_total": 3793,
+  "versets_mesures": 2335,
+  "versets_non_mesures": 1458
+ },
  "debut": "2026-11-16T15:35:36",
  "phases": {
   "chargement": {
-   "duree_s": 0.0,
-   "cpu_s": 0.0
+   "duree_s": 0,
+   "cpu_s": 0
   },
   "apprentissage": {
-   "duree_s": 0.0,
-   "cpu_s": 0.0
+   "duree_s": 0,
+   "cpu_s": 0
   },
   "alignement": {
-   "duree_s": 236.076,
-   "cpu_s": 0.189
+   "duree_s": 11519.98,
+   "cpu_s": 6.217
   },
   "evaluation": {
-   "duree_s": 0.758,
-   "cpu_s": 0.742
+   "duree_s": 2.258,
+   "cpu_s": 2.172
   }
  },
  "total": {
-  "duree_s": 236.834,
-  "cpu_s": 0.931
+  "duree_s": 11522.238,
+  "cpu_s": 8.389
  },
  "cout_methode": {
-  "duree_s": 236.076,
-  "cpu_s": 0.189,
-  "s_par_1000_versets": 3934.598
+  "duree_s": 11519.98,
+  "cpu_s": 6.217,
+  "s_par_1000_versets": 4933.61
  },
  "debit_alignement": {
-  "versets_par_s": 0.25,
+  "versets_par_s": 0.2,
   "tokens_par_s": null
  },
  "volume": {
-  "versets": 60,
+  "versets": 2335,
   "versets_repris": 1458,
-  "tokens_hb": 28209,
-  "tokens_gr": 32280
+  "tokens_hb": 62049,
+  "tokens_gr": 73464
  },
- "memoire_max_mo": 90.9,
+ "memoire_max_mo": 132.8,
  "machine": {
   "systeme": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
   "processeur": "Apple M3 Max",
@@ -52,13 +63,14 @@
   }
  },
  "aligneur": {
-  "ollama_prompt_eval_count": 14629,
-  "ollama_eval_count": 15244,
-  "ollama_prompt_eval_duration": 38931176419,
-  "ollama_eval_duration": 191583818089,
-  "versets": 60,
-  "tokens_hb_sans_lien": 133,
-  "tokens_gr_sans_lien": 49,
-  "ollama_tokens_generes_par_s": 79.57
+  "ollama_prompt_eval_count": 560482,
+  "ollama_eval_count": 531419,
+  "ollama_prompt_eval_duration": 1780480500628,
+  "ollama_eval_duration": 9579605314620,
+  "versets": 2335,
+  "tokens_hb_sans_lien": 4514,
+  "tokens_gr_sans_lien": 3335,
+  "reponses_tronquees": 2,
+  "ollama_tokens_generes_par_s": 55.47
  }
 }
