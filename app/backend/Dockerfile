@@ -24,12 +24,15 @@ RUN pip install '.[simalign,eflomal]'
 COPY app/backend ./app/backend
 RUN pip install ./app/backend
 
-# données nécessaires à l'app : textes hébreu et grec, table des versets
+# données nécessaires à l'app : textes hébreu, grec et syriaque, table des versets
+# (résultats du lecteur : volume monté sur /srv/results, voir docker-compose.yml)
 COPY data/he ./data/he
 COPY data/lxx ./data/lxx
+COPY data/syr ./data/syr
 COPY data/verse_map.json ./data/verse_map.json
 
 ENV POLYGLOT_DATA_DIR=/srv/data \
+    POLYGLOT_RESULTS_DIR=/srv/results \
     POLYGLOT_HOST=0.0.0.0 \
     POLYGLOT_PORT=8000
 EXPOSE 8000

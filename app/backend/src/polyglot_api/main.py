@@ -18,7 +18,9 @@ from fastapi.responses import JSONResponse
 
 from polyglot_api import __version__
 from polyglot_api.routes import align, health
+from polyglot_api.routes import reader as reader_routes
 from polyglot_api.services.aligner import AlignerService, NotReady, UnknownAlgorithm
+from polyglot_api.services.reader import Reader
 from polyglot_api.settings import Settings
 
 log = logging.getLogger(__name__)
@@ -55,13 +57,11 @@ def ollama_check(settings: Settings):
     return check
 
 
-def default_service(settings: Settings) -> AlignerService:
-    """Aligneurs réels : socle (données de settings.data_dir, segmentation table +
+def default_service(settings: Settings, store) -> AlignerService:
+    """Aligneurs réels : socle (données du DataStore, segmentation table +
     dictabert-seg) puis les algorithmes de settings.algorithms, dans l'ordre."""
     def base():
         from polyglot_align.segment import CombinedSegmenter
-        from polyglot_align.store import DataStore
-        store = DataStore(settings.data_dir)
         return {"store": store, "segmenter": CombinedSegmenter.from_store(store, device=settings.device)}
 
     def eflomal(b):
@@ -85,10 +85,17 @@ def default_service(settings: Settings) -> AlignerService:
                           checks={"llm": ollama_check(settings)})
 
 
-def create_app(settings: Settings | None = None, service: AlignerService | None = None) -> FastAPI:
-    """Construit l'application. service : à fournir en test (aligneur simulé)."""
+def create_app(settings: Settings | None = None, service: AlignerService | None = None,
+               reader: Reader | None = None) -> FastAPI:
+    """Construit l'application. service, reader : à fournir en test (aligneur
+    simulé, petits résultats). Un seul DataStore (settings.data_dir) pour les
+    deux."""
+    from polyglot_align.store import DataStore
     settings = settings or Settings()
-    service = service or default_service(settings)
+    store = DataStore(settings.data_dir) if service is None or reader is None else None
+    service = service or default_service(settings, store)
+    reader = reader or Reader(store, settings.results_dir, settings.reader_corpora,
+                              settings.reader_method, settings.reader_cache)
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
@@ -100,7 +107,7 @@ def create_app(settings: Settings | None = None, service: AlignerService | None 
     app = FastAPI(title="polyglot-align API", version=__version__, lifespan=lifespan,
                   description="Alignement mot à mot d'un texte hébreu et d'un texte grec "
                               "(eflomal, appris sur la Bible hébraïque et la Septante).")
-    app.state.settings, app.state.service = settings, service
+    app.state.settings, app.state.service, app.state.reader = settings, service, reader
     app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins,
                        allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
 
@@ -114,6 +121,7 @@ def create_app(settings: Settings | None = None, service: AlignerService | None 
 
     app.include_router(health.router, prefix=PREFIX)
     app.include_router(align.router, prefix=PREFIX)
+    app.include_router(reader_routes.router, prefix=PREFIX)
     return app
 
 

@@ -4,8 +4,19 @@ Seul endroit du code qui lit le format d'export (couches t / w / l / g,
 voir DECISIONS.md « Format d'export des textes »).
 """
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
+
+from polyglot_align.normalize import norm_heb
+
+# tokens de la couche t hébraïque hors du texte : setuma (ס), petucha (פ), nun
+# inversé écrit נ (Nb 10,34-36)
+TEXT_MARKS = ("ס", "פ", "נ")
+
+
+def _consonants(token: str) -> str:
+    return re.sub(r"[^א-ת]", "", norm_heb(token, "unvocalized"))
 
 
 def ref_key(ref: str) -> tuple:
@@ -50,6 +61,46 @@ class Verse:
         """Mots graphiques pour l'affichage (prompt du LLM) : tokens recollés,
         nom composé בית_אל -> « בית אל ». layer = w ou l (g = w)."""
         return self._join_graphic("w" if layer == "g" else layer, keep_compound=False)
+
+    def spaced_words(self) -> list:
+        """Mots séparés par des espaces (couche t, hébreu) et leurs mots
+        graphiques (couche g) : [([indices dans t], [numéros g])], dans l'ordre.
+        Un groupe = un token de t (אֶת־הָרָקִיעַ : deux mots graphiques), ou
+        plusieurs quand un mot graphique en couvre plusieurs (nom composé
+        בַּעַל חָנָן : un token de w) ; marques (ס, פ, ׀) : groupe sans mot
+        graphique. Rattachement par les consonnes ; ValueError si t et w ne
+        portent pas les mêmes consonnes."""
+        tokens = self.tokens("t")
+        spans, pos, text = [], 0, ""   # consonnes de chaque token de t : [début, fin)
+        for tok in tokens:
+            c = "" if tok in TEXT_MARKS else _consonants(tok)
+            spans.append((pos, pos + len(c)))
+            pos, text = pos + len(c), text + c
+        graphic = {}                   # numéro g -> [début, fin)
+        start, words = 0, ""
+        for tok, k in zip(self.tokens("w"), self.graphic_numbers()):
+            c = _consonants(tok)
+            a, _ = graphic.get(k, (start, start))
+            graphic[k] = (a, start + len(c))
+            start, words = start + len(c), words + c
+        if text != words:
+            raise ValueError(f"{self.ref} : couches t et w aux consonnes différentes")
+        joined = [False] * len(tokens)     # token i dans le même groupe que i + 1
+        first = {}                         # numéro g -> premier token de t qui le porte
+        for k, (a, b) in graphic.items():
+            hit = [i for i, (s, e) in enumerate(spans) if s < e and s < b and a < e]
+            first[k] = hit[0]
+            for i in hit[:-1]:             # mot graphique sur plusieurs tokens : fusion
+                joined[i] = True
+        groups, group_of = [], []
+        for i in range(len(tokens)):
+            if i == 0 or not joined[i - 1]:
+                groups.append(([], []))
+            groups[-1][0].append(i)
+            group_of.append(len(groups) - 1)
+        for k, i in first.items():
+            groups[group_of[i]][1].append(k)
+        return groups
 
     def _join_graphic(self, layer: str, keep_compound: bool) -> list:
         """Recolle les tokens de `layer` qui ont le même numéro de mot graphique."""

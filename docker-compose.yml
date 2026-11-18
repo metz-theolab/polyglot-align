@@ -21,6 +21,7 @@ services:
       POLYGLOT_CORS_ORIGINS: "[]"          # le front passe par nginx : même origine
     volumes:
       - models:/models                     # dictabert-seg, Glot500 : téléchargés une fois
+      - ./results:/srv/results:ro          # lecteur : résultats publiés (POLYGLOT_READER_CORPORA)
     extra_hosts:
       - "host.docker.internal:host-gateway" # Linux : accès à l'Ollama de la machine
     healthcheck:

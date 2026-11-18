@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 from polyglot_align.config import Config, Passage
-from polyglot_align.corpus import Corpus, ref_key
+from polyglot_align.corpus import Corpus, Verse, ref_key
 from polyglot_align.store import DataStore
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -105,6 +105,20 @@ class TestCorpus(unittest.TestCase):
         self.assertEqual((v.book, v.key, v.ref), ("Gen", "1.1", "Gen.1.1"))
         self.assertEqual(len(v.tokens("w")), len(v.tokens("l")))
         self.assertEqual(v.graphic_numbers(), "0 0 1 2 3 4 4 5 5 6 6".split())
+
+    def test_mots_separes_par_des_espaces(self):
+        # Gn 1,7 : אֶת־הָרָקִיעַ = un mot de t, deux mots graphiques (2, 3)
+        groups = self.he["1.7"].spaced_words()
+        self.assertEqual(len(groups), len(self.he["1.7"].tokens("t")))
+        self.assertEqual(groups[2], ([2], ["2", "3"]))
+        # nom composé (1 Ch 1,50 : בַּעַל חָנָן, un token de w) : deux mots de t, un groupe ;
+        # setuma ס en fin de verset : groupe sans mot graphique
+        v = Verse("1Chr", "1", "50", {"t": "וַיָּמָת בַּעַל חָנָן וַיִּמְלֹךְ ס",
+                                       "w": "וַ יָּמָת בַּעַל_חָנָן וַ יִּמְלֹךְ", "g": "0 0 1 2 2"})
+        self.assertEqual(v.spaced_words(), [([0], ["0"]), ([1, 2], ["1"]), ([3], ["2"]), ([4], [])])
+        bad = Verse("Gen", "1", "1", {"t": "אב", "w": "גד", "g": "0"})
+        with self.assertRaises(ValueError):
+            bad.spaced_words()
 
     def test_mots_graphiques_hebreu(self):
         words = [nfc(w) for w in self.he["1.1"].graphic_words()]

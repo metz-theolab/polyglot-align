@@ -107,3 +107,56 @@ class Info(BaseModel):
     max_chars: int
     max_batch: int
     limits: list[str]
+
+
+# --- lecteur des textes alignés (/reader) -------------------------------------
+
+
+class ReaderCorpus(BaseModel):
+    """Un dossier de résultats publié."""
+    id: str = Field(description="nom du dossier de résultats (ex. eflomal_syr)")
+    label: str = Field(description="ex. « Peshitta — eflomal »")
+    target: Literal["lxx", "syr"]
+    language: str = Field(description="code de langue de la cible (grc, syc)")
+    direction: Literal["ltr", "rtl"]
+    gold: bool = Field(description="verdicts du gold CATSS disponibles (LXX)")
+    method: str = Field(description="liens affichés (gdfa)")
+
+
+class ReaderText(BaseModel):
+    corpus: str
+    text: str = Field(description="livre cible (ex. JudgA : texte A des Juges)")
+
+
+class ReaderBook(BaseModel):
+    book: str = Field(description="livre hébreu")
+    chapters: list[str]
+    texts: list[ReaderText] = Field(description="textes cibles alignés avec ce livre")
+
+
+class ReaderWord(BaseModel):
+    """Mot pivot : mot hébreu séparé par des espaces (אֶת־הָרָקִיעַ) ou nom composé."""
+    text: str
+    graphic: bool = Field(description="false : marque hors du texte (ס, פ, ׀)")
+
+
+class ReaderTarget(BaseModel):
+    corpus: str
+    text: str
+    ref: str = Field(description="référence du verset cible (peut différer de l'hébreu)")
+    tokens: list[str]
+    links: list[tuple[int, int]] = Field(description="couples [mot pivot, token cible]")
+    verdicts: list[str | None] | None = Field(
+        description="verdict du gold par mot pivot (LXX ; le pire de ses tokens) ; null sans gold")
+
+
+class ReaderVerse(BaseModel):
+    ref: str
+    words: list[ReaderWord]
+    targets: list[ReaderTarget] = Field(description="un par texte cible aligné ; absent si non apparié")
+
+
+class ReaderChapter(BaseModel):
+    book: str
+    chapter: str
+    verses: list[ReaderVerse]

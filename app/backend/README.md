@@ -37,6 +37,10 @@ répond `loading` (503) puis `ready` (200).
 | `POLYGLOT_SIMALIGN_MODEL` | `cis-lmu/glot500-base` | modèle de SimAlign |
 | `POLYGLOT_OLLAMA_URL` | `http://localhost:11434` | serveur Ollama du LLM |
 | `POLYGLOT_LLM_MODEL` | `gemma4:12b` | modèle Ollama |
+| `POLYGLOT_RESULTS_DIR` | `results` | dossier `results/` de polyglot-align (lecteur) |
+| `POLYGLOT_READER_CORPORA` | `["eflomal_unvocalized", "eflomal_syr"]` | résultats publiés dans le lecteur |
+| `POLYGLOT_READER_METHOD` | `gdfa` | liens affichés par le lecteur |
+| `POLYGLOT_READER_CACHE` | `16` | livres gardés en mémoire par le lecteur |
 
 Le LLM n'est proposé que si Ollama répond et connaît le modèle ; sinon il
 apparaît « unavailable » dans `/info`, avec la raison, et est revérifié à
@@ -51,6 +55,16 @@ chaque appel de `/info` (Ollama démarré après l'API).
 | `POST /align` | `{"hebrew": "…", "greek": "…", "algorithm": "eflomal"}` → tokens, mots graphiques, liens `sure` et `all` |
 | `POST /align/batch` | `{"pairs": [{…}, …]}` : plusieurs paires, un seul apprentissage |
 | `POST /segment` | `{"hebrew": "…"}` → découpage en mots BHSA, sans aligner |
+| `GET /reader/corpora` | résultats publiés : cible (lxx, syr), langue, sens d'écriture, gold |
+| `GET /reader/books` | livres hébreux alignés, chapitres, textes cibles (Judg et JudgA…) |
+| `GET /reader/{livre}/{chapitre}` | chapitre hébreu en pivot ; `?corpus=…` (répétable) : résultats à inclure |
+
+Lecteur (`/reader`) : alignements déjà calculés (`results/<nom>/*.jsonl`),
+l'hébreu en pivot. Chaque verset : `words` (mots hébreux séparés par des
+espaces ; `graphic: false` pour ס, פ, ׀) et `targets`, un par texte cible
+(`tokens` du corpus, `links` : couples `[mot pivot, token cible]`, `verdicts` :
+verdict du gold par mot pivot, LXX seulement). Verset sans équivalent : pas de
+cible. Dossier de résultats absent : non publié (avertissement au démarrage).
 
 Réponse de `/align` : `hebrew` et `greek` (`text`, `tokens`, `graphic` : numéro
 du mot graphique de chaque token), `links` (`sure` : liens sûrs ; `all` : sûrs

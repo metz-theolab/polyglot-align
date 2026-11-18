@@ -16,6 +16,10 @@ servira en local et sur un serveur (decisions-app.md).
     POLYGLOT_SIMALIGN_MODEL modèle de SimAlign (Hugging Face)
     POLYGLOT_OLLAMA_URL     serveur Ollama du LLM
     POLYGLOT_LLM_MODEL      modèle Ollama du LLM
+    POLYGLOT_RESULTS_DIR    dossier results/ de polyglot-align (lecteur)
+    POLYGLOT_READER_CORPORA résultats publiés dans le lecteur, liste JSON
+    POLYGLOT_READER_METHOD  liens affichés par le lecteur (gdfa)
+    POLYGLOT_READER_CACHE   nombre de livres gardés en mémoire par le lecteur
 """
 from pathlib import Path
 
@@ -37,3 +41,7 @@ class Settings(BaseSettings):
     simalign_model: str = "cis-lmu/glot500-base"
     ollama_url: str = "http://localhost:11434"
     llm_model: str = "gemma4:12b"
+    results_dir: Path = Path("results")
+    reader_corpora: list[str] = ["eflomal_unvocalized", "eflomal_syr"]
+    reader_method: str = "gdfa"
+    reader_cache: int = 16
