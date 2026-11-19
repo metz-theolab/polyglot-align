@@ -1,0 +1,13 @@
+# HTTPS devant le front, sur le serveur seulement (compose.https.yml).
+# Voir decisions-app.md, « HTTPS : Caddy et l'ACME de la HU ».
+# Certificat obtenu et renouvelé par Caddy auprès de l'ACME de la HU ;
+# HTTP redirigé vers HTTPS. Variables : .env du serveur.
+{
+	email {$ACME_EMAIL}
+	acme_ca {$ACME_CA}
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+	reverse_proxy frontend:80
+}

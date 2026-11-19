@@ -1,0 +1,32 @@
+# HTTPS sur le serveur : Caddy devant le front (app/caddy/Caddyfile).
+# Voir decisions-app.md, « HTTPS : Caddy et l'ACME de la HU ».
+# En local, ne pas l'utiliser : docker compose up suffit (http://localhost:8080).
+#
+# Activé par le .env du serveur :
+#   COMPOSE_FILE=docker-compose.yml:compose.https.yml
+#   PORT=127.0.0.1:8080        front joignable depuis la VM seulement ; Caddy prend 80 et 443
+#   DOMAIN=polyglot-align.ikt.hu-berlin.de
+#   ACME_EMAIL=…               adresse lue : avis d'expiration et d'erreur
+name: polyglot-align
+
+services:
+  caddy:
+    image: caddy:2.10-alpine
+    environment:
+      DOMAIN: ${DOMAIN:?DOMAIN manquant dans .env}
+      ACME_EMAIL: ${ACME_EMAIL:?ACME_EMAIL manquant dans .env}
+      ACME_CA: ${ACME_CA:-https://botcert.uvf.hu-berlin.de/directory}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./app/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data                   # certificats et compte ACME : à garder
+      - caddy_config:/config
+    depends_on:
+      - frontend
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:
